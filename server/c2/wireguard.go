@@ -28,7 +28,7 @@ import (
 	"net"
 	"net/netip"
 
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/starkzarn/glod/server/certs"
 	"github.com/starkzarn/glod/server/core"
 	"github.com/starkzarn/glod/server/generate"
@@ -243,7 +243,7 @@ Loop:
 // socketWGWriteEnvelope - Writes a message to the wireguard socket using length prefix framing
 // which is a fancy way of saying we write the length of the message then the message
 // e.g. [uint32 length|message] so the receiver can delimit messages properly
-func socketWGWriteEnvelope(connection net.Conn, envelope *sliverpb.Envelope) error {
+func socketWGWriteEnvelope(connection net.Conn, envelope *glodpb.Envelope) error {
 	data, err := proto.Marshal(envelope)
 	if err != nil {
 		wgLog.Errorf("Envelope marshaling error: %v", err)
@@ -258,7 +258,7 @@ func socketWGWriteEnvelope(connection net.Conn, envelope *sliverpb.Envelope) err
 
 // socketWGReadEnvelope - Reads a message from the wireguard connection using length prefix framing
 // returns messageType, message, and error
-func socketWGReadEnvelope(connection net.Conn) (*sliverpb.Envelope, error) {
+func socketWGReadEnvelope(connection net.Conn) (*glodpb.Envelope, error) {
 
 	// Read the first four bytes to determine data length
 	dataLengthBuf := make([]byte, 4) // Size of uint32
@@ -287,7 +287,7 @@ func socketWGReadEnvelope(connection net.Conn) (*sliverpb.Envelope, error) {
 		return nil, err
 	}
 	// Unmarshal the protobuf envelope
-	envelope := &sliverpb.Envelope{}
+	envelope := &glodpb.Envelope{}
 	err = proto.Unmarshal(dataBuf, envelope)
 	if err != nil {
 		wgLog.Errorf("Un-marshaling envelope error: %v", err)

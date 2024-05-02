@@ -29,7 +29,7 @@ import (
 	"github.com/starkzarn/glod/protobuf/clientpb"
 	"github.com/starkzarn/glod/protobuf/commonpb"
 	"github.com/starkzarn/glod/protobuf/rpcpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/starkzarn/glod/util/leaky"
 )
 
@@ -156,7 +156,7 @@ func (f *socksProxy) Start(tcpProxy *TcpProxy) error {
 			log.Printf("Failed to accept new listener, probably already closed: %s\n", err)
 			break
 		}
-		rpcSocks, err := tcpProxy.Rpc.CreateSocks(context.Background(), &sliverpb.Socks{
+		rpcSocks, err := tcpProxy.Rpc.CreateSocks(context.Background(), &glodpb.Socks{
 			SessionID: tcpProxy.Session.ID,
 		})
 		if err != nil {
@@ -164,7 +164,7 @@ func (f *socksProxy) Start(tcpProxy *TcpProxy) error {
 			break
 		}
 
-		go connect(connection, proxy, &sliverpb.SocksData{
+		go connect(connection, proxy, &glodpb.SocksData{
 			Username: tcpProxy.Username,
 			Password: tcpProxy.Password,
 			TunnelID: rpcSocks.TunnelID,
@@ -209,7 +209,7 @@ const leakyBufSize = 4108 // data.len(2) + hmacsha1(10) + data(4096)
 
 var leakyBuf = leaky.NewLeakyBuf(2048, leakyBufSize)
 
-func connect(conn net.Conn, stream rpcpb.SliverRPC_SocksProxyClient, frame *sliverpb.SocksData) {
+func connect(conn net.Conn, stream rpcpb.SliverRPC_SocksProxyClient, frame *glodpb.SocksData) {
 
 	SocksConnPool.Store(frame.TunnelID, conn)
 

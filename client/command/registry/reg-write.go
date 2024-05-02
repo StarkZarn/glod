@@ -27,7 +27,7 @@ import (
 
 	"github.com/starkzarn/glod/client/console"
 	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/desertbit/grumble"
 	"google.golang.org/protobuf/proto"
 )
@@ -86,7 +86,7 @@ func RegWriteCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 	finalPath := regPath[:pathBaseIdx]
 	key := regPath[pathBaseIdx+1:]
 	switch valType {
-	case sliverpb.RegistryTypeBinary:
+	case glodpb.RegistryTypeBinary:
 		var (
 			v   []byte
 			err error
@@ -105,27 +105,27 @@ func RegWriteCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 			}
 		}
 		binaryValue = v
-	case sliverpb.RegistryTypeDWORD:
+	case glodpb.RegistryTypeDWORD:
 		v, err := strconv.ParseUint(value, 10, 32)
 		if err != nil {
 			con.PrintErrorf("%s\n", err)
 			return
 		}
 		dwordValue = uint32(v)
-	case sliverpb.RegistryTypeQWORD:
+	case glodpb.RegistryTypeQWORD:
 		v, err := strconv.ParseUint(value, 10, 64)
 		if err != nil {
 			con.PrintErrorf("%s\n", err)
 			return
 		}
 		qwordValue = v
-	case sliverpb.RegistryTypeString:
+	case glodpb.RegistryTypeString:
 		stringValue = value
 	default:
 		con.PrintErrorf("Invalid type")
 		return
 	}
-	regWrite, err := con.Rpc.RegistryWrite(context.Background(), &sliverpb.RegistryWriteReq{
+	regWrite, err := con.Rpc.RegistryWrite(context.Background(), &glodpb.RegistryWriteReq{
 		Request:     con.ActiveTarget.Request(ctx),
 		Hostname:    hostname,
 		Hive:        hive,
@@ -158,7 +158,7 @@ func RegWriteCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 }
 
 // PrintRegWrite - Print the registry write operation
-func PrintRegWrite(regWrite *sliverpb.RegistryWrite, con *console.SliverConsoleClient) {
+func PrintRegWrite(regWrite *glodpb.RegistryWrite, con *console.SliverConsoleClient) {
 	if regWrite.Response != nil && regWrite.Response.Err != "" {
 		con.PrintErrorf("%s", regWrite.Response.Err)
 		return

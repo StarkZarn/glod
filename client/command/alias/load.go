@@ -33,7 +33,7 @@ import (
 	"github.com/starkzarn/glod/client/console"
 	consts "github.com/starkzarn/glod/client/constants"
 	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/starkzarn/glod/util"
 	"github.com/desertbit/grumble"
 	"google.golang.org/protobuf/proto"
@@ -345,7 +345,7 @@ func runAliasCommand(ctx *grumble.Context, con *console.SliverConsoleClient) {
 		ctrl := make(chan bool)
 		msg := fmt.Sprintf("Executing %s %s ...", ctx.Command.Name, extArgs)
 		con.SpinUntil(msg, ctrl)
-		executeAssemblyResp, err := con.Rpc.ExecuteAssembly(context.Background(), &sliverpb.ExecuteAssemblyReq{
+		executeAssemblyResp, err := con.Rpc.ExecuteAssembly(context.Background(), &glodpb.ExecuteAssemblyReq{
 			Request:     con.ActiveTarget.Request(ctx),
 			IsDLL:       isDLL,
 			Process:     processName,
@@ -389,7 +389,7 @@ func runAliasCommand(ctx *grumble.Context, con *console.SliverConsoleClient) {
 		ctrl := make(chan bool)
 		msg := fmt.Sprintf("Executing %s %s ...", ctx.Command.Name, extArgs)
 		con.SpinUntil(msg, ctrl)
-		spawnDllResp, err := con.Rpc.SpawnDll(context.Background(), &sliverpb.InvokeSpawnDllReq{
+		spawnDllResp, err := con.Rpc.SpawnDll(context.Background(), &glodpb.InvokeSpawnDllReq{
 			Request:     con.ActiveTarget.Request(ctx),
 			Args:        strings.Trim(extArgs, " "),
 			Data:        binData,
@@ -426,7 +426,7 @@ func runAliasCommand(ctx *grumble.Context, con *console.SliverConsoleClient) {
 		ctrl := make(chan bool)
 		msg := fmt.Sprintf("Executing %s %s ...", ctx.Command.Name, extArgs)
 		con.SpinUntil(msg, ctrl)
-		sideloadResp, err := con.Rpc.Sideload(context.Background(), &sliverpb.SideloadReq{
+		sideloadResp, err := con.Rpc.Sideload(context.Background(), &glodpb.SideloadReq{
 			Request:     con.ActiveTarget.Request(ctx),
 			Args:        extArgs,
 			Data:        binData,
@@ -461,7 +461,7 @@ func runAliasCommand(ctx *grumble.Context, con *console.SliverConsoleClient) {
 }
 
 // PrintSpawnDLLOutput - Prints the output of a spawn dll command
-func PrintSpawnDLLOutput(cmdName string, spawnDllResp *sliverpb.SpawnDll, outFilePath *os.File, con *console.SliverConsoleClient) {
+func PrintSpawnDLLOutput(cmdName string, spawnDllResp *glodpb.SpawnDll, outFilePath *os.File, con *console.SliverConsoleClient) {
 	con.PrintInfof("%s output:\n%s", cmdName, spawnDllResp.GetResult())
 	if outFilePath != nil {
 		outFilePath.Write([]byte(spawnDllResp.GetResult()))
@@ -470,7 +470,7 @@ func PrintSpawnDLLOutput(cmdName string, spawnDllResp *sliverpb.SpawnDll, outFil
 }
 
 // PrintSideloadOutput - Prints the output of a sideload command
-func PrintSideloadOutput(cmdName string, sideloadResp *sliverpb.Sideload, outFilePath *os.File, con *console.SliverConsoleClient) {
+func PrintSideloadOutput(cmdName string, sideloadResp *glodpb.Sideload, outFilePath *os.File, con *console.SliverConsoleClient) {
 	con.PrintInfof("%s output:\n%s", cmdName, sideloadResp.GetResult())
 	if outFilePath != nil {
 		outFilePath.Write([]byte(sideloadResp.GetResult()))
@@ -479,7 +479,7 @@ func PrintSideloadOutput(cmdName string, sideloadResp *sliverpb.Sideload, outFil
 }
 
 // PrintAssemblyOutput - Prints the output of an execute-assembly command
-func PrintAssemblyOutput(cmdName string, execAsmResp *sliverpb.ExecuteAssembly, outFilePath *os.File, con *console.SliverConsoleClient) {
+func PrintAssemblyOutput(cmdName string, execAsmResp *glodpb.ExecuteAssembly, outFilePath *os.File, con *console.SliverConsoleClient) {
 	con.PrintInfof("%s output:\n%s", cmdName, string(execAsmResp.GetOutput()))
 	if outFilePath != nil {
 		outFilePath.Write(execAsmResp.GetOutput())

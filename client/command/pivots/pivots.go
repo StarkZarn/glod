@@ -23,7 +23,7 @@ import (
 
 	"github.com/starkzarn/glod/client/command/settings"
 	"github.com/starkzarn/glod/client/console"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/jedib0t/go-pretty/v6/table"
 
 	"github.com/desertbit/grumble"
@@ -35,7 +35,7 @@ func PivotsCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 	if session == nil {
 		return
 	}
-	pivotListeners, err := con.Rpc.PivotSessionListeners(context.Background(), &sliverpb.PivotListenersReq{
+	pivotListeners, err := con.Rpc.PivotSessionListeners(context.Background(), &glodpb.PivotListenersReq{
 		Request: con.ActiveTarget.Request(ctx),
 	})
 	if err != nil {
@@ -55,7 +55,7 @@ func PivotsCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 }
 
 // PrintPivotListeners - Print a table of pivot listeners
-func PrintPivotListeners(pivotListeners []*sliverpb.PivotListener, con *console.SliverConsoleClient) {
+func PrintPivotListeners(pivotListeners []*glodpb.PivotListener, con *console.SliverConsoleClient) {
 	tw := table.NewWriter()
 	tw.SetStyle(settings.GetTableStyle(con))
 	tw.AppendHeader(table.Row{
@@ -76,13 +76,13 @@ func PrintPivotListeners(pivotListeners []*sliverpb.PivotListener, con *console.
 }
 
 // PivotTypeToString - Convert a pivot type to a human string
-func PivotTypeToString(pivotType sliverpb.PivotType) string {
+func PivotTypeToString(pivotType glodpb.PivotType) string {
 	switch pivotType {
-	case sliverpb.PivotType_TCP:
+	case glodpb.PivotType_TCP:
 		return "TCP"
-	case sliverpb.PivotType_UDP:
+	case glodpb.PivotType_UDP:
 		return "UDP"
-	case sliverpb.PivotType_NamedPipe:
+	case glodpb.PivotType_NamedPipe:
 		return "Named Pipe"
 	}
 	return "Unknown"

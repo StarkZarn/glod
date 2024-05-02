@@ -21,31 +21,31 @@ package tunnel_handlers
 import (
 	"sync"
 
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 )
 
 var (
 	// TunnelID -> Sequence Number -> Data
-	tunnelDataCache = dataCache{mutex: &sync.RWMutex{}, cache: map[uint64]map[uint64]*sliverpb.TunnelData{}}
+	tunnelDataCache = dataCache{mutex: &sync.RWMutex{}, cache: map[uint64]map[uint64]*glodpb.TunnelData{}}
 )
 
 type dataCache struct {
 	mutex *sync.RWMutex
-	cache map[uint64]map[uint64]*sliverpb.TunnelData
+	cache map[uint64]map[uint64]*glodpb.TunnelData
 }
 
-func (c *dataCache) Add(tunnelID uint64, sequence uint64, tunnelData *sliverpb.TunnelData) {
+func (c *dataCache) Add(tunnelID uint64, sequence uint64, tunnelData *glodpb.TunnelData) {
 	c.mutex.Lock()
 	defer c.mutex.Unlock()
 
 	if _, ok := c.cache[tunnelID]; !ok {
-		c.cache[tunnelID] = map[uint64]*sliverpb.TunnelData{}
+		c.cache[tunnelID] = map[uint64]*glodpb.TunnelData{}
 	}
 
 	c.cache[tunnelID][sequence] = tunnelData
 }
 
-func (c *dataCache) Get(tunnelID uint64, sequence uint64) (*sliverpb.TunnelData, bool) {
+func (c *dataCache) Get(tunnelID uint64, sequence uint64) (*glodpb.TunnelData, bool) {
 	c.mutex.RLock()
 	defer c.mutex.RUnlock()
 

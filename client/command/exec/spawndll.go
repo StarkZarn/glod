@@ -26,7 +26,7 @@ import (
 
 	"github.com/starkzarn/glod/client/console"
 	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/desertbit/grumble"
 	"google.golang.org/protobuf/proto"
 )
@@ -49,7 +49,7 @@ func SpawnDllCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 	}
 	ctrl := make(chan bool)
 	con.SpinUntil(fmt.Sprintf("Executing reflective dll %s", binPath), ctrl)
-	spawndll, err := con.Rpc.SpawnDll(context.Background(), &sliverpb.InvokeSpawnDllReq{
+	spawndll, err := con.Rpc.SpawnDll(context.Background(), &glodpb.InvokeSpawnDllReq{
 		Data:        binData,
 		ProcessName: processName,
 		Args:        dllArgs,
@@ -81,7 +81,7 @@ func SpawnDllCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 	}
 }
 
-func HandleSpawnDLLResponse(spawndll *sliverpb.SpawnDll, binPath string, hostName string, ctx *grumble.Context, con *console.SliverConsoleClient) {
+func HandleSpawnDLLResponse(spawndll *glodpb.SpawnDll, binPath string, hostName string, ctx *grumble.Context, con *console.SliverConsoleClient) {
 	saveLoot := ctx.Flags.Bool("loot")
 	lootName := ctx.Flags.String("name")
 

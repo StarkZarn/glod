@@ -27,7 +27,7 @@ import (
 
 	"github.com/starkzarn/glod/client/console"
 	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/starkzarn/glod/util"
 	"google.golang.org/protobuf/proto"
 
@@ -41,7 +41,7 @@ func MemfilesListCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 		return
 	}
 
-	memfilesList, err := con.Rpc.MemfilesList(context.Background(), &sliverpb.MemfilesListReq{
+	memfilesList, err := con.Rpc.MemfilesList(context.Background(), &glodpb.MemfilesListReq{
 		Request: con.ActiveTarget.Request(ctx),
 	})
 	if err != nil {
@@ -63,8 +63,8 @@ func MemfilesListCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 	}
 }
 
-// PrintMemfiles - Display an sliverpb.Ls object
-func PrintMemfiles(ls *sliverpb.Ls, con *console.SliverConsoleClient) {
+// PrintMemfiles - Display an glodpb.Ls object
+func PrintMemfiles(ls *glodpb.Ls, con *console.SliverConsoleClient) {
 	if ls.Response != nil && ls.Response.Err != "" {
 		con.PrintErrorf("%s\n", ls.Response.Err)
 		return

@@ -37,7 +37,7 @@ import (
 	"github.com/starkzarn/glod/client/command/settings"
 	"github.com/starkzarn/glod/client/console"
 	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/starkzarn/glod/util"
 	"github.com/desertbit/grumble"
 	"github.com/jedib0t/go-pretty/v6/table"
@@ -167,15 +167,15 @@ func emojiState(state string) string {
 
 // Decode and render message specific content
 func renderTaskResponse(task *clientpb.BeaconTask, con *console.SliverConsoleClient) {
-	reqEnvelope := &sliverpb.Envelope{}
+	reqEnvelope := &glodpb.Envelope{}
 	proto.Unmarshal(task.Request, reqEnvelope)
 	switch reqEnvelope.Type {
 
 	// ---------------------
 	// Environment commands
 	// ---------------------
-	case sliverpb.MsgEnvReq:
-		envInfo := &sliverpb.EnvInfo{}
+	case glodpb.MsgEnvReq:
+		envInfo := &glodpb.EnvInfo{}
 		err := proto.Unmarshal(task.Response, envInfo)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task response: %s\n", err)
@@ -183,14 +183,14 @@ func renderTaskResponse(task *clientpb.BeaconTask, con *console.SliverConsoleCli
 		}
 		environment.PrintGetEnvInfo(envInfo, con)
 
-	case sliverpb.MsgSetEnvReq:
-		setEnvReq := &sliverpb.SetEnvReq{}
+	case glodpb.MsgSetEnvReq:
+		setEnvReq := &glodpb.SetEnvReq{}
 		err := proto.Unmarshal(task.Request, setEnvReq)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task request: %s\n", err)
 			return
 		}
-		setEnv := &sliverpb.SetEnv{}
+		setEnv := &glodpb.SetEnv{}
 		err = proto.Unmarshal(task.Response, setEnv)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task response: %s\n", err)
@@ -198,14 +198,14 @@ func renderTaskResponse(task *clientpb.BeaconTask, con *console.SliverConsoleCli
 		}
 		environment.PrintSetEnvInfo(setEnvReq.Variable.Key, setEnvReq.Variable.Value, setEnv, con)
 
-	case sliverpb.MsgUnsetEnvReq:
-		unsetEnvReq := &sliverpb.UnsetEnvReq{}
+	case glodpb.MsgUnsetEnvReq:
+		unsetEnvReq := &glodpb.UnsetEnvReq{}
 		err := proto.Unmarshal(task.Request, unsetEnvReq)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task request: %s\n", err)
 			return
 		}
-		unsetEnv := &sliverpb.UnsetEnv{}
+		unsetEnv := &glodpb.UnsetEnv{}
 		err = proto.Unmarshal(task.Response, unsetEnv)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task response: %s\n", err)
@@ -216,8 +216,8 @@ func renderTaskResponse(task *clientpb.BeaconTask, con *console.SliverConsoleCli
 	// ---------------------
 	// Call extension commands
 	// ---------------------
-	case sliverpb.MsgCallExtensionReq:
-		callExtension := &sliverpb.CallExtension{}
+	case glodpb.MsgCallExtensionReq:
+		callExtension := &glodpb.CallExtension{}
 		err := proto.Unmarshal(task.Response, callExtension)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task response: %s\n", err)
@@ -228,12 +228,12 @@ func renderTaskResponse(task *clientpb.BeaconTask, con *console.SliverConsoleCli
 	// ---------------------
 	// Exec commands
 	// ---------------------
-	case sliverpb.MsgInvokeExecuteAssemblyReq:
+	case glodpb.MsgInvokeExecuteAssemblyReq:
 		fallthrough
-	case sliverpb.MsgInvokeInProcExecuteAssemblyReq:
+	case glodpb.MsgInvokeInProcExecuteAssemblyReq:
 		fallthrough
-	case sliverpb.MsgExecuteAssemblyReq:
-		execAssembly := &sliverpb.ExecuteAssembly{}
+	case glodpb.MsgExecuteAssemblyReq:
+		execAssembly := &glodpb.ExecuteAssembly{}
 		err := proto.Unmarshal(task.Response, execAssembly)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task response: %s\n", err)
@@ -256,8 +256,8 @@ func renderTaskResponse(task *clientpb.BeaconTask, con *console.SliverConsoleCli
 		exec.HandleExecuteAssemblyResponse(execAssembly, assemblyPath, hostname, ctx, con)
 
 	// execute-shellcode
-	case sliverpb.MsgTaskReq:
-		shellcodeExec := &sliverpb.Task{}
+	case glodpb.MsgTaskReq:
+		shellcodeExec := &glodpb.Task{}
 		err := proto.Unmarshal(task.Response, shellcodeExec)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task response: %s\n", err)
@@ -265,14 +265,14 @@ func renderTaskResponse(task *clientpb.BeaconTask, con *console.SliverConsoleCli
 		}
 		exec.PrintExecuteShellcode(shellcodeExec, con)
 
-	case sliverpb.MsgExecuteReq:
-		execReq := &sliverpb.ExecuteReq{}
+	case glodpb.MsgExecuteReq:
+		execReq := &glodpb.ExecuteReq{}
 		err := proto.Unmarshal(reqEnvelope.Data, execReq)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task response: %s\n", err)
 			return
 		}
-		execResult := &sliverpb.Execute{}
+		execResult := &glodpb.Execute{}
 		err = proto.Unmarshal(task.Response, execResult)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task response: %s\n", err)
@@ -293,8 +293,8 @@ func renderTaskResponse(task *clientpb.BeaconTask, con *console.SliverConsoleCli
 		}
 		exec.PrintExecute(execResult, ctx, con)
 
-	case sliverpb.MsgSideloadReq:
-		sideload := &sliverpb.Sideload{}
+	case glodpb.MsgSideloadReq:
+		sideload := &glodpb.Sideload{}
 		err := proto.Unmarshal(task.Response, sideload)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task response: %s\n", err)
@@ -314,8 +314,8 @@ func renderTaskResponse(task *clientpb.BeaconTask, con *console.SliverConsoleCli
 		}
 		exec.HandleSideloadResponse(sideload, "", hostname, ctx, con)
 
-	case sliverpb.MsgSpawnDllReq:
-		spawnDll := &sliverpb.SpawnDll{}
+	case glodpb.MsgSpawnDllReq:
+		spawnDll := &glodpb.SpawnDll{}
 		err := proto.Unmarshal(task.Response, spawnDll)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task response: %s\n", err)
@@ -335,8 +335,8 @@ func renderTaskResponse(task *clientpb.BeaconTask, con *console.SliverConsoleCli
 		}
 		exec.HandleSpawnDLLResponse(spawnDll, "", hostname, ctx, con)
 
-	case sliverpb.MsgSSHCommandReq:
-		sshCommand := &sliverpb.SSHCommand{}
+	case glodpb.MsgSSHCommandReq:
+		sshCommand := &glodpb.SSHCommand{}
 		err := proto.Unmarshal(task.Response, sshCommand)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task response: %s\n", err)
@@ -348,8 +348,8 @@ func renderTaskResponse(task *clientpb.BeaconTask, con *console.SliverConsoleCli
 	// File system commands
 	// ---------------------
 	// Cat = download
-	case sliverpb.MsgCdReq:
-		pwd := &sliverpb.Pwd{}
+	case glodpb.MsgCdReq:
+		pwd := &glodpb.Pwd{}
 		err := proto.Unmarshal(task.Response, pwd)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task response: %s\n", err)
@@ -357,8 +357,8 @@ func renderTaskResponse(task *clientpb.BeaconTask, con *console.SliverConsoleCli
 		}
 		filesystem.PrintPwd(pwd, con)
 
-	case sliverpb.MsgDownloadReq:
-		download := &sliverpb.Download{}
+	case glodpb.MsgDownloadReq:
+		download := &glodpb.Download{}
 		err := proto.Unmarshal(task.Response, download)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task response: %s\n", err)
@@ -366,8 +366,8 @@ func renderTaskResponse(task *clientpb.BeaconTask, con *console.SliverConsoleCli
 		}
 		taskResponseDownload(download, con)
 
-	case sliverpb.MsgLsReq:
-		ls := &sliverpb.Ls{}
+	case glodpb.MsgLsReq:
+		ls := &glodpb.Ls{}
 		err := proto.Unmarshal(task.Response, ls)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task response: %s\n", err)
@@ -380,16 +380,16 @@ func renderTaskResponse(task *clientpb.BeaconTask, con *console.SliverConsoleCli
 		}
 		filesystem.PrintLs(ls, flags, con)
 
-	case sliverpb.MsgMvReq:
-		mv := &sliverpb.Mv{}
+	case glodpb.MsgMvReq:
+		mv := &glodpb.Mv{}
 		err := proto.Unmarshal(task.Response, mv)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task response: %s\n", err)
 			return
 		}
 
-	case sliverpb.MsgMkdirReq:
-		mkdir := &sliverpb.Mkdir{}
+	case glodpb.MsgMkdirReq:
+		mkdir := &glodpb.Mkdir{}
 		err := proto.Unmarshal(task.Response, mkdir)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task response: %s\n", err)
@@ -397,8 +397,8 @@ func renderTaskResponse(task *clientpb.BeaconTask, con *console.SliverConsoleCli
 		}
 		filesystem.PrintMkdir(mkdir, con)
 
-	case sliverpb.MsgPwdReq:
-		pwd := &sliverpb.Pwd{}
+	case glodpb.MsgPwdReq:
+		pwd := &glodpb.Pwd{}
 		err := proto.Unmarshal(task.Response, pwd)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task response: %s\n", err)
@@ -406,8 +406,8 @@ func renderTaskResponse(task *clientpb.BeaconTask, con *console.SliverConsoleCli
 		}
 		filesystem.PrintPwd(pwd, con)
 
-	case sliverpb.MsgRmReq:
-		rm := &sliverpb.Rm{}
+	case glodpb.MsgRmReq:
+		rm := &glodpb.Rm{}
 		err := proto.Unmarshal(task.Response, rm)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task response: %s\n", err)
@@ -415,8 +415,8 @@ func renderTaskResponse(task *clientpb.BeaconTask, con *console.SliverConsoleCli
 		}
 		filesystem.PrintRm(rm, con)
 
-	case sliverpb.MsgUploadReq:
-		upload := &sliverpb.Upload{}
+	case glodpb.MsgUploadReq:
+		upload := &glodpb.Upload{}
 		err := proto.Unmarshal(task.Response, upload)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task response: %s\n", err)
@@ -424,8 +424,8 @@ func renderTaskResponse(task *clientpb.BeaconTask, con *console.SliverConsoleCli
 		}
 		filesystem.PrintUpload(upload, con)
 
-	case sliverpb.MsgChmodReq:
-		chmod := &sliverpb.Chmod{}
+	case glodpb.MsgChmodReq:
+		chmod := &glodpb.Chmod{}
 		err := proto.Unmarshal(task.Response, chmod)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task response: %s\n", err)
@@ -433,8 +433,8 @@ func renderTaskResponse(task *clientpb.BeaconTask, con *console.SliverConsoleCli
 		}
 		filesystem.PrintChmod(chmod, con)
 
-	case sliverpb.MsgChownReq:
-		chown := &sliverpb.Chown{}
+	case glodpb.MsgChownReq:
+		chown := &glodpb.Chown{}
 		err := proto.Unmarshal(task.Response, chown)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task response: %s\n", err)
@@ -442,8 +442,8 @@ func renderTaskResponse(task *clientpb.BeaconTask, con *console.SliverConsoleCli
 		}
 		filesystem.PrintChown(chown, con)
 
-	case sliverpb.MsgChtimesReq:
-		chtimes := &sliverpb.Chtimes{}
+	case glodpb.MsgChtimesReq:
+		chtimes := &glodpb.Chtimes{}
 		err := proto.Unmarshal(task.Response, chtimes)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task response: %s\n", err)
@@ -451,8 +451,8 @@ func renderTaskResponse(task *clientpb.BeaconTask, con *console.SliverConsoleCli
 		}
 		filesystem.PrintChtimes(chtimes, con)
 
-	case sliverpb.MsgMemfilesListReq:
-		memfilesList := &sliverpb.Ls{}
+	case glodpb.MsgMemfilesListReq:
+		memfilesList := &glodpb.Ls{}
 		err := proto.Unmarshal(task.Response, memfilesList)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task response: %s\n", err)
@@ -460,8 +460,8 @@ func renderTaskResponse(task *clientpb.BeaconTask, con *console.SliverConsoleCli
 		}
 		filesystem.PrintMemfiles(memfilesList, con)
 
-	case sliverpb.MsgMemfilesAddReq:
-		memfilesAdd := &sliverpb.MemfilesAdd{}
+	case glodpb.MsgMemfilesAddReq:
+		memfilesAdd := &glodpb.MemfilesAdd{}
 		err := proto.Unmarshal(task.Response, memfilesAdd)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task response: %s\n", err)
@@ -469,8 +469,8 @@ func renderTaskResponse(task *clientpb.BeaconTask, con *console.SliverConsoleCli
 		}
 		filesystem.PrintAddMemfile(memfilesAdd, con)
 
-	case sliverpb.MsgMemfilesRmReq:
-		memfilesRm := &sliverpb.MemfilesRm{}
+	case glodpb.MsgMemfilesRmReq:
+		memfilesRm := &glodpb.MemfilesRm{}
 		err := proto.Unmarshal(task.Response, memfilesRm)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task response: %s\n", err)
@@ -481,8 +481,8 @@ func renderTaskResponse(task *clientpb.BeaconTask, con *console.SliverConsoleCli
 	// ---------------------
 	// Network commands
 	// ---------------------
-	case sliverpb.MsgIfconfigReq:
-		ifconfig := &sliverpb.Ifconfig{}
+	case glodpb.MsgIfconfigReq:
+		ifconfig := &glodpb.Ifconfig{}
 		err := proto.Unmarshal(task.Response, ifconfig)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task response: %s\n", err)
@@ -490,8 +490,8 @@ func renderTaskResponse(task *clientpb.BeaconTask, con *console.SliverConsoleCli
 		}
 		network.PrintIfconfig(ifconfig, true, con)
 
-	case sliverpb.MsgNetstatReq:
-		netstat := &sliverpb.Netstat{}
+	case glodpb.MsgNetstatReq:
+		netstat := &glodpb.Netstat{}
 		err := proto.Unmarshal(task.Response, netstat)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task response: %s\n", err)
@@ -507,8 +507,8 @@ func renderTaskResponse(task *clientpb.BeaconTask, con *console.SliverConsoleCli
 	// ---------------------
 	// Privilege commands
 	// ---------------------
-	case sliverpb.MsgGetPrivsReq:
-		privs := &sliverpb.GetPrivs{}
+	case glodpb.MsgGetPrivsReq:
+		privs := &glodpb.GetPrivs{}
 		err := proto.Unmarshal(task.Response, privs)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task response: %s\n", err)
@@ -521,8 +521,8 @@ func renderTaskResponse(task *clientpb.BeaconTask, con *console.SliverConsoleCli
 		}
 		privilege.PrintGetPrivs(privs, beacon.PID, con)
 
-	case sliverpb.MsgInvokeGetSystemReq:
-		getSystem := &sliverpb.GetSystem{}
+	case glodpb.MsgInvokeGetSystemReq:
+		getSystem := &glodpb.GetSystem{}
 		err := proto.Unmarshal(task.Response, getSystem)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task response: %s\n", err)
@@ -530,22 +530,22 @@ func renderTaskResponse(task *clientpb.BeaconTask, con *console.SliverConsoleCli
 		}
 		privilege.PrintGetSystem(getSystem, con)
 
-	case sliverpb.MsgCurrentTokenOwnerReq:
-		cto := &sliverpb.CurrentTokenOwner{}
+	case glodpb.MsgCurrentTokenOwnerReq:
+		cto := &glodpb.CurrentTokenOwner{}
 		err := proto.Unmarshal(task.Response, cto)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task response: %s\n", err)
 			return
 		}
 
-	case sliverpb.MsgImpersonateReq:
-		impersonateReq := &sliverpb.ImpersonateReq{}
+	case glodpb.MsgImpersonateReq:
+		impersonateReq := &glodpb.ImpersonateReq{}
 		err := proto.Unmarshal(task.Response, impersonateReq)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task request: %s\n", err)
 			return
 		}
-		impersonate := &sliverpb.Impersonate{}
+		impersonate := &glodpb.Impersonate{}
 		err = proto.Unmarshal(task.Response, impersonate)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task response: %s\n", err)
@@ -553,14 +553,14 @@ func renderTaskResponse(task *clientpb.BeaconTask, con *console.SliverConsoleCli
 		}
 		privilege.PrintImpersonate(impersonate, impersonateReq.Username, con)
 
-	case sliverpb.MsgMakeTokenReq:
-		makeTokenReq := &sliverpb.MakeTokenReq{}
+	case glodpb.MsgMakeTokenReq:
+		makeTokenReq := &glodpb.MakeTokenReq{}
 		err := proto.Unmarshal(task.Response, makeTokenReq)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task request: %s\n", err)
 			return
 		}
-		makeToken := &sliverpb.MakeToken{}
+		makeToken := &glodpb.MakeToken{}
 		err = proto.Unmarshal(task.Response, makeToken)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task request: %s\n", err)
@@ -568,14 +568,14 @@ func renderTaskResponse(task *clientpb.BeaconTask, con *console.SliverConsoleCli
 		}
 		privilege.PrintMakeToken(makeToken, makeTokenReq.Domain, makeTokenReq.Username, con)
 
-	case sliverpb.MsgRunAsReq:
-		runAsReq := &sliverpb.RunAsReq{}
+	case glodpb.MsgRunAsReq:
+		runAsReq := &glodpb.RunAsReq{}
 		err := proto.Unmarshal(task.Response, runAsReq)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task request: %s\n", err)
 			return
 		}
-		runAs := &sliverpb.RunAs{}
+		runAs := &glodpb.RunAs{}
 		err = proto.Unmarshal(task.Response, runAs)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task request: %s\n", err)
@@ -591,8 +591,8 @@ func renderTaskResponse(task *clientpb.BeaconTask, con *console.SliverConsoleCli
 	// ---------------------
 	// Processes commands
 	// ---------------------
-	case sliverpb.MsgProcessDumpReq:
-		dump := &sliverpb.ProcessDump{}
+	case glodpb.MsgProcessDumpReq:
+		dump := &glodpb.ProcessDump{}
 		err := proto.Unmarshal(task.Response, dump)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task response: %s\n", err)
@@ -600,8 +600,8 @@ func renderTaskResponse(task *clientpb.BeaconTask, con *console.SliverConsoleCli
 		}
 		promptSaveToFile(dump.Data, con)
 
-	case sliverpb.MsgPsReq:
-		ps := &sliverpb.Ps{}
+	case glodpb.MsgPsReq:
+		ps := &glodpb.Ps{}
 		err := proto.Unmarshal(task.Response, ps)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task response: %s\n", err)
@@ -625,8 +625,8 @@ func renderTaskResponse(task *clientpb.BeaconTask, con *console.SliverConsoleCli
 		}
 		processes.PrintPS(beacon.OS, ps, true, ctx, con)
 
-	case sliverpb.MsgTerminateReq:
-		terminate := &sliverpb.Terminate{}
+	case glodpb.MsgTerminateReq:
+		terminate := &glodpb.Terminate{}
 		err := proto.Unmarshal(task.Response, terminate)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task response: %s\n", err)
@@ -637,14 +637,14 @@ func renderTaskResponse(task *clientpb.BeaconTask, con *console.SliverConsoleCli
 	// ---------------------
 	// Registry commands
 	// ---------------------
-	case sliverpb.MsgRegistryCreateKeyReq:
-		createKeyReq := &sliverpb.RegistryCreateKeyReq{}
+	case glodpb.MsgRegistryCreateKeyReq:
+		createKeyReq := &glodpb.RegistryCreateKeyReq{}
 		err := proto.Unmarshal(task.Request, createKeyReq)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task response: %s\n", err)
 			return
 		}
-		createKey := &sliverpb.RegistryCreateKey{}
+		createKey := &glodpb.RegistryCreateKey{}
 		err = proto.Unmarshal(task.Response, createKey)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task response: %s\n", err)
@@ -652,14 +652,14 @@ func renderTaskResponse(task *clientpb.BeaconTask, con *console.SliverConsoleCli
 		}
 		registry.PrintCreateKey(createKey, createKeyReq.Path, createKeyReq.Key, con)
 
-	case sliverpb.MsgRegistryDeleteKeyReq:
-		deleteKeyReq := &sliverpb.RegistryDeleteKeyReq{}
+	case glodpb.MsgRegistryDeleteKeyReq:
+		deleteKeyReq := &glodpb.RegistryDeleteKeyReq{}
 		err := proto.Unmarshal(task.Request, deleteKeyReq)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task response: %s\n", err)
 			return
 		}
-		deleteKey := &sliverpb.RegistryDeleteKey{}
+		deleteKey := &glodpb.RegistryDeleteKey{}
 		err = proto.Unmarshal(task.Response, deleteKey)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task response: %s\n", err)
@@ -667,14 +667,14 @@ func renderTaskResponse(task *clientpb.BeaconTask, con *console.SliverConsoleCli
 		}
 		registry.PrintDeleteKey(deleteKey, deleteKeyReq.Path, deleteKeyReq.Key, con)
 
-	case sliverpb.MsgRegistryListValuesReq:
-		listValuesReq := &sliverpb.RegistryListValuesReq{}
+	case glodpb.MsgRegistryListValuesReq:
+		listValuesReq := &glodpb.RegistryListValuesReq{}
 		err := proto.Unmarshal(task.Request, listValuesReq)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task response: %s\n", err)
 			return
 		}
-		regList := &sliverpb.RegistryValuesList{}
+		regList := &glodpb.RegistryValuesList{}
 		err = proto.Unmarshal(task.Response, regList)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task response: %s\n", err)
@@ -682,14 +682,14 @@ func renderTaskResponse(task *clientpb.BeaconTask, con *console.SliverConsoleCli
 		}
 		registry.PrintListValues(regList, listValuesReq.Hive, listValuesReq.Path, con)
 
-	case sliverpb.MsgRegistrySubKeysListReq:
-		listValuesReq := &sliverpb.RegistrySubKeyListReq{}
+	case glodpb.MsgRegistrySubKeysListReq:
+		listValuesReq := &glodpb.RegistrySubKeyListReq{}
 		err := proto.Unmarshal(task.Request, listValuesReq)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task response: %s\n", err)
 			return
 		}
-		regList := &sliverpb.RegistrySubKeyList{}
+		regList := &glodpb.RegistrySubKeyList{}
 		err = proto.Unmarshal(task.Response, regList)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task response: %s\n", err)
@@ -697,8 +697,8 @@ func renderTaskResponse(task *clientpb.BeaconTask, con *console.SliverConsoleCli
 		}
 		registry.PrintListSubKeys(regList, listValuesReq.Hive, listValuesReq.Path, con)
 
-	case sliverpb.MsgRegistryReadReq:
-		regRead := &sliverpb.RegistryRead{}
+	case glodpb.MsgRegistryReadReq:
+		regRead := &glodpb.RegistryRead{}
 		err := proto.Unmarshal(task.Response, regRead)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task response: %s\n", err)
@@ -706,8 +706,8 @@ func renderTaskResponse(task *clientpb.BeaconTask, con *console.SliverConsoleCli
 		}
 		registry.PrintRegRead(regRead, con)
 
-	case sliverpb.MsgRegistryWriteReq:
-		regWrite := &sliverpb.RegistryWrite{}
+	case glodpb.MsgRegistryWriteReq:
+		regWrite := &glodpb.RegistryWrite{}
 		err := proto.Unmarshal(task.Response, regWrite)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task response: %s\n", err)
@@ -718,8 +718,8 @@ func renderTaskResponse(task *clientpb.BeaconTask, con *console.SliverConsoleCli
 	// ---------------------
 	// Screenshot
 	// ---------------------
-	case sliverpb.MsgScreenshotReq:
-		screenshot := &sliverpb.Screenshot{}
+	case glodpb.MsgScreenshotReq:
+		screenshot := &glodpb.Screenshot{}
 		err := proto.Unmarshal(task.Response, screenshot)
 		if err != nil {
 			con.PrintErrorf("Failed to decode task response: %s\n", err)
@@ -735,7 +735,7 @@ func renderTaskResponse(task *clientpb.BeaconTask, con *console.SliverConsoleCli
 	}
 }
 
-func taskResponseDownload(download *sliverpb.Download, con *console.SliverConsoleClient) {
+func taskResponseDownload(download *glodpb.Download, con *console.SliverConsoleClient) {
 	const (
 		dump   = "Dump Contents"
 		saveTo = "Save to File ..."

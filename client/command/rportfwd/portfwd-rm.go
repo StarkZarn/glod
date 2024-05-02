@@ -22,7 +22,7 @@ import (
 	"context"
 
 	"github.com/starkzarn/glod/client/console"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 
 	"github.com/desertbit/grumble"
 )
@@ -35,7 +35,7 @@ func StopRportFwdListenerCmd(ctx *grumble.Context, con *console.SliverConsoleCli
 	}
 
 	listenerID := ctx.Flags.Int("id")
-	rportfwdListener, err := con.Rpc.StopRportFwdListener(context.Background(), &sliverpb.RportFwdStopListenerReq{
+	rportfwdListener, err := con.Rpc.StopRportFwdListener(context.Background(), &glodpb.RportFwdStopListenerReq{
 		Request: con.ActiveTarget.Request(ctx),
 		ID:      uint32(listenerID),
 	})
@@ -46,7 +46,7 @@ func StopRportFwdListenerCmd(ctx *grumble.Context, con *console.SliverConsoleCli
 	printStoppedRportFwdListener(rportfwdListener, con)
 }
 
-func printStoppedRportFwdListener(rportfwdListener *sliverpb.RportFwdListener, con *console.SliverConsoleClient) {
+func printStoppedRportFwdListener(rportfwdListener *glodpb.RportFwdListener, con *console.SliverConsoleClient) {
 	if rportfwdListener.Response != nil && rportfwdListener.Response.Err != "" {
 		con.PrintErrorf("%s", rportfwdListener.Response.Err)
 		return

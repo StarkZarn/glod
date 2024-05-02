@@ -27,7 +27,7 @@ import (
 	"github.com/starkzarn/glod/client/command/loot"
 	"github.com/starkzarn/glod/client/console"
 	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/desertbit/grumble"
 	"google.golang.org/protobuf/proto"
 )
@@ -96,7 +96,7 @@ func SSHCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 		}
 	}
 
-	sshCmd, err := con.Rpc.RunSSHCommand(context.Background(), &sliverpb.SSHCommandReq{
+	sshCmd, err := con.Rpc.RunSSHCommand(context.Background(), &glodpb.SSHCommandReq{
 		Username:       username,
 		Hostname:       hostname,
 		Port:           uint32(port),
@@ -129,7 +129,7 @@ func SSHCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 }
 
 // PrintSSHCmd - Print the ssh command response
-func PrintSSHCmd(sshCmd *sliverpb.SSHCommand, con *console.SliverConsoleClient) {
+func PrintSSHCmd(sshCmd *glodpb.SSHCommand, con *console.SliverConsoleClient) {
 	if sshCmd.Response != nil && sshCmd.Response.Err != "" {
 		con.PrintErrorf("Error: %s\n", sshCmd.Response.Err)
 		if sshCmd.StdErr != "" {

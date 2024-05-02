@@ -23,7 +23,7 @@ import (
 
 	"github.com/starkzarn/glod/client/console"
 	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"google.golang.org/protobuf/proto"
 
 	"github.com/desertbit/grumble"
@@ -35,7 +35,7 @@ func PwdCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 	if session == nil && beacon == nil {
 		return
 	}
-	pwd, err := con.Rpc.Pwd(context.Background(), &sliverpb.PwdReq{
+	pwd, err := con.Rpc.Pwd(context.Background(), &glodpb.PwdReq{
 		Request: con.ActiveTarget.Request(ctx),
 	})
 	if err != nil {
@@ -58,7 +58,7 @@ func PwdCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 }
 
 // PrintPwd - Print the remote working directory
-func PrintPwd(pwd *sliverpb.Pwd, con *console.SliverConsoleClient) {
+func PrintPwd(pwd *glodpb.Pwd, con *console.SliverConsoleClient) {
 	if pwd.Response != nil && pwd.Response.Err != "" {
 		con.PrintErrorf("%s\n", pwd.Response.Err)
 		return

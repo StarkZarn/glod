@@ -22,7 +22,7 @@ import (
 	"context"
 
 	"github.com/starkzarn/glod/protobuf/commonpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/starkzarn/glod/server/core"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -35,7 +35,7 @@ var (
 )
 
 // Shell - Open an interactive shell
-func (rpc *Server) Shell(ctx context.Context, req *sliverpb.ShellReq) (*sliverpb.Shell, error) {
+func (rpc *Server) Shell(ctx context.Context, req *glodpb.ShellReq) (*glodpb.Shell, error) {
 	session := core.Sessions.Get(req.Request.SessionID)
 	if session == nil {
 		return nil, ErrInvalidSessionID
@@ -48,18 +48,18 @@ func (rpc *Server) Shell(ctx context.Context, req *sliverpb.ShellReq) (*sliverpb
 	if err != nil {
 		return nil, err
 	}
-	data, err := session.Request(sliverpb.MsgNumber(req), rpc.getTimeout(req), reqData)
+	data, err := session.Request(glodpb.MsgNumber(req), rpc.getTimeout(req), reqData)
 	if err != nil {
 		return nil, err
 	}
-	shell := &sliverpb.Shell{}
+	shell := &glodpb.Shell{}
 	err = proto.Unmarshal(data, shell)
 	return shell, err
 }
 
 // RunSSHCommand runs a SSH command using the client built into the implant
-func (rpc *Server) RunSSHCommand(ctx context.Context, req *sliverpb.SSHCommandReq) (*sliverpb.SSHCommand, error) {
-	resp := &sliverpb.SSHCommand{Response: &commonpb.Response{}}
+func (rpc *Server) RunSSHCommand(ctx context.Context, req *glodpb.SSHCommandReq) (*glodpb.SSHCommand, error) {
+	resp := &glodpb.SSHCommand{Response: &commonpb.Response{}}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err

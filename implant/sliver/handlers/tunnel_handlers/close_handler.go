@@ -25,12 +25,12 @@ import (
 	// {{end}}
 
 	"github.com/starkzarn/glod/implant/sliver/transports"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"google.golang.org/protobuf/proto"
 )
 
-func TunnelCloseHandler(envelope *sliverpb.Envelope, connection *transports.Connection) {
-	tunnelClose := &sliverpb.TunnelData{
+func TunnelCloseHandler(envelope *glodpb.Envelope, connection *transports.Connection) {
+	tunnelClose := &glodpb.TunnelData{
 		Closed: true,
 	}
 	proto.Unmarshal(envelope.Data, tunnelClose)

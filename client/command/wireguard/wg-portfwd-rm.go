@@ -22,7 +22,7 @@ import (
 	"context"
 
 	"github.com/starkzarn/glod/client/console"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/desertbit/grumble"
 )
 
@@ -38,7 +38,7 @@ func WGPortFwdRmCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 	}
 
 	fwdID := ctx.Args.Int("id")
-	stopReq, err := con.Rpc.WGStopPortForward(context.Background(), &sliverpb.WGPortForwardStopReq{
+	stopReq, err := con.Rpc.WGStopPortForward(context.Background(), &glodpb.WGPortForwardStopReq{
 		ID:      int32(fwdID),
 		Request: con.ActiveTarget.Request(ctx),
 	})

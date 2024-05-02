@@ -23,7 +23,7 @@ import (
 
 	"github.com/starkzarn/glod/client/console"
 	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"google.golang.org/protobuf/proto"
 
 	"github.com/desertbit/grumble"
@@ -37,7 +37,7 @@ func CdCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 	}
 	filePath := ctx.Args.String("path")
 
-	pwd, err := con.Rpc.Cd(context.Background(), &sliverpb.CdReq{
+	pwd, err := con.Rpc.Cd(context.Background(), &glodpb.CdReq{
 		Request: con.ActiveTarget.Request(ctx),
 		Path:    filePath,
 	})

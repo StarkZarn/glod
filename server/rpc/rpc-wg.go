@@ -5,7 +5,7 @@ import (
 
 	"github.com/starkzarn/glod/protobuf/clientpb"
 	"github.com/starkzarn/glod/protobuf/commonpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/starkzarn/glod/server/certs"
 	"github.com/starkzarn/glod/server/generate"
 	"google.golang.org/grpc/codes"
@@ -40,8 +40,8 @@ func (rpc *Server) GenerateWGClientConfig(ctx context.Context, _ *commonpb.Empty
 }
 
 // WGStartPortForward - Start a port forward
-func (rpc *Server) WGStartPortForward(ctx context.Context, req *sliverpb.WGPortForwardStartReq) (*sliverpb.WGPortForward, error) {
-	resp := &sliverpb.WGPortForward{}
+func (rpc *Server) WGStartPortForward(ctx context.Context, req *glodpb.WGPortForwardStartReq) (*glodpb.WGPortForward, error) {
+	resp := &glodpb.WGPortForward{}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err
@@ -50,8 +50,8 @@ func (rpc *Server) WGStartPortForward(ctx context.Context, req *sliverpb.WGPortF
 }
 
 // WGStopPortForward - Stop a port forward
-func (rpc *Server) WGStopPortForward(ctx context.Context, req *sliverpb.WGPortForwardStopReq) (*sliverpb.WGPortForward, error) {
-	resp := &sliverpb.WGPortForward{}
+func (rpc *Server) WGStopPortForward(ctx context.Context, req *glodpb.WGPortForwardStopReq) (*glodpb.WGPortForward, error) {
+	resp := &glodpb.WGPortForward{}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err
@@ -60,8 +60,8 @@ func (rpc *Server) WGStopPortForward(ctx context.Context, req *sliverpb.WGPortFo
 }
 
 // WGAddForwarder - Add a TCP forwarder
-func (rpc *Server) WGStartSocks(ctx context.Context, req *sliverpb.WGSocksStartReq) (*sliverpb.WGSocks, error) {
-	resp := &sliverpb.WGSocks{}
+func (rpc *Server) WGStartSocks(ctx context.Context, req *glodpb.WGSocksStartReq) (*glodpb.WGSocks, error) {
+	resp := &glodpb.WGSocks{}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err
@@ -70,8 +70,8 @@ func (rpc *Server) WGStartSocks(ctx context.Context, req *sliverpb.WGSocksStartR
 }
 
 // WGStopForwarder - Stop a TCP forwarder
-func (rpc *Server) WGStopSocks(ctx context.Context, req *sliverpb.WGSocksStopReq) (*sliverpb.WGSocks, error) {
-	resp := &sliverpb.WGSocks{}
+func (rpc *Server) WGStopSocks(ctx context.Context, req *glodpb.WGSocksStopReq) (*glodpb.WGSocks, error) {
+	resp := &glodpb.WGSocks{}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err
@@ -79,8 +79,8 @@ func (rpc *Server) WGStopSocks(ctx context.Context, req *sliverpb.WGSocksStopReq
 	return resp, nil
 }
 
-func (rpc *Server) WGListSocksServers(ctx context.Context, req *sliverpb.WGSocksServersReq) (*sliverpb.WGSocksServers, error) {
-	resp := &sliverpb.WGSocksServers{}
+func (rpc *Server) WGListSocksServers(ctx context.Context, req *glodpb.WGSocksServersReq) (*glodpb.WGSocksServers, error) {
+	resp := &glodpb.WGSocksServers{}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err
@@ -89,8 +89,8 @@ func (rpc *Server) WGListSocksServers(ctx context.Context, req *sliverpb.WGSocks
 }
 
 // WGAddForwarder - List wireguard forwarders
-func (rpc *Server) WGListForwarders(ctx context.Context, req *sliverpb.WGTCPForwardersReq) (*sliverpb.WGTCPForwarders, error) {
-	resp := &sliverpb.WGTCPForwarders{}
+func (rpc *Server) WGListForwarders(ctx context.Context, req *glodpb.WGTCPForwardersReq) (*glodpb.WGTCPForwarders, error) {
+	resp := &glodpb.WGTCPForwarders{}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err

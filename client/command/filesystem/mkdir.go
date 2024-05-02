@@ -23,7 +23,7 @@ import (
 
 	"github.com/starkzarn/glod/client/console"
 	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"google.golang.org/protobuf/proto"
 
 	"github.com/desertbit/grumble"
@@ -43,7 +43,7 @@ func MkdirCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 		return
 	}
 
-	mkdir, err := con.Rpc.Mkdir(context.Background(), &sliverpb.MkdirReq{
+	mkdir, err := con.Rpc.Mkdir(context.Background(), &glodpb.MkdirReq{
 		Request: con.ActiveTarget.Request(ctx),
 		Path:    filePath,
 	})
@@ -67,7 +67,7 @@ func MkdirCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 }
 
 // PrintMkdir - Print make directory
-func PrintMkdir(mkdir *sliverpb.Mkdir, con *console.SliverConsoleClient) {
+func PrintMkdir(mkdir *glodpb.Mkdir, con *console.SliverConsoleClient) {
 	if mkdir.Response != nil && mkdir.Response.Err != "" {
 		con.PrintErrorf("%s\n", mkdir.Response.Err)
 		return

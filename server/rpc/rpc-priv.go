@@ -25,7 +25,7 @@ import (
 
 	"github.com/starkzarn/glod/protobuf/clientpb"
 	"github.com/starkzarn/glod/protobuf/commonpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/starkzarn/glod/server/codenames"
 	"github.com/starkzarn/glod/server/core"
 	"github.com/starkzarn/glod/server/cryptography"
@@ -35,8 +35,8 @@ import (
 )
 
 // Impersonate - Impersonate a remote user
-func (rpc *Server) Impersonate(ctx context.Context, req *sliverpb.ImpersonateReq) (*sliverpb.Impersonate, error) {
-	resp := &sliverpb.Impersonate{Response: &commonpb.Response{}}
+func (rpc *Server) Impersonate(ctx context.Context, req *glodpb.ImpersonateReq) (*glodpb.Impersonate, error) {
+	resp := &glodpb.Impersonate{Response: &commonpb.Response{}}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err
@@ -45,8 +45,8 @@ func (rpc *Server) Impersonate(ctx context.Context, req *sliverpb.ImpersonateReq
 }
 
 // RunAs - Run a remote process as a specific user
-func (rpc *Server) RunAs(ctx context.Context, req *sliverpb.RunAsReq) (*sliverpb.RunAs, error) {
-	resp := &sliverpb.RunAs{Response: &commonpb.Response{}}
+func (rpc *Server) RunAs(ctx context.Context, req *glodpb.RunAsReq) (*glodpb.RunAs, error) {
+	resp := &glodpb.RunAs{Response: &commonpb.Response{}}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err
@@ -55,8 +55,8 @@ func (rpc *Server) RunAs(ctx context.Context, req *sliverpb.RunAsReq) (*sliverpb
 }
 
 // RevToSelf - Revert process context to self
-func (rpc *Server) RevToSelf(ctx context.Context, req *sliverpb.RevToSelfReq) (*sliverpb.RevToSelf, error) {
-	resp := &sliverpb.RevToSelf{Response: &commonpb.Response{}}
+func (rpc *Server) RevToSelf(ctx context.Context, req *glodpb.RevToSelfReq) (*glodpb.RevToSelf, error) {
+	resp := &glodpb.RevToSelf{Response: &commonpb.Response{}}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err
@@ -65,8 +65,8 @@ func (rpc *Server) RevToSelf(ctx context.Context, req *sliverpb.RevToSelfReq) (*
 }
 
 // CurrentTokenOwner - Retrieve the thread token's owner
-func (rpc *Server) CurrentTokenOwner(ctx context.Context, req *sliverpb.CurrentTokenOwnerReq) (*sliverpb.CurrentTokenOwner, error) {
-	resp := &sliverpb.CurrentTokenOwner{Response: &commonpb.Response{}}
+func (rpc *Server) CurrentTokenOwner(ctx context.Context, req *glodpb.CurrentTokenOwnerReq) (*glodpb.CurrentTokenOwner, error) {
+	resp := &glodpb.CurrentTokenOwner{Response: &commonpb.Response{}}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err
@@ -75,7 +75,7 @@ func (rpc *Server) CurrentTokenOwner(ctx context.Context, req *sliverpb.CurrentT
 }
 
 // GetSystem - Attempt to get 'NT AUTHORITY/SYSTEM' access on a remote Windows system
-func (rpc *Server) GetSystem(ctx context.Context, req *clientpb.GetSystemReq) (*sliverpb.GetSystem, error) {
+func (rpc *Server) GetSystem(ctx context.Context, req *clientpb.GetSystemReq) (*glodpb.GetSystem, error) {
 	var shellcode []byte
 	session := core.Sessions.Get(req.Request.SessionID)
 	if session == nil {
@@ -105,7 +105,7 @@ func (rpc *Server) GetSystem(ctx context.Context, req *clientpb.GetSystemReq) (*
 		}
 		shellcode, _ = os.ReadFile(shellcodePath)
 	}
-	data, err := proto.Marshal(&sliverpb.InvokeGetSystemReq{
+	data, err := proto.Marshal(&glodpb.InvokeGetSystemReq{
 		Data:           shellcode,
 		HostingProcess: req.HostingProcess,
 		Request:        req.GetRequest(),
@@ -115,11 +115,11 @@ func (rpc *Server) GetSystem(ctx context.Context, req *clientpb.GetSystemReq) (*
 	}
 
 	timeout := rpc.getTimeout(req)
-	data, err = session.Request(sliverpb.MsgInvokeGetSystemReq, timeout, data)
+	data, err = session.Request(glodpb.MsgInvokeGetSystemReq, timeout, data)
 	if err != nil {
 		return nil, err
 	}
-	getSystem := &sliverpb.GetSystem{}
+	getSystem := &glodpb.GetSystem{}
 	err = proto.Unmarshal(data, getSystem)
 	if err != nil {
 		return nil, err
@@ -128,8 +128,8 @@ func (rpc *Server) GetSystem(ctx context.Context, req *clientpb.GetSystemReq) (*
 }
 
 // MakeToken - Creates a new logon session to impersonate a user based on its credentials.
-func (rpc *Server) MakeToken(ctx context.Context, req *sliverpb.MakeTokenReq) (*sliverpb.MakeToken, error) {
-	resp := &sliverpb.MakeToken{Response: &commonpb.Response{}}
+func (rpc *Server) MakeToken(ctx context.Context, req *glodpb.MakeTokenReq) (*glodpb.MakeToken, error) {
+	resp := &glodpb.MakeToken{Response: &commonpb.Response{}}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err
@@ -138,8 +138,8 @@ func (rpc *Server) MakeToken(ctx context.Context, req *sliverpb.MakeTokenReq) (*
 }
 
 // GetPrivs - gRPC interface to get privilege information from the current process
-func (rpc *Server) GetPrivs(ctx context.Context, req *sliverpb.GetPrivsReq) (*sliverpb.GetPrivs, error) {
-	resp := &sliverpb.GetPrivs{Response: &commonpb.Response{}}
+func (rpc *Server) GetPrivs(ctx context.Context, req *glodpb.GetPrivsReq) (*glodpb.GetPrivs, error) {
+	resp := &glodpb.GetPrivs{Response: &commonpb.Response{}}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err

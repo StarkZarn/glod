@@ -24,7 +24,7 @@ import (
 
 	"github.com/starkzarn/glod/protobuf/clientpb"
 	"github.com/starkzarn/glod/protobuf/commonpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/starkzarn/glod/server/core"
 	"github.com/starkzarn/glod/server/db"
 	"google.golang.org/protobuf/proto"
@@ -48,7 +48,7 @@ func (rpc *Server) GetSessions(ctx context.Context, _ *commonpb.Empty) (*clientp
 }
 
 // KillSession - Kill a session
-func (rpc *Server) KillSession(ctx context.Context, kill *sliverpb.KillReq) (*commonpb.Empty, error) {
+func (rpc *Server) KillSession(ctx context.Context, kill *glodpb.KillReq) (*commonpb.Empty, error) {
 	session := core.Sessions.Get(kill.Request.SessionID)
 	if session == nil {
 		return &commonpb.Empty{}, ErrInvalidSessionID
@@ -59,13 +59,13 @@ func (rpc *Server) KillSession(ctx context.Context, kill *sliverpb.KillReq) (*co
 		return nil, err
 	}
 	timeout := time.Duration(kill.Request.GetTimeout())
-	session.Request(sliverpb.MsgNumber(kill), timeout, data)
+	session.Request(glodpb.MsgNumber(kill), timeout, data)
 	return &commonpb.Empty{}, nil
 }
 
 // OpenSession - Instruct beacon to open a new session on next checkin
-func (rpc *Server) OpenSession(ctx context.Context, openSession *sliverpb.OpenSession) (*sliverpb.OpenSession, error) {
-	resp := &sliverpb.OpenSession{Response: &commonpb.Response{}}
+func (rpc *Server) OpenSession(ctx context.Context, openSession *glodpb.OpenSession) (*glodpb.OpenSession, error) {
+	resp := &glodpb.OpenSession{Response: &commonpb.Response{}}
 	err := rpc.GenericHandler(openSession, resp)
 	if err != nil {
 		return nil, err
@@ -74,7 +74,7 @@ func (rpc *Server) OpenSession(ctx context.Context, openSession *sliverpb.OpenSe
 }
 
 // CloseSession - Close an interactive session, but do not kill the remote process
-func (rpc *Server) CloseSession(ctx context.Context, closeSession *sliverpb.CloseSession) (*commonpb.Empty, error) {
+func (rpc *Server) CloseSession(ctx context.Context, closeSession *glodpb.CloseSession) (*commonpb.Empty, error) {
 	session := core.Sessions.Get(closeSession.Request.SessionID)
 	if session == nil {
 		return nil, ErrInvalidSessionID
@@ -86,7 +86,7 @@ func (rpc *Server) CloseSession(ctx context.Context, closeSession *sliverpb.Clos
 	closeWait := make(chan struct{})
 	go func() {
 		select {
-		case session.Connection.Send <- &sliverpb.Envelope{Type: sliverpb.MsgCloseSession}:
+		case session.Connection.Send <- &glodpb.Envelope{Type: glodpb.MsgCloseSession}:
 		case <-time.After(time.Second * 3):
 		}
 		closeWait <- struct{}{}

@@ -27,7 +27,7 @@ import (
 
 	"github.com/starkzarn/glod/client/console"
 	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/starkzarn/glod/util/encoders"
 	"google.golang.org/protobuf/proto"
 
@@ -72,7 +72,7 @@ func UploadCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 
 	ctrl := make(chan bool)
 	con.SpinUntil(fmt.Sprintf("%s -> %s", src, dst), ctrl)
-	upload, err := con.Rpc.Upload(context.Background(), &sliverpb.UploadReq{
+	upload, err := con.Rpc.Upload(context.Background(), &glodpb.UploadReq{
 		Request: con.ActiveTarget.Request(ctx),
 		Path:    dst,
 		Data:    uploadGzip,
@@ -101,7 +101,7 @@ func UploadCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 }
 
 // PrintUpload - Print the result of the upload command
-func PrintUpload(upload *sliverpb.Upload, con *console.SliverConsoleClient) {
+func PrintUpload(upload *glodpb.Upload, con *console.SliverConsoleClient) {
 	if upload.Response != nil && upload.Response.Err != "" {
 		con.PrintErrorf("%s\n", upload.Response.Err)
 		return

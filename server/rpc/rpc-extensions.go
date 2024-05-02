@@ -4,12 +4,12 @@ import (
 	"context"
 
 	"github.com/starkzarn/glod/protobuf/commonpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 )
 
 // RegisterExtension registers a new extension in the implant
-func (rpc *Server) RegisterExtension(ctx context.Context, req *sliverpb.RegisterExtensionReq) (*sliverpb.RegisterExtension, error) {
-	resp := &sliverpb.RegisterExtension{Response: &commonpb.Response{}}
+func (rpc *Server) RegisterExtension(ctx context.Context, req *glodpb.RegisterExtensionReq) (*glodpb.RegisterExtension, error) {
+	resp := &glodpb.RegisterExtension{Response: &commonpb.Response{}}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err
@@ -18,8 +18,8 @@ func (rpc *Server) RegisterExtension(ctx context.Context, req *sliverpb.Register
 }
 
 // ListExtensions lists the registered extensions
-func (rpc *Server) ListExtensions(ctx context.Context, req *sliverpb.ListExtensionsReq) (*sliverpb.ListExtensions, error) {
-	resp := &sliverpb.ListExtensions{Response: &commonpb.Response{}}
+func (rpc *Server) ListExtensions(ctx context.Context, req *glodpb.ListExtensionsReq) (*glodpb.ListExtensions, error) {
+	resp := &glodpb.ListExtensions{Response: &commonpb.Response{}}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err
@@ -28,8 +28,8 @@ func (rpc *Server) ListExtensions(ctx context.Context, req *sliverpb.ListExtensi
 }
 
 // CallExtension calls a specific export of the loaded extension
-func (rpc *Server) CallExtension(ctx context.Context, req *sliverpb.CallExtensionReq) (*sliverpb.CallExtension, error) {
-	resp := &sliverpb.CallExtension{Response: &commonpb.Response{}}
+func (rpc *Server) CallExtension(ctx context.Context, req *glodpb.CallExtensionReq) (*glodpb.CallExtension, error) {
+	resp := &glodpb.CallExtension{Response: &commonpb.Response{}}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err

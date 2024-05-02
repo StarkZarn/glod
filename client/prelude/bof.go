@@ -28,7 +28,7 @@ import (
 	"github.com/starkzarn/glod/client/assets"
 	"github.com/starkzarn/glod/client/core"
 	"github.com/starkzarn/glod/protobuf/rpcpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 )
 
 const (
@@ -103,7 +103,7 @@ func runBOF(implant ActiveImplant, rpc rpcpb.SliverRPCClient, bof []byte, args [
 		return
 	}
 
-	extResp, err := rpc.CallExtension(context.Background(), &sliverpb.CallExtensionReq{
+	extResp, err := rpc.CallExtension(context.Background(), &glodpb.CallExtensionReq{
 		Name:        coffLoaderName,
 		ServerStore: false,
 		Args:        extArgsBuffer,
@@ -143,7 +143,7 @@ func registerLoader(implant ActiveImplant, rpc rpcpb.SliverRPCClient) error {
 	if err != nil {
 		return err
 	}
-	resp, err := rpc.RegisterExtension(context.Background(), &sliverpb.RegisterExtensionReq{
+	resp, err := rpc.RegisterExtension(context.Background(), &glodpb.RegisterExtensionReq{
 		Name:    coffLoaderName,
 		Data:    loaderData,
 		OS:      implant.GetOS(),
@@ -160,7 +160,7 @@ func registerLoader(implant ActiveImplant, rpc rpcpb.SliverRPCClient) error {
 }
 
 func isLoaderLoaded(implant ActiveImplant, rpc rpcpb.SliverRPCClient) bool {
-	extList, err := rpc.ListExtensions(context.Background(), &sliverpb.ListExtensionsReq{
+	extList, err := rpc.ListExtensions(context.Background(), &glodpb.ListExtensionsReq{
 		Request: MakeRequest(implant),
 	})
 	if err != nil {

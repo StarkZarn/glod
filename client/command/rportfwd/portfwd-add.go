@@ -24,7 +24,7 @@ import (
 	"regexp"
 
 	"github.com/starkzarn/glod/client/console"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 
 	"github.com/desertbit/grumble"
 )
@@ -56,7 +56,7 @@ func StartRportFwdListenerCmd(ctx *grumble.Context, con *console.SliverConsoleCl
 	if portNumberOnlyRegexp.MatchString(forwardAddress) {
 		forwardAddress = fmt.Sprintf("127.0.0.1:%s", forwardAddress)
 	}
-	rportfwdListener, err := con.Rpc.StartRportFwdListener(context.Background(), &sliverpb.RportFwdStartListenerReq{
+	rportfwdListener, err := con.Rpc.StartRportFwdListener(context.Background(), &glodpb.RportFwdStartListenerReq{
 		Request:        con.ActiveTarget.Request(ctx),
 		BindAddress:    bindAddress,
 		ForwardAddress: forwardAddress,
@@ -68,7 +68,7 @@ func StartRportFwdListenerCmd(ctx *grumble.Context, con *console.SliverConsoleCl
 	printStartedRportFwdListener(rportfwdListener, con)
 }
 
-func printStartedRportFwdListener(rportfwdListener *sliverpb.RportFwdListener, con *console.SliverConsoleClient) {
+func printStartedRportFwdListener(rportfwdListener *glodpb.RportFwdListener, con *console.SliverConsoleClient) {
 	if rportfwdListener.Response != nil && rportfwdListener.Response.Err != "" {
 		con.PrintErrorf("%s", rportfwdListener.Response.Err)
 		return

@@ -29,7 +29,7 @@ import (
 
 	consts "github.com/starkzarn/glod/client/constants"
 	"github.com/starkzarn/glod/protobuf/clientpb"
-	sliverpb "github.com/starkzarn/glod/protobuf/sliverpb"
+	glodpb "github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/starkzarn/glod/server/core"
 	"github.com/starkzarn/glod/server/db"
 	"github.com/starkzarn/glod/server/db/models"
@@ -43,8 +43,8 @@ var (
 	beaconHandlerLog = log.NamedLogger("handlers", "beacons")
 )
 
-func beaconRegisterHandler(implantConn *core.ImplantConnection, data []byte) *sliverpb.Envelope {
-	beaconReg := &sliverpb.BeaconRegister{}
+func beaconRegisterHandler(implantConn *core.ImplantConnection, data []byte) *glodpb.Envelope {
+	beaconReg := &glodpb.BeaconRegister{}
 	err := proto.Unmarshal(data, beaconReg)
 	if err != nil {
 		beaconHandlerLog.Errorf("Error decoding beacon registration message: %s", err)
@@ -104,10 +104,10 @@ func beaconRegisterHandler(implantConn *core.ImplantConnection, data []byte) *sl
 
 type auditLogNewBeaconMsg struct {
 	Beacon   *clientpb.Beacon
-	Register *sliverpb.Register
+	Register *glodpb.Register
 }
 
-func auditLogBeacon(beacon *models.Beacon, register *sliverpb.Register) {
+func auditLogBeacon(beacon *models.Beacon, register *glodpb.Register) {
 	msg, err := json.Marshal(auditLogNewBeaconMsg{
 		Beacon:   beacon.ToProtobuf(),
 		Register: register,
@@ -119,8 +119,8 @@ func auditLogBeacon(beacon *models.Beacon, register *sliverpb.Register) {
 	}
 }
 
-func beaconTasksHandler(implantConn *core.ImplantConnection, data []byte) *sliverpb.Envelope {
-	beaconTasks := &sliverpb.BeaconTasks{}
+func beaconTasksHandler(implantConn *core.ImplantConnection, data []byte) *glodpb.Envelope {
+	beaconTasks := &glodpb.BeaconTasks{}
 	err := proto.Unmarshal(data, beaconTasks)
 	if err != nil {
 		beaconHandlerLog.Errorf("Error decoding beacon tasks message: %s", err)
@@ -152,9 +152,9 @@ func beaconTasksHandler(implantConn *core.ImplantConnection, data []byte) *slive
 		beaconHandlerLog.Errorf("Beacon task database error: %s", err)
 		return nil
 	}
-	tasks := []*sliverpb.Envelope{}
+	tasks := []*glodpb.Envelope{}
 	for _, pendingTask := range pendingTasks {
-		envelope := &sliverpb.Envelope{}
+		envelope := &glodpb.Envelope{}
 		err = proto.Unmarshal(pendingTask.Request, envelope)
 		if err != nil {
 			beaconHandlerLog.Errorf("Error decoding pending task: %s", err)
@@ -171,19 +171,19 @@ func beaconTasksHandler(implantConn *core.ImplantConnection, data []byte) *slive
 			beaconHandlerLog.Errorf("Database error: %s", err)
 		}
 	}
-	taskData, err := proto.Marshal(&sliverpb.BeaconTasks{Tasks: tasks})
+	taskData, err := proto.Marshal(&glodpb.BeaconTasks{Tasks: tasks})
 	if err != nil {
 		beaconHandlerLog.Errorf("Error marshaling beacon tasks message: %s", err)
 		return nil
 	}
 	beaconHandlerLog.Infof("Sending %d task(s) to beacon %s", len(pendingTasks), beaconTasks.ID)
-	return &sliverpb.Envelope{
-		Type: sliverpb.MsgBeaconTasks,
+	return &glodpb.Envelope{
+		Type: glodpb.MsgBeaconTasks,
 		Data: taskData,
 	}
 }
 
-func beaconTaskResults(beaconID string, taskEnvelopes []*sliverpb.Envelope) *sliverpb.Envelope {
+func beaconTaskResults(beaconID string, taskEnvelopes []*glodpb.Envelope) *glodpb.Envelope {
 	for _, envelope := range taskEnvelopes {
 		dbTask, err := db.BeaconTaskByEnvelopeID(beaconID, envelope.ID)
 		if err != nil {

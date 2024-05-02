@@ -59,7 +59,7 @@ import (
 	"github.com/starkzarn/glod/implant/sliver/transports/dnsclient"
 	// {{end}}
 
-	pb "github.com/starkzarn/glod/protobuf/sliverpb"
+	pb "github.com/starkzarn/glod/protobuf/glodpb"
 )
 
 var (

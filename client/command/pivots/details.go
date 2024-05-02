@@ -24,7 +24,7 @@ import (
 
 	"github.com/starkzarn/glod/client/command/settings"
 	"github.com/starkzarn/glod/client/console"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/desertbit/grumble"
 	"github.com/jedib0t/go-pretty/v6/table"
 )
@@ -35,7 +35,7 @@ func PivotDetailsCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 	if session == nil {
 		return
 	}
-	pivotListeners, err := con.Rpc.PivotSessionListeners(context.Background(), &sliverpb.PivotListenersReq{
+	pivotListeners, err := con.Rpc.PivotSessionListeners(context.Background(), &glodpb.PivotListenersReq{
 		Request: con.ActiveTarget.Request(ctx),
 	})
 	if err != nil {
@@ -70,7 +70,7 @@ func PivotDetailsCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 }
 
 // PrintPivotListenerDetails - Print details of a single pivot listener
-func PrintPivotListenerDetails(listener *sliverpb.PivotListener, con *console.SliverConsoleClient) {
+func PrintPivotListenerDetails(listener *glodpb.PivotListener, con *console.SliverConsoleClient) {
 	con.Printf("\n")
 	con.Printf("               ID: %d\n", listener.ID)
 	con.Printf("         Protocol: %s\n", PivotTypeToString(listener.Type))

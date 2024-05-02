@@ -23,7 +23,7 @@ import (
 
 	"github.com/starkzarn/glod/client/console"
 	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"google.golang.org/protobuf/proto"
 
 	"github.com/desertbit/grumble"
@@ -43,7 +43,7 @@ func RmCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 		return
 	}
 
-	rm, err := con.Rpc.Rm(context.Background(), &sliverpb.RmReq{
+	rm, err := con.Rpc.Rm(context.Background(), &glodpb.RmReq{
 		Request:   con.ActiveTarget.Request(ctx),
 		Path:      filePath,
 		Recursive: ctx.Flags.Bool("recursive"),
@@ -69,7 +69,7 @@ func RmCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 }
 
 // PrintRm - Print the rm response
-func PrintRm(rm *sliverpb.Rm, con *console.SliverConsoleClient) {
+func PrintRm(rm *glodpb.Rm, con *console.SliverConsoleClient) {
 	if rm.Response != nil && rm.Response.Err != "" {
 		con.PrintErrorf("%s\n", rm.Response.Err)
 		return

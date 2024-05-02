@@ -251,22 +251,22 @@ func SetupGoPath(goPathSrc string) error {
 	}
 
 	// Sliver PB
-	sliverpbGoSrc, err := protobufs.FS.ReadFile("sliverpb/sliver.pb.go")
+	glodpbGoSrc, err := protobufs.FS.ReadFile("glodpb/sliver.pb.go")
 	if err != nil {
 		setupLog.Info("Static asset not found: sliver.pb.go")
 		return err
 	}
-	sliverpbConstSrc, err := protobufs.FS.ReadFile("sliverpb/constants.go")
+	glodpbConstSrc, err := protobufs.FS.ReadFile("glodpb/constants.go")
 	if err != nil {
 		setupLog.Info("Static asset not found: constants.go")
 		return err
 	}
-	sliverpbGoSrc = xorPBRawBytes(sliverpbGoSrc)
-	sliverpbGoSrc = stripSliverpb(sliverpbGoSrc)
-	sliverpbDir := filepath.Join(goPathSrc, "github.com", "starkzarn", "glod", "protobuf", "sliverpb")
-	os.MkdirAll(sliverpbDir, 0700)
-	os.WriteFile(filepath.Join(sliverpbDir, "sliver.pb.go"), sliverpbGoSrc, 0600)
-	os.WriteFile(filepath.Join(sliverpbDir, "constants.go"), sliverpbConstSrc, 0600)
+	glodpbGoSrc = xorPBRawBytes(glodpbGoSrc)
+	glodpbGoSrc = stripSliverpb(glodpbGoSrc)
+	glodpbDir := filepath.Join(goPathSrc, "github.com", "starkzarn", "glod", "protobuf", "glodpb")
+	os.MkdirAll(glodpbDir, 0700)
+	os.WriteFile(filepath.Join(glodpbDir, "sliver.pb.go"), glodpbGoSrc, 0600)
+	os.WriteFile(filepath.Join(glodpbDir, "constants.go"), glodpbConstSrc, 0600)
 
 	// Common PB
 	commonpbSrc, err := protobufs.FS.ReadFile("commonpb/common.pb.go")
@@ -318,8 +318,8 @@ func xorPBRawBytes(src []byte) []byte {
 	var (
 		fileAst                   *ast.File
 		err                       error
-		sliverpbVarName           = "file_sliverpb_sliver_proto_rawDesc"
-		sliverPbProtoInitFuncName = "file_sliverpb_sliver_proto_init"
+		glodpbVarName           = "file_glodpb_sliver_proto_rawDesc"
+		sliverPbProtoInitFuncName = "file_glodpb_sliver_proto_init"
 		fset                      = token.NewFileSet()
 		parserMode                = parser.ParseComments
 	)
@@ -341,18 +341,18 @@ func xorPBRawBytes(src []byte) []byte {
 		// data at the top of the function
 		case *ast.FuncDecl:
 			// add an ast.AssignStmt at the top of the function Body
-			// that calls the xor function on the file_sliverpb_sliver_proto_rawDesc object
+			// that calls the xor function on the file_glodpb_sliver_proto_rawDesc object
 			if node.Name.Name == sliverPbProtoInitFuncName {
 				newStmt := &ast.AssignStmt{
 					Lhs: []ast.Expr{
-						ast.NewIdent(sliverpbVarName),
+						ast.NewIdent(glodpbVarName),
 					},
 					Tok: token.ASSIGN,
 					Rhs: []ast.Expr{
 						&ast.CallExpr{
 							Fun: ast.NewIdent("xor"),
 							Args: []ast.Expr{
-								ast.NewIdent(sliverpbVarName),
+								ast.NewIdent(glodpbVarName),
 								ast.NewIdent("xorKey"),
 							},
 						},
@@ -367,7 +367,7 @@ func xorPBRawBytes(src []byte) []byte {
 				switch spec := spec.(type) {
 				case *ast.ValueSpec:
 					for _, id := range spec.Names {
-						if id.Name == sliverpbVarName {
+						if id.Name == glodpbVarName {
 							values := spec.Values[0].(*ast.CompositeLit).Elts
 							// XOR each value of the slice
 							for i, v := range values {

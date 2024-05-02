@@ -26,7 +26,7 @@ import (
 	"github.com/starkzarn/glod/client/command/settings"
 	"github.com/starkzarn/glod/client/console"
 	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/desertbit/grumble"
 	"github.com/jedib0t/go-pretty/v6/table"
 	"google.golang.org/protobuf/proto"
@@ -49,7 +49,7 @@ func NetstatCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 	implantPID := getPID(session, beacon)
 	activeC2 := getActiveC2(session, beacon)
 
-	netstat, err := con.Rpc.Netstat(context.Background(), &sliverpb.NetstatReq{
+	netstat, err := con.Rpc.Netstat(context.Background(), &glodpb.NetstatReq{
 		Request:   con.ActiveTarget.Request(ctx),
 		TCP:       tcp,
 		UDP:       udp,
@@ -76,8 +76,8 @@ func NetstatCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 	}
 }
 
-func PrintNetstat(netstat *sliverpb.Netstat, implantPID int32, activeC2 string, numeric bool, con *console.SliverConsoleClient) {
-	lookup := func(skaddr *sliverpb.SockTabEntry_SockAddr) string {
+func PrintNetstat(netstat *glodpb.Netstat, implantPID int32, activeC2 string, numeric bool, con *console.SliverConsoleClient) {
+	lookup := func(skaddr *glodpb.SockTabEntry_SockAddr) string {
 		addr := skaddr.Ip
 		names, err := net.LookupAddr(addr)
 		if err == nil && len(names) > 0 {

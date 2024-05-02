@@ -23,7 +23,7 @@ import (
 
 	"github.com/starkzarn/glod/client/console"
 	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/desertbit/grumble"
 	"google.golang.org/protobuf/proto"
 )
@@ -37,7 +37,7 @@ func TerminateCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 	}
 
 	pid := ctx.Args.Uint("pid")
-	terminated, err := con.Rpc.Terminate(context.Background(), &sliverpb.TerminateReq{
+	terminated, err := con.Rpc.Terminate(context.Background(), &glodpb.TerminateReq{
 		Request: con.ActiveTarget.Request(ctx),
 		Pid:     int32(pid),
 		Force:   ctx.Flags.Bool("force"),
@@ -63,7 +63,7 @@ func TerminateCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 }
 
 // PrintTerminate - Print the results of the terminate command
-func PrintTerminate(terminated *sliverpb.Terminate, con *console.SliverConsoleClient) {
+func PrintTerminate(terminated *glodpb.Terminate, con *console.SliverConsoleClient) {
 	if terminated.Response != nil && terminated.Response.GetErr() != "" {
 		con.PrintErrorf("%s\n", terminated.Response.GetErr())
 	} else {

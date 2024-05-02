@@ -22,12 +22,12 @@ import (
 	"context"
 
 	"github.com/starkzarn/glod/protobuf/commonpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 )
 
 // Screenshot - Take a screenshot of the remote system
-func (rpc *Server) Screenshot(ctx context.Context, req *sliverpb.ScreenshotReq) (*sliverpb.Screenshot, error) {
-	resp := &sliverpb.Screenshot{Response: &commonpb.Response{}}
+func (rpc *Server) Screenshot(ctx context.Context, req *glodpb.ScreenshotReq) (*glodpb.Screenshot, error) {
+	resp := &glodpb.Screenshot{Response: &commonpb.Response{}}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err

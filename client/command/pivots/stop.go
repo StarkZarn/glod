@@ -22,7 +22,7 @@ import (
 	"context"
 
 	"github.com/starkzarn/glod/client/console"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/desertbit/grumble"
 )
 
@@ -34,7 +34,7 @@ func StopPivotListenerCmd(ctx *grumble.Context, con *console.SliverConsoleClient
 	}
 	id := uint32(ctx.Flags.Int("id"))
 	if id == uint32(0) {
-		pivotListeners, err := con.Rpc.PivotSessionListeners(context.Background(), &sliverpb.PivotListenersReq{
+		pivotListeners, err := con.Rpc.PivotSessionListeners(context.Background(), &glodpb.PivotListenersReq{
 			Request: con.ActiveTarget.Request(ctx),
 		})
 		if err != nil {
@@ -52,7 +52,7 @@ func StopPivotListenerCmd(ctx *grumble.Context, con *console.SliverConsoleClient
 		}
 		id = selectedListener.ID
 	}
-	_, err := con.Rpc.PivotStopListener(context.Background(), &sliverpb.PivotStopListenerReq{
+	_, err := con.Rpc.PivotStopListener(context.Background(), &glodpb.PivotStopListenerReq{
 		ID:      id,
 		Request: con.ActiveTarget.Request(ctx),
 	})

@@ -31,7 +31,7 @@ import (
 	"time"
 
 	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/starkzarn/glod/server/core"
 	"github.com/starkzarn/glod/server/core/rtunnels"
 	"github.com/starkzarn/glod/server/log"
@@ -45,11 +45,11 @@ var (
 	sessionHandlerLog = log.NamedLogger("handlers", "sessions")
 )
 
-func registerSessionHandler(implantConn *core.ImplantConnection, data []byte) *sliverpb.Envelope {
+func registerSessionHandler(implantConn *core.ImplantConnection, data []byte) *glodpb.Envelope {
 	if implantConn == nil {
 		return nil
 	}
-	register := &sliverpb.Register{}
+	register := &glodpb.Register{}
 	err := proto.Unmarshal(data, register)
 	if err != nil {
 		sessionHandlerLog.Errorf("Error decoding session registration message: %s", err)
@@ -90,10 +90,10 @@ func registerSessionHandler(implantConn *core.ImplantConnection, data []byte) *s
 
 type auditLogNewSessionMsg struct {
 	Session  *clientpb.Session
-	Register *sliverpb.Register
+	Register *glodpb.Register
 }
 
-func auditLogSession(session *core.Session, register *sliverpb.Register) {
+func auditLogSession(session *core.Session, register *glodpb.Register) {
 	msg, err := json.Marshal(auditLogNewSessionMsg{
 		Session:  session.ToProtobuf(),
 		Register: register,
@@ -107,7 +107,7 @@ func auditLogSession(session *core.Session, register *sliverpb.Register) {
 
 // The handler mutex prevents a send on a closed channel, without it
 // two handlers calls may race when a tunnel is quickly created and closed.
-func tunnelDataHandler(implantConn *core.ImplantConnection, data []byte) *sliverpb.Envelope {
+func tunnelDataHandler(implantConn *core.ImplantConnection, data []byte) *glodpb.Envelope {
 	session := core.Sessions.FromImplantConnection(implantConn)
 	if session == nil {
 		sessionHandlerLog.Warnf("Received tunnel data from unknown session: %v", implantConn)
@@ -115,7 +115,7 @@ func tunnelDataHandler(implantConn *core.ImplantConnection, data []byte) *sliver
 	}
 	tunnelHandlerMutex.Lock()
 	defer tunnelHandlerMutex.Unlock()
-	tunnelData := &sliverpb.TunnelData{}
+	tunnelData := &glodpb.TunnelData{}
 	proto.Unmarshal(data, tunnelData)
 
 	sessionHandlerLog.Debugf("[DATA] Sequence on tunnel %d, %d, data: %s", tunnelData.TunnelID, tunnelData.Sequence, tunnelData.Data)
@@ -144,7 +144,7 @@ func tunnelDataHandler(implantConn *core.ImplantConnection, data []byte) *sliver
 	return nil
 }
 
-func tunnelCloseHandler(implantConn *core.ImplantConnection, data []byte) *sliverpb.Envelope {
+func tunnelCloseHandler(implantConn *core.ImplantConnection, data []byte) *glodpb.Envelope {
 	session := core.Sessions.FromImplantConnection(implantConn)
 	if session == nil {
 		sessionHandlerLog.Warnf("Received tunnel close from unknown session: %v", implantConn)
@@ -153,7 +153,7 @@ func tunnelCloseHandler(implantConn *core.ImplantConnection, data []byte) *slive
 	tunnelHandlerMutex.Lock()
 	defer tunnelHandlerMutex.Unlock()
 
-	tunnelData := &sliverpb.TunnelData{}
+	tunnelData := &glodpb.TunnelData{}
 	proto.Unmarshal(data, tunnelData)
 	sessionHandlerLog.Debugf("[CLOSE] Sequence on tunnel %d, %d, data: %s", tunnelData.TunnelID, tunnelData.Sequence, tunnelData.Data)
 	if !tunnelData.Closed {
@@ -181,7 +181,7 @@ func tunnelCloseHandler(implantConn *core.ImplantConnection, data []byte) *slive
 	return nil
 }
 
-func pingHandler(implantConn *core.ImplantConnection, data []byte) *sliverpb.Envelope {
+func pingHandler(implantConn *core.ImplantConnection, data []byte) *glodpb.Envelope {
 	session := core.Sessions.FromImplantConnection(implantConn)
 	if session == nil {
 		sessionHandlerLog.Warnf("Received ping from unknown session: %v", implantConn)
@@ -191,7 +191,7 @@ func pingHandler(implantConn *core.ImplantConnection, data []byte) *sliverpb.Env
 	return nil
 }
 
-func socksDataHandler(implantConn *core.ImplantConnection, data []byte) *sliverpb.Envelope {
+func socksDataHandler(implantConn *core.ImplantConnection, data []byte) *glodpb.Envelope {
 	session := core.Sessions.FromImplantConnection(implantConn)
 	if session == nil {
 		sessionHandlerLog.Warnf("Received socks data from unknown session: %v", implantConn)
@@ -199,7 +199,7 @@ func socksDataHandler(implantConn *core.ImplantConnection, data []byte) *sliverp
 	}
 	tunnelHandlerMutex.Lock()
 	defer tunnelHandlerMutex.Unlock()
-	socksData := &sliverpb.SocksData{}
+	socksData := &glodpb.SocksData{}
 
 	proto.Unmarshal(data, socksData)
 	//if socksData.CloseConn{
@@ -220,10 +220,10 @@ func socksDataHandler(implantConn *core.ImplantConnection, data []byte) *sliverp
 	return nil
 }
 
-func createReverseTunnelHandler(implantConn *core.ImplantConnection, data []byte) *sliverpb.Envelope {
+func createReverseTunnelHandler(implantConn *core.ImplantConnection, data []byte) *glodpb.Envelope {
 	session := core.Sessions.FromImplantConnection(implantConn)
 
-	req := &sliverpb.TunnelData{}
+	req := &glodpb.TunnelData{}
 	proto.Unmarshal(data, req)
 
 	var defaultDialer = new(net.Dialer)
@@ -235,12 +235,12 @@ func createReverseTunnelHandler(implantConn *core.ImplantConnection, data []byte
 	dst, err := defaultDialer.DialContext(ctx, "tcp", remoteAddress)
 	//dst, err := net.Dial("tcp", remoteAddress)
 	if err != nil {
-		tunnelClose, _ := proto.Marshal(&sliverpb.TunnelData{
+		tunnelClose, _ := proto.Marshal(&glodpb.TunnelData{
 			Closed:   true,
 			TunnelID: req.TunnelID,
 		})
-		implantConn.Send <- &sliverpb.Envelope{
-			Type: sliverpb.MsgTunnelClose,
+		implantConn.Send <- &glodpb.Envelope{
+			Type: glodpb.MsgTunnelClose,
 			Data: tunnelClose,
 		}
 		cancelContext()
@@ -308,7 +308,7 @@ func createReverseTunnelHandler(implantConn *core.ImplantConnection, data []byte
 	//If cache is building up it probably means a msg was lost and the server is currently hung waiting for it.
 	//Send a Resend packet to have the msg resent from the cache
 	if tunnelDataCache.Len(tunnel.ID) > 3 {
-		data, err := proto.Marshal(&sliverpb.TunnelData{
+		data, err := proto.Marshal(&glodpb.TunnelData{
 			Sequence: tunnel.WriteSequence(), // The tunnel write sequence
 			Ack:      tunnel.ReadSequence(),
 			Resend:   true,
@@ -329,7 +329,7 @@ func createReverseTunnelHandler(implantConn *core.ImplantConnection, data []byte
 	return nil
 }
 
-func RTunnelDataHandler(tunnelData *sliverpb.TunnelData, tunnel *rtunnels.RTunnel, connection *core.ImplantConnection) {
+func RTunnelDataHandler(tunnelData *glodpb.TunnelData, tunnel *rtunnels.RTunnel, connection *core.ImplantConnection) {
 
 	// Since we have no guarantees that we will receive tunnel data in the correct order, we need
 	// to ensure we write the data back to the reader in the correct order. The server will ensure
@@ -368,7 +368,7 @@ func RTunnelDataHandler(tunnelData *sliverpb.TunnelData, tunnel *rtunnels.RTunne
 	//If cache is building up it probably means a msg was lost and the server is currently hung waiting for it.
 	//Send a Resend packet to have the msg resent from the cache
 	if tunnelDataCache.Len(tunnel.ID) > 3 {
-		data, err := proto.Marshal(&sliverpb.TunnelData{
+		data, err := proto.Marshal(&glodpb.TunnelData{
 			Sequence: tunnel.WriteSequence(), // The tunnel write sequence
 			Ack:      tunnel.ReadSequence(),
 			Resend:   true,

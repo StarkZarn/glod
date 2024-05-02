@@ -22,7 +22,7 @@ import (
 	"sync"
 
 	"github.com/starkzarn/glod/protobuf/rpcpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 )
 
 var (
@@ -39,7 +39,7 @@ type TcpTunnel struct {
 	ToImplantSequence uint64
 	ToImplantMux      sync.Mutex
 
-	FromImplant         chan *sliverpb.SocksData
+	FromImplant         chan *glodpb.SocksData
 	FromImplantSequence uint64
 	Client              rpcpb.SliverRPC_SocksProxyServer
 }
@@ -56,7 +56,7 @@ func (t *tcpTunnel) Create(sessionID string) *TcpTunnel {
 		ID:        tunnelID,
 		SessionID: session.ID,
 		//ToImplant:   make(chan []byte),
-		FromImplant: make(chan *sliverpb.SocksData),
+		FromImplant: make(chan *glodpb.SocksData),
 	}
 	t.mutex.Lock()
 	defer t.mutex.Unlock()

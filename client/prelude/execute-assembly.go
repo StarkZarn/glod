@@ -23,7 +23,7 @@ import (
 	"errors"
 
 	"github.com/starkzarn/glod/protobuf/rpcpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 )
 
 type execasmArgs struct {
@@ -37,7 +37,7 @@ type execasmArgs struct {
 }
 
 func execAsm(implant ActiveImplant, rpc rpcpb.SliverRPCClient, asm []byte, args execasmArgs, onFinishCallback func(string, int, int)) (output string, err error) {
-	extResp, err := rpc.ExecuteAssembly(context.Background(), &sliverpb.ExecuteAssemblyReq{
+	extResp, err := rpc.ExecuteAssembly(context.Background(), &glodpb.ExecuteAssemblyReq{
 		Request:   MakeRequest(implant),
 		IsDLL:     args.IsDLL,
 		Process:   args.Process,

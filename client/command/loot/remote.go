@@ -31,7 +31,7 @@ import (
 	"github.com/starkzarn/glod/client/console"
 	"github.com/starkzarn/glod/protobuf/clientpb"
 	"github.com/starkzarn/glod/protobuf/commonpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/starkzarn/glod/util/encoders"
 	"github.com/desertbit/grumble"
 	"google.golang.org/protobuf/proto"
@@ -75,10 +75,10 @@ func ValidateLootFileType(lootFileTypeInput string, data []byte) clientpb.FileTy
 	Eventually this function needs to be refactored out, but we made the decision to
 	duplicate it for now
 */
-func PerformDownload(remotePath string, fileName string, ctx *grumble.Context, con *console.SliverConsoleClient) (*sliverpb.Download, error) {
+func PerformDownload(remotePath string, fileName string, ctx *grumble.Context, con *console.SliverConsoleClient) (*glodpb.Download, error) {
 	ctrl := make(chan bool)
 	con.SpinUntil(fmt.Sprintf("%s -> %s", fileName, "loot"), ctrl)
-	download, err := con.Rpc.Download(context.Background(), &sliverpb.DownloadReq{
+	download, err := con.Rpc.Download(context.Background(), &glodpb.DownloadReq{
 		Request: con.ActiveTarget.Request(ctx),
 		Path:    remotePath,
 	})
@@ -154,7 +154,7 @@ func SendLootMessage(loot *clientpb.Loot, con *console.SliverConsoleClient) {
 	return
 }
 
-func LootDownload(download *sliverpb.Download, lootName string, lootType clientpb.LootType, fileType clientpb.FileType, ctx *grumble.Context, con *console.SliverConsoleClient) {
+func LootDownload(download *glodpb.Download, lootName string, lootType clientpb.LootType, fileType clientpb.FileType, ctx *grumble.Context, con *console.SliverConsoleClient) {
 	// Was the download successful?
 	if download.Response != nil && download.Response.Err != "" {
 		con.PrintErrorf("%s\n", download.Response.Err)

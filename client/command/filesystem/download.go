@@ -32,7 +32,7 @@ import (
 	"github.com/starkzarn/glod/client/command/loot"
 	"github.com/starkzarn/glod/client/console"
 	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/starkzarn/glod/util/encoders"
 	"google.golang.org/protobuf/proto"
 
@@ -49,7 +49,7 @@ func DownloadCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 
 	ctrl := make(chan bool)
 	con.SpinUntil(fmt.Sprintf("Downloading %s ...", remotePath), ctrl)
-	download, err := con.Rpc.Download(context.Background(), &sliverpb.DownloadReq{
+	download, err := con.Rpc.Download(context.Background(), &glodpb.DownloadReq{
 		Request: con.ActiveTarget.Request(ctx),
 		Path:    remotePath,
 		Recurse: recurse,
@@ -159,7 +159,7 @@ func prettifyDownloadName(path string) string {
 	return filteredString
 }
 
-func HandleDownloadResponse(download *sliverpb.Download, ctx *grumble.Context, con *console.SliverConsoleClient) {
+func HandleDownloadResponse(download *glodpb.Download, ctx *grumble.Context, con *console.SliverConsoleClient) {
 	var err error
 	if download.Response != nil && download.Response.Err != "" {
 		con.PrintErrorf("%s\n", download.Response.Err)

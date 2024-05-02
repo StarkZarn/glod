@@ -23,7 +23,7 @@ import (
 
 	"github.com/starkzarn/glod/client/console"
 	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"google.golang.org/protobuf/proto"
 
 	"github.com/desertbit/grumble"
@@ -44,7 +44,7 @@ func MemfilesRmCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 
 	fdInt, err := strconv.ParseInt(fdArg, 0, 64)
 
-	memfilesList, err := con.Rpc.MemfilesRm(context.Background(), &sliverpb.MemfilesRmReq{
+	memfilesList, err := con.Rpc.MemfilesRm(context.Background(), &glodpb.MemfilesRmReq{
 		Request: con.ActiveTarget.Request(ctx),
 		Fd:      fdInt,
 	})
@@ -68,7 +68,7 @@ func MemfilesRmCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 }
 
 // PrintRmMemfile - Remove a memfile
-func PrintRmMemfile(memfilesList *sliverpb.MemfilesRm, con *console.SliverConsoleClient) {
+func PrintRmMemfile(memfilesList *glodpb.MemfilesRm, con *console.SliverConsoleClient) {
 	if memfilesList.Response != nil && memfilesList.Response.Err != "" {
 		con.PrintErrorf("%s\n", memfilesList.Response.Err)
 		return

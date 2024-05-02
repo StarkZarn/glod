@@ -22,12 +22,12 @@ import (
 	"context"
 
 	"github.com/starkzarn/glod/protobuf/commonpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 )
 
 // Execute - Execute a remote process
-func (rpc *Server) Execute(ctx context.Context, req *sliverpb.ExecuteReq) (*sliverpb.Execute, error) {
-	resp := &sliverpb.Execute{Response: &commonpb.Response{}}
+func (rpc *Server) Execute(ctx context.Context, req *glodpb.ExecuteReq) (*glodpb.Execute, error) {
+	resp := &glodpb.Execute{Response: &commonpb.Response{}}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err
@@ -36,8 +36,8 @@ func (rpc *Server) Execute(ctx context.Context, req *sliverpb.ExecuteReq) (*sliv
 }
 
 // ExecuteWindows - Execute a remote process with specific options (PPID, Token, windows only)
-func (rpc *Server) ExecuteWindows(ctx context.Context, req *sliverpb.ExecuteWindowsReq) (*sliverpb.Execute, error) {
-	resp := &sliverpb.Execute{Response: &commonpb.Response{}}
+func (rpc *Server) ExecuteWindows(ctx context.Context, req *glodpb.ExecuteWindowsReq) (*glodpb.Execute, error) {
+	resp := &glodpb.Execute{Response: &commonpb.Response{}}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err

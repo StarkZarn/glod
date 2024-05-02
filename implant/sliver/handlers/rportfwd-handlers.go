@@ -30,7 +30,7 @@ import (
 	"github.com/starkzarn/glod/implant/sliver/tcpproxy"
 	"github.com/starkzarn/glod/implant/sliver/transports"
 	"github.com/starkzarn/glod/protobuf/commonpb"
-	pb "github.com/starkzarn/glod/protobuf/sliverpb"
+	pb "github.com/starkzarn/glod/protobuf/glodpb"
 	"google.golang.org/protobuf/proto"
 )
 

@@ -29,7 +29,7 @@ import (
 	"github.com/starkzarn/glod/protobuf/clientpb"
 	"github.com/starkzarn/glod/protobuf/commonpb"
 	"github.com/starkzarn/glod/protobuf/rpcpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/starkzarn/glod/server/core"
 	"github.com/starkzarn/glod/server/db"
 	"github.com/starkzarn/glod/server/log"
@@ -124,7 +124,7 @@ func (rpc *Server) GenericHandler(req GenericRequest, resp GenericResponse) erro
 		return err
 	}
 
-	data, err := session.Request(sliverpb.MsgNumber(req), rpc.getTimeout(req), reqData)
+	data, err := session.Request(glodpb.MsgNumber(req), rpc.getTimeout(req), reqData)
 	if err != nil {
 		return err
 	}
@@ -160,8 +160,8 @@ func (rpc *Server) asyncGenericHandler(req GenericRequest, resp GenericResponse)
 	taskResponse := resp.GetResponse()
 	taskResponse.Async = true
 	taskResponse.BeaconID = beacon.ID.String()
-	task, err := beacon.Task(&sliverpb.Envelope{
-		Type: sliverpb.MsgNumber(req),
+	task, err := beacon.Task(&glodpb.Envelope{
+		Type: glodpb.MsgNumber(req),
 		Data: reqData,
 	})
 	if err != nil {

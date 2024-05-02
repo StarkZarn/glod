@@ -24,7 +24,7 @@ import (
 
 	"github.com/starkzarn/glod/client/console"
 	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/desertbit/grumble"
 	"google.golang.org/protobuf/proto"
 )
@@ -68,7 +68,7 @@ func RegDeleteKeyCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 	finalPath := regPath[:pathBaseIdx]
 	key := regPath[pathBaseIdx+1:]
 
-	deleteKey, err := con.Rpc.RegistryDeleteKey(context.Background(), &sliverpb.RegistryDeleteKeyReq{
+	deleteKey, err := con.Rpc.RegistryDeleteKey(context.Background(), &glodpb.RegistryDeleteKeyReq{
 		Hive:     hive,
 		Path:     finalPath,
 		Key:      key,
@@ -96,7 +96,7 @@ func RegDeleteKeyCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 }
 
 // PrintDeleteKey - Print the results of the delete key command
-func PrintDeleteKey(deleteKey *sliverpb.RegistryDeleteKey, regPath string, key string, con *console.SliverConsoleClient) {
+func PrintDeleteKey(deleteKey *glodpb.RegistryDeleteKey, regPath string, key string, con *console.SliverConsoleClient) {
 	if deleteKey.Response != nil && deleteKey.Response.Err != "" {
 		con.PrintErrorf("%s", deleteKey.Response.Err)
 		return

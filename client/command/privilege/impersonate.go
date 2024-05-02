@@ -23,7 +23,7 @@ import (
 
 	"github.com/starkzarn/glod/client/console"
 	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/desertbit/grumble"
 	"google.golang.org/protobuf/proto"
 )
@@ -36,7 +36,7 @@ func ImpersonateCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 	}
 
 	username := ctx.Args.String("username")
-	impersonate, err := con.Rpc.Impersonate(context.Background(), &sliverpb.ImpersonateReq{
+	impersonate, err := con.Rpc.Impersonate(context.Background(), &glodpb.ImpersonateReq{
 		Request:  con.ActiveTarget.Request(ctx),
 		Username: username,
 	})
@@ -61,7 +61,7 @@ func ImpersonateCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 }
 
 // PrintImpersonate - Print the results of the attempted impersonation
-func PrintImpersonate(impersonate *sliverpb.Impersonate, username string, con *console.SliverConsoleClient) {
+func PrintImpersonate(impersonate *glodpb.Impersonate, username string, con *console.SliverConsoleClient) {
 	if impersonate.Response != nil && impersonate.Response.GetErr() != "" {
 		con.PrintErrorf("%s\n", impersonate.Response.GetErr())
 		return

@@ -29,7 +29,7 @@ import (
 	"github.com/starkzarn/glod/client/command/loot"
 	"github.com/starkzarn/glod/client/console"
 	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/starkzarn/glod/util"
 	"google.golang.org/protobuf/proto"
 
@@ -49,7 +49,7 @@ func ScreenshotCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 		return
 	}
 
-	screenshot, err := con.Rpc.Screenshot(context.Background(), &sliverpb.ScreenshotReq{
+	screenshot, err := con.Rpc.Screenshot(context.Background(), &glodpb.ScreenshotReq{
 		Request: con.ActiveTarget.Request(ctx),
 	})
 	if err != nil {
@@ -98,7 +98,7 @@ func ScreenshotCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 }
 
 // PrintScreenshot - Handle the screenshot command response
-func PrintScreenshot(screenshot *sliverpb.Screenshot, hostname string, ctx *grumble.Context, con *console.SliverConsoleClient) {
+func PrintScreenshot(screenshot *glodpb.Screenshot, hostname string, ctx *grumble.Context, con *console.SliverConsoleClient) {
 	timestamp := time.Now().Format("20060102150405")
 
 	saveTo := ctx.Flags.String("save")
@@ -129,7 +129,7 @@ func PrintScreenshot(screenshot *sliverpb.Screenshot, hostname string, ctx *grum
 	con.PrintInfof("Screenshot written to %s (%s)\n", saveToFile.Name(), util.ByteCountBinary(int64(n)))
 }
 
-func LootScreenshot(screenshot *sliverpb.Screenshot, lootName string, hostName string, con *console.SliverConsoleClient) {
+func LootScreenshot(screenshot *glodpb.Screenshot, lootName string, hostName string, con *console.SliverConsoleClient) {
 	timeNow := time.Now().UTC()
 	screenshotFileName := fmt.Sprintf("screenshot_%s_%s.png", hostName, timeNow.Format("20060102150405"))
 

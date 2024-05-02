@@ -30,7 +30,7 @@ import (
 	implantCrypto "github.com/starkzarn/glod/implant/sliver/cryptography"
 	implantEncoders "github.com/starkzarn/glod/implant/sliver/encoders"
 	implantTransports "github.com/starkzarn/glod/implant/sliver/transports/httpclient"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/starkzarn/glod/server/configs"
 	"github.com/starkzarn/glod/server/cryptography"
 	"google.golang.org/protobuf/proto"
@@ -60,7 +60,7 @@ func TestStartSessionHandler(t *testing.T) {
 
 	// Generate key exchange request
 	sKey := cryptography.RandomKey()
-	httpSessionInit := &sliverpb.HTTPSessionInit{Key: sKey[:]}
+	httpSessionInit := &glodpb.HTTPSessionInit{Key: sKey[:]}
 	data, _ := proto.Marshal(httpSessionInit)
 	encryptedSessionInit, err := implantCrypto.AgeKeyExToServer(data)
 	if err != nil {

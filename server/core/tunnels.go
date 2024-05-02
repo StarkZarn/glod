@@ -26,7 +26,7 @@ import (
 	"time"
 
 	"github.com/starkzarn/glod/protobuf/rpcpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -57,7 +57,7 @@ type Tunnel struct {
 	ToImplant         chan []byte
 	ToImplantSequence uint64
 
-	FromImplant         chan *sliverpb.TunnelData
+	FromImplant         chan *glodpb.TunnelData
 	FromImplantSequence uint64
 
 	Client rpcpb.SliverRPC_TunnelDataServer
@@ -71,7 +71,7 @@ func NewTunnel(id uint64, sessionID string) *Tunnel {
 		ID:          id,
 		SessionID:   sessionID,
 		ToImplant:   make(chan []byte),
-		FromImplant: make(chan *sliverpb.TunnelData),
+		FromImplant: make(chan *glodpb.TunnelData),
 
 		mutex:               &sync.RWMutex{},
 		lastDataMessageTime: time.Now(), // need to be initialized
@@ -92,7 +92,7 @@ func (t *Tunnel) GetLastMessageTime() time.Time {
 	return t.lastDataMessageTime
 }
 
-func (t *Tunnel) SendDataFromImplant(tunnelData *sliverpb.TunnelData) {
+func (t *Tunnel) SendDataFromImplant(tunnelData *glodpb.TunnelData) {
 	// Setting the date right before and right after message, since channel can be blocked for some amount of time
 	t.setLastMessageTime()
 	defer t.setLastMessageTime()
@@ -162,7 +162,7 @@ func (t *tunnels) Close(tunnelID uint64) error {
 	if tunnel == nil {
 		return ErrInvalidTunnelID
 	}
-	tunnelClose, err := proto.Marshal(&sliverpb.TunnelData{
+	tunnelClose, err := proto.Marshal(&glodpb.TunnelData{
 		TunnelID:  tunnel.ID,
 		SessionID: tunnel.SessionID,
 		Closed:    true,
@@ -170,8 +170,8 @@ func (t *tunnels) Close(tunnelID uint64) error {
 	if err != nil {
 		return err
 	}
-	data, err := proto.Marshal(&sliverpb.Envelope{
-		Type: sliverpb.MsgTunnelClose,
+	data, err := proto.Marshal(&glodpb.Envelope{
+		Type: glodpb.MsgTunnelClose,
 		Data: tunnelClose,
 	})
 	if err != nil {

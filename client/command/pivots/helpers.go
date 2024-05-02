@@ -27,11 +27,11 @@ import (
 
 	"github.com/AlecAivazis/survey/v2"
 	"github.com/starkzarn/glod/client/console"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 )
 
 // SelectPivotListener - Interactive menu to select a pivot listener
-func SelectPivotListener(listeners []*sliverpb.PivotListener, con *console.SliverConsoleClient) (*sliverpb.PivotListener, error) {
+func SelectPivotListener(listeners []*glodpb.PivotListener, con *console.SliverConsoleClient) (*glodpb.PivotListener, error) {
 
 	// Render selection table
 	buf := bytes.NewBufferString("")

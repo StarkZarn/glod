@@ -40,7 +40,7 @@ package handlers
 import (
 	"fmt"
 
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/starkzarn/glod/server/core"
 	"github.com/starkzarn/glod/server/cryptography"
 	"github.com/starkzarn/glod/server/db"
@@ -60,27 +60,27 @@ var (
 // connection from which we received the pivot peer envelope we need to unwrap and forward it.
 // NOTE: the data passed as an argument to this handler is already extracted from the most recent
 // envelope so we can just start parsing PivotPeerEnvelope's
-func pivotPeerEnvelopeHandler(implantConn *core.ImplantConnection, data []byte) *sliverpb.Envelope {
+func pivotPeerEnvelopeHandler(implantConn *core.ImplantConnection, data []byte) *glodpb.Envelope {
 	pivotLog.Debugf("received pivot peer envelope ...")
-	peerEnvelope := &sliverpb.PivotPeerEnvelope{}
+	peerEnvelope := &glodpb.PivotPeerEnvelope{}
 	err := proto.Unmarshal(data, peerEnvelope)
 	if err != nil {
 		pivotLog.Errorf("failed to parse outermost peer envelope")
 		return nil
 	}
 
-	var resp *sliverpb.Envelope
+	var resp *glodpb.Envelope
 	switch peerEnvelope.Type {
-	case sliverpb.MsgPivotServerKeyExchange:
+	case glodpb.MsgPivotServerKeyExchange:
 		resp = serverKeyExchange(implantConn, peerEnvelope)
-	case sliverpb.MsgPivotSessionEnvelope:
+	case glodpb.MsgPivotSessionEnvelope:
 		resp = sessionEnvelopeHandler(implantConn, peerEnvelope)
 	}
 
 	return resp
 }
 
-func sessionEnvelopeHandler(implantConn *core.ImplantConnection, peerEnvelope *sliverpb.PivotPeerEnvelope) *sliverpb.Envelope {
+func sessionEnvelopeHandler(implantConn *core.ImplantConnection, peerEnvelope *glodpb.PivotPeerEnvelope) *glodpb.Envelope {
 	pivotSessionID := uuid.FromBytesOrNil(peerEnvelope.PivotSessionID).String()
 	if pivotSessionID == "" {
 		pivotLog.Errorf("failed to parse pivot session id from peer envelope")
@@ -98,7 +98,7 @@ func sessionEnvelopeHandler(implantConn *core.ImplantConnection, peerEnvelope *s
 		pivotLog.Errorf("failed to decrypt pivot session data: %v", err)
 		return nil
 	}
-	envelope := &sliverpb.Envelope{}
+	envelope := &glodpb.Envelope{}
 	err = proto.Unmarshal(plaintext, envelope)
 	if err != nil {
 		pivotLog.Errorf("failed to unmarshal pivot session data: %v", err)
@@ -110,7 +110,7 @@ func sessionEnvelopeHandler(implantConn *core.ImplantConnection, peerEnvelope *s
 	return nil
 }
 
-func handlePivotEnvelope(pivot *core.Pivot, envelope *sliverpb.Envelope) {
+func handlePivotEnvelope(pivot *core.Pivot, envelope *glodpb.Envelope) {
 	pivotLog.Debugf("pivot session %s received envelope: %v", pivot.ID, envelope.Type)
 	handlers := GetNonPivotHandlers()
 	pivot.ImplantConn.UpdateLastMessage()
@@ -127,15 +127,15 @@ func handlePivotEnvelope(pivot *core.Pivot, envelope *sliverpb.Envelope) {
 				pivot.ImplantConn.Send <- respEnvelope
 			}()
 		}
-	} else if envelope.Type == sliverpb.MsgPivotServerPing {
+	} else if envelope.Type == glodpb.MsgPivotServerPing {
 		pivotServerPingHandler(pivot)
 	} else {
 		pivotLog.Errorf("no pivot handler for envelope type %v", envelope.Type)
 	}
 }
 
-func pivotPeerFailureHandler(implantConn *core.ImplantConnection, data []byte) *sliverpb.Envelope {
-	peerFailure := &sliverpb.PivotPeerFailure{}
+func pivotPeerFailureHandler(implantConn *core.ImplantConnection, data []byte) *glodpb.Envelope {
+	peerFailure := &glodpb.PivotPeerFailure{}
 	err := proto.Unmarshal(data, peerFailure)
 	if err != nil {
 		pivotLog.Errorf("failed to parse peer failure message: %v", err)
@@ -181,7 +181,7 @@ func pivotServerPingHandler(pivot *core.Pivot) {
 // ------------------------
 // Non-handler functions
 // ------------------------
-func serverKeyExchange(implantConn *core.ImplantConnection, peerEnvelope *sliverpb.PivotPeerEnvelope) *sliverpb.Envelope {
+func serverKeyExchange(implantConn *core.ImplantConnection, peerEnvelope *glodpb.PivotPeerEnvelope) *glodpb.Envelope {
 	// Normally the peer envelope data would be encrypted, but the server key exchange messages are special
 	// only the session key field is encrypted (with the server's public key)
 	if len(peerEnvelope.Peers) < 2 {
@@ -189,7 +189,7 @@ func serverKeyExchange(implantConn *core.ImplantConnection, peerEnvelope *sliver
 		return nil
 	}
 
-	serverKeyEx := &sliverpb.PivotServerKeyExchange{}
+	serverKeyEx := &glodpb.PivotServerKeyExchange{}
 	err := proto.Unmarshal(peerEnvelope.Data, serverKeyEx)
 	if err != nil {
 		pivotLog.Errorf("failed to parse pivot server key exchange: %v", err)
@@ -237,9 +237,9 @@ func serverKeyExchange(implantConn *core.ImplantConnection, peerEnvelope *sliver
 	pivotSession.ImplantConn = core.NewImplantConnection(core.PivotTransportName, pivotRemoteAddr)
 	pivotSession.ImmediateImplantConn = implantConn
 	core.PivotSessions.Store(pivotSession.ID, pivotSession)
-	keyExRespEnvelope := MustMarshal(&sliverpb.Envelope{
-		Type: sliverpb.MsgPivotServerKeyExchange,
-		Data: MustMarshal(&sliverpb.PivotServerKeyExchange{
+	keyExRespEnvelope := MustMarshal(&glodpb.Envelope{
+		Type: glodpb.MsgPivotServerKeyExchange,
+		Data: MustMarshal(&glodpb.PivotServerKeyExchange{
 			SessionKey: uuid.FromStringOrNil(pivotSession.ID).Bytes(), // Re-use the bytes field
 		}),
 	})
@@ -248,7 +248,7 @@ func serverKeyExchange(implantConn *core.ImplantConnection, peerEnvelope *sliver
 		pivotLog.Warn("Failed to encrypt pivot server key exchange response")
 		return nil
 	}
-	peerEnvelopeData, _ := proto.Marshal(&sliverpb.PivotPeerEnvelope{
+	peerEnvelopeData, _ := proto.Marshal(&glodpb.PivotPeerEnvelope{
 		Peers: pivotSession.Peers,
 		Data:  ciphertext,
 	})
@@ -258,8 +258,8 @@ func serverKeyExchange(implantConn *core.ImplantConnection, peerEnvelope *sliver
 	}
 
 	pivotSession.Start()
-	return &sliverpb.Envelope{
-		Type: sliverpb.MsgPivotPeerEnvelope,
+	return &glodpb.Envelope{
+		Type: glodpb.MsgPivotPeerEnvelope,
 		Data: peerEnvelopeData,
 	}
 }
@@ -274,7 +274,7 @@ func MustMarshal(msg proto.Message) []byte {
 	return data
 }
 
-func peersToString(remoteAddr string, peerEnvelope *sliverpb.PivotPeerEnvelope) string {
+func peersToString(remoteAddr string, peerEnvelope *glodpb.PivotPeerEnvelope) string {
 	pivotRemoteAddr := remoteAddr
 	if 1 < len(peerEnvelope.Peers) {
 		for index := len(peerEnvelope.Peers) - 1; 0 < index; index-- {

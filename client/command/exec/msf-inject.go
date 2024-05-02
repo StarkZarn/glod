@@ -25,7 +25,7 @@ import (
 	"github.com/starkzarn/glod/client/console"
 	consts "github.com/starkzarn/glod/client/constants"
 	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"google.golang.org/protobuf/proto"
 
 	"github.com/desertbit/grumble"
@@ -99,7 +99,7 @@ func MsfInjectCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 }
 
 // PrintMsfRemote - Print the results of the remote injection attempt
-func PrintMsfRemote(msfRemote *sliverpb.Task, con *console.SliverConsoleClient) {
+func PrintMsfRemote(msfRemote *glodpb.Task, con *console.SliverConsoleClient) {
 	if msfRemote.Response == nil {
 		con.PrintErrorf("Empty response from msf payload injection task")
 		return

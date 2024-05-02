@@ -36,7 +36,7 @@ import (
 	consts "github.com/starkzarn/glod/client/constants"
 	"github.com/starkzarn/glod/client/core"
 	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/starkzarn/glod/util"
 	"github.com/desertbit/grumble"
 	"google.golang.org/protobuf/proto"
@@ -229,7 +229,7 @@ func loadExtension(goos string, goarch string, checkCache bool, ext *ExtensionMa
 
 	// Try to find the extension in the loaded extensions
 	if checkCache {
-		extList, err := con.Rpc.ListExtensions(context.Background(), &sliverpb.ListExtensionsReq{
+		extList, err := con.Rpc.ListExtensions(context.Background(), &glodpb.ListExtensionsReq{
 			Request: con.ActiveTarget.Request(ctx),
 		})
 		if err != nil {
@@ -272,7 +272,7 @@ func loadExtension(goos string, goarch string, checkCache bool, ext *ExtensionMa
 }
 
 func registerExtension(goos string, ext *ExtensionManifest, binData []byte, ctx *grumble.Context, con *console.SliverConsoleClient) error {
-	registerResp, err := con.Rpc.RegisterExtension(context.Background(), &sliverpb.RegisterExtensionReq{
+	registerResp, err := con.Rpc.RegisterExtension(context.Background(), &glodpb.RegisterExtensionReq{
 		Name:    ext.CommandName,
 		Data:    binData,
 		OS:      goos,
@@ -370,7 +370,7 @@ func runExtensionCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 	ctrl := make(chan bool)
 	msg := fmt.Sprintf("Executing %s ...", ctx.Command.Name)
 	con.SpinUntil(msg, ctrl)
-	callExtResp, err := con.Rpc.CallExtension(context.Background(), &sliverpb.CallExtensionReq{
+	callExtResp, err := con.Rpc.CallExtension(context.Background(), &glodpb.CallExtensionReq{
 		Name:    extName,
 		Export:  entryPoint,
 		Args:    extensionArgs,
@@ -399,7 +399,7 @@ func runExtensionCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 }
 
 // PrintExtOutput - Print the ext execution output
-func PrintExtOutput(extName string, commandName string, callExtension *sliverpb.CallExtension, con *console.SliverConsoleClient) {
+func PrintExtOutput(extName string, commandName string, callExtension *glodpb.CallExtension, con *console.SliverConsoleClient) {
 	if extName == commandName {
 		con.PrintInfof("Successfully executed %s\n", extName)
 	} else {

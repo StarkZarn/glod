@@ -23,7 +23,7 @@ import (
 
 	"github.com/starkzarn/glod/client/console"
 	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/desertbit/grumble"
 	"google.golang.org/protobuf/proto"
 )
@@ -53,7 +53,7 @@ func RunAsCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 		return
 	}
 
-	runAs, err := con.Rpc.RunAs(context.Background(), &sliverpb.RunAsReq{
+	runAs, err := con.Rpc.RunAs(context.Background(), &glodpb.RunAsReq{
 		Request:     con.ActiveTarget.Request(ctx),
 		Username:    username,
 		ProcessName: process,
@@ -86,7 +86,7 @@ func RunAsCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 }
 
 // PrintRunAs - Print the result of run as
-func PrintRunAs(runAs *sliverpb.RunAs, process string, args string, name string, con *console.SliverConsoleClient) {
+func PrintRunAs(runAs *glodpb.RunAs, process string, args string, name string, con *console.SliverConsoleClient) {
 	if runAs.Response != nil && runAs.Response.GetErr() != "" {
 		con.PrintErrorf("%s\n", runAs.Response.GetErr())
 		return

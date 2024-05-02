@@ -5,7 +5,7 @@ import (
 	insecureRand "math/rand"
 
 	"github.com/starkzarn/glod/client/console"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/desertbit/grumble"
 )
 
@@ -18,7 +18,7 @@ func PingCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 
 	nonce := insecureRand.Intn(999999)
 	con.PrintInfof("Ping %d\n", nonce)
-	pong, err := con.Rpc.Ping(context.Background(), &sliverpb.Ping{
+	pong, err := con.Rpc.Ping(context.Background(), &glodpb.Ping{
 		Nonce:   int32(nonce),
 		Request: con.ActiveTarget.Request(ctx),
 	})

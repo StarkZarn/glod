@@ -26,7 +26,7 @@ import (
 	"github.com/starkzarn/glod/client/console"
 	"github.com/starkzarn/glod/protobuf/clientpb"
 	"github.com/starkzarn/glod/protobuf/commonpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/starkzarn/glod/server/core"
 	"github.com/desertbit/grumble"
 )
@@ -72,7 +72,7 @@ func KillSession(session *clientpb.Session, ctx *grumble.Context, con *console.S
 	if session == nil {
 		return errors.New("session does not exist")
 	}
-	_, err := con.Rpc.Kill(context.Background(), &sliverpb.KillReq{
+	_, err := con.Rpc.Kill(context.Background(), &glodpb.KillReq{
 		Request: &commonpb.Request{
 			SessionID: session.ID,
 			Timeout:   int64(ctx.Flags.Int("timeout")),
@@ -87,7 +87,7 @@ func KillBeacon(beacon *clientpb.Beacon, ctx *grumble.Context, con *console.Sliv
 	if beacon == nil {
 		return errors.New("session does not exist")
 	}
-	_, err := con.Rpc.Kill(context.Background(), &sliverpb.KillReq{
+	_, err := con.Rpc.Kill(context.Background(), &glodpb.KillReq{
 		Request: &commonpb.Request{
 			BeaconID: beacon.ID,
 			Timeout:  int64(ctx.Flags.Int("timeout")),

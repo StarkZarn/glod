@@ -25,11 +25,11 @@ package handlers
 import (
 	"sync"
 
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/starkzarn/glod/server/core"
 )
 
-type ServerHandler func(*core.ImplantConnection, []byte) *sliverpb.Envelope
+type ServerHandler func(*core.ImplantConnection, []byte) *glodpb.Envelope
 
 var (
 	tunnelHandlerMutex = &sync.Mutex{}
@@ -39,19 +39,19 @@ var (
 func GetHandlers() map[uint32]ServerHandler {
 	return map[uint32]ServerHandler{
 		// Sessions
-		sliverpb.MsgRegister:    registerSessionHandler,
-		sliverpb.MsgTunnelData:  tunnelDataHandler,
-		sliverpb.MsgTunnelClose: tunnelCloseHandler,
-		sliverpb.MsgPing:        pingHandler,
-		sliverpb.MsgSocksData:   socksDataHandler,
+		glodpb.MsgRegister:    registerSessionHandler,
+		glodpb.MsgTunnelData:  tunnelDataHandler,
+		glodpb.MsgTunnelClose: tunnelCloseHandler,
+		glodpb.MsgPing:        pingHandler,
+		glodpb.MsgSocksData:   socksDataHandler,
 
 		// Beacons
-		sliverpb.MsgBeaconRegister: beaconRegisterHandler,
-		sliverpb.MsgBeaconTasks:    beaconTasksHandler,
+		glodpb.MsgBeaconRegister: beaconRegisterHandler,
+		glodpb.MsgBeaconTasks:    beaconTasksHandler,
 
 		// Pivots
-		sliverpb.MsgPivotPeerEnvelope: pivotPeerEnvelopeHandler,
-		sliverpb.MsgPivotPeerFailure:  pivotPeerFailureHandler,
+		glodpb.MsgPivotPeerEnvelope: pivotPeerEnvelopeHandler,
+		glodpb.MsgPivotPeerFailure:  pivotPeerFailureHandler,
 	}
 }
 
@@ -61,11 +61,11 @@ func GetHandlers() map[uint32]ServerHandler {
 func GetNonPivotHandlers() map[uint32]ServerHandler {
 	return map[uint32]ServerHandler{
 		// Sessions
-		sliverpb.MsgRegister:    registerSessionHandler,
-		sliverpb.MsgTunnelData:  tunnelDataHandler,
-		sliverpb.MsgTunnelClose: tunnelCloseHandler,
-		sliverpb.MsgPing:        pingHandler,
-		sliverpb.MsgSocksData:   socksDataHandler,
+		glodpb.MsgRegister:    registerSessionHandler,
+		glodpb.MsgTunnelData:  tunnelDataHandler,
+		glodpb.MsgTunnelClose: tunnelCloseHandler,
+		glodpb.MsgPing:        pingHandler,
+		glodpb.MsgSocksData:   socksDataHandler,
 
 		// Beacons - Not currently supported in pivots
 	}

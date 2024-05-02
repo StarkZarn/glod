@@ -23,7 +23,7 @@ import (
 	"net"
 
 	"github.com/starkzarn/glod/client/console"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/desertbit/grumble"
 )
 
@@ -50,7 +50,7 @@ func WGPortFwdAddCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 		return
 	}
 
-	portfwdAdd, err := con.Rpc.WGStartPortForward(context.Background(), &sliverpb.WGPortForwardStartReq{
+	portfwdAdd, err := con.Rpc.WGStartPortForward(context.Background(), &glodpb.WGPortForwardStartReq{
 		LocalPort:     int32(localPort),
 		RemoteAddress: remoteAddr,
 		Request:       con.ActiveTarget.Request(ctx),

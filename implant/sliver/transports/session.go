@@ -66,7 +66,7 @@ import (
 	"net/url"
 	"sync"
 
-	pb "github.com/starkzarn/glod/protobuf/sliverpb"
+	pb "github.com/starkzarn/glod/protobuf/glodpb"
 	// {{end}}
 
 	"time"

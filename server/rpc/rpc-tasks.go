@@ -30,7 +30,7 @@ import (
 	"github.com/Binject/debug/pe"
 	"github.com/starkzarn/glod/protobuf/clientpb"
 	"github.com/starkzarn/glod/protobuf/commonpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/starkzarn/glod/server/codenames"
 	"github.com/starkzarn/glod/server/core"
 	"github.com/starkzarn/glod/server/cryptography"
@@ -50,8 +50,8 @@ var (
 )
 
 // Task - Execute shellcode in-memory
-func (rpc *Server) Task(ctx context.Context, req *sliverpb.TaskReq) (*sliverpb.Task, error) {
-	resp := &sliverpb.Task{Response: &commonpb.Response{}}
+func (rpc *Server) Task(ctx context.Context, req *glodpb.TaskReq) (*glodpb.Task, error) {
+	resp := &glodpb.Task{Response: &commonpb.Response{}}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err
@@ -60,7 +60,7 @@ func (rpc *Server) Task(ctx context.Context, req *sliverpb.TaskReq) (*sliverpb.T
 }
 
 // Migrate - Migrate to a new process on the remote system (Windows only)
-func (rpc *Server) Migrate(ctx context.Context, req *clientpb.MigrateReq) (*sliverpb.Migrate, error) {
+func (rpc *Server) Migrate(ctx context.Context, req *clientpb.MigrateReq) (*glodpb.Migrate, error) {
 	var shellcode []byte
 	session := core.Sessions.Get(req.Request.SessionID)
 	if session == nil {
@@ -104,7 +104,7 @@ func (rpc *Server) Migrate(ctx context.Context, req *clientpb.MigrateReq) (*sliv
 
 	}
 
-	reqData, err := proto.Marshal(&sliverpb.InvokeMigrateReq{
+	reqData, err := proto.Marshal(&glodpb.InvokeMigrateReq{
 		Request: req.Request,
 		Data:    shellcode,
 		Pid:     req.Pid,
@@ -113,11 +113,11 @@ func (rpc *Server) Migrate(ctx context.Context, req *clientpb.MigrateReq) (*sliv
 		return nil, err
 	}
 	timeout := rpc.getTimeout(req)
-	respData, err := session.Request(sliverpb.MsgInvokeMigrateReq, timeout, reqData)
+	respData, err := session.Request(glodpb.MsgInvokeMigrateReq, timeout, reqData)
 	if err != nil {
 		return nil, err
 	}
-	resp := &sliverpb.Migrate{}
+	resp := &glodpb.Migrate{}
 	err = proto.Unmarshal(respData, resp)
 	if err != nil {
 		return nil, err
@@ -126,7 +126,7 @@ func (rpc *Server) Migrate(ctx context.Context, req *clientpb.MigrateReq) (*sliv
 }
 
 // ExecuteAssembly - Execute a .NET assembly on the remote system in-memory (Windows only)
-func (rpc *Server) ExecuteAssembly(ctx context.Context, req *sliverpb.ExecuteAssemblyReq) (*sliverpb.ExecuteAssembly, error) {
+func (rpc *Server) ExecuteAssembly(ctx context.Context, req *glodpb.ExecuteAssemblyReq) (*glodpb.ExecuteAssembly, error) {
 	var session *core.Session
 	var beacon *models.Beacon
 	var err error
@@ -160,10 +160,10 @@ func (rpc *Server) ExecuteAssembly(ctx context.Context, req *sliverpb.ExecuteAss
 		return nil, err
 	}
 
-	resp := &sliverpb.ExecuteAssembly{Response: &commonpb.Response{}}
+	resp := &glodpb.ExecuteAssembly{Response: &commonpb.Response{}}
 	if req.InProcess {
 		tasksLog.Infof("Executing assembly in-process")
-		invokeInProcExecAssembly := &sliverpb.InvokeInProcExecuteAssemblyReq{
+		invokeInProcExecAssembly := &glodpb.InvokeInProcExecuteAssemblyReq{
 			Data:       req.Assembly,
 			Runtime:    req.Runtime,
 			Arguments:  strings.Split(req.Arguments, " "),
@@ -173,7 +173,7 @@ func (rpc *Server) ExecuteAssembly(ctx context.Context, req *sliverpb.ExecuteAss
 		}
 		err = rpc.GenericHandler(invokeInProcExecAssembly, resp)
 	} else {
-		invokeExecAssembly := &sliverpb.InvokeExecuteAssemblyReq{
+		invokeExecAssembly := &glodpb.InvokeExecuteAssemblyReq{
 			Data:        shellcode,
 			Process:     req.Process,
 			Request:     req.Request,
@@ -190,7 +190,7 @@ func (rpc *Server) ExecuteAssembly(ctx context.Context, req *sliverpb.ExecuteAss
 }
 
 // Sideload - Sideload a DLL on the remote system (Windows only)
-func (rpc *Server) Sideload(ctx context.Context, req *sliverpb.SideloadReq) (*sliverpb.Sideload, error) {
+func (rpc *Server) Sideload(ctx context.Context, req *glodpb.SideloadReq) (*glodpb.Sideload, error) {
 	var (
 		session *core.Session
 		beacon  *models.Beacon
@@ -221,7 +221,7 @@ func (rpc *Server) Sideload(ctx context.Context, req *sliverpb.SideloadReq) (*sl
 			tasksLog.Errorf("Sideload failed: %s", err)
 			return nil, err
 		}
-		req = &sliverpb.SideloadReq{
+		req = &glodpb.SideloadReq{
 			Request:     req.Request,
 			Data:        shellcode,
 			ProcessName: req.ProcessName,
@@ -230,7 +230,7 @@ func (rpc *Server) Sideload(ctx context.Context, req *sliverpb.SideloadReq) (*sl
 			ProcessArgs: req.ProcessArgs,
 		}
 	}
-	resp := &sliverpb.Sideload{Response: &commonpb.Response{}}
+	resp := &glodpb.Sideload{Response: &commonpb.Response{}}
 	err = rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err
@@ -239,7 +239,7 @@ func (rpc *Server) Sideload(ctx context.Context, req *sliverpb.SideloadReq) (*sl
 }
 
 // SpawnDll - Spawn a DLL on the remote system (Windows only)
-func (rpc *Server) SpawnDll(ctx context.Context, req *sliverpb.InvokeSpawnDllReq) (*sliverpb.SpawnDll, error) {
+func (rpc *Server) SpawnDll(ctx context.Context, req *glodpb.InvokeSpawnDllReq) (*glodpb.SpawnDll, error) {
 	var session *core.Session
 	var beacon *models.Beacon
 	var err error
@@ -259,12 +259,12 @@ func (rpc *Server) SpawnDll(ctx context.Context, req *sliverpb.InvokeSpawnDllReq
 		}
 	}
 
-	resp := &sliverpb.SpawnDll{Response: &commonpb.Response{}}
+	resp := &glodpb.SpawnDll{Response: &commonpb.Response{}}
 	offset, err := getExportOffsetFromMemory(req.Data, req.EntryPoint)
 	if err != nil {
 		return nil, err
 	}
-	spawnDLLReq := &sliverpb.SpawnDllReq{
+	spawnDLLReq := &glodpb.SpawnDllReq{
 		Data:        req.Data,
 		Offset:      offset,
 		ProcessName: req.ProcessName,

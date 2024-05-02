@@ -28,7 +28,7 @@ import (
 
 	"github.com/starkzarn/glod/protobuf/clientpb"
 	"github.com/starkzarn/glod/protobuf/commonpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/starkzarn/glod/server/codenames"
 	"github.com/starkzarn/glod/server/configs"
 	"github.com/starkzarn/glod/server/core"
@@ -42,7 +42,7 @@ var (
 )
 
 // Msf - Helper function to execute MSF payloads on the remote system
-func (rpc *Server) Msf(ctx context.Context, req *clientpb.MSFReq) (*sliverpb.Task, error) {
+func (rpc *Server) Msf(ctx context.Context, req *clientpb.MSFReq) (*glodpb.Task, error) {
 	var os string
 	var arch string
 	if !req.Request.Async {
@@ -79,13 +79,13 @@ func (rpc *Server) Msf(ctx context.Context, req *clientpb.MSFReq) (*sliverpb.Tas
 		rpcLog.Warnf("Error while generating msf payload: %v\n", err)
 		return nil, err
 	}
-	taskReq := &sliverpb.TaskReq{
+	taskReq := &glodpb.TaskReq{
 		Encoder:  "raw",
 		Data:     rawPayload,
 		RWXPages: true,
 		Request:  req.Request,
 	}
-	resp := &sliverpb.Task{Response: &commonpb.Response{}}
+	resp := &glodpb.Task{Response: &commonpb.Response{}}
 	err = rpc.GenericHandler(taskReq, resp)
 	if err != nil {
 		return nil, err
@@ -94,7 +94,7 @@ func (rpc *Server) Msf(ctx context.Context, req *clientpb.MSFReq) (*sliverpb.Tas
 }
 
 // MsfRemote - Inject an MSF payload into a remote process
-func (rpc *Server) MsfRemote(ctx context.Context, req *clientpb.MSFRemoteReq) (*sliverpb.Task, error) {
+func (rpc *Server) MsfRemote(ctx context.Context, req *clientpb.MSFRemoteReq) (*glodpb.Task, error) {
 	var os string
 	var arch string
 	if !req.Request.Async {
@@ -130,14 +130,14 @@ func (rpc *Server) MsfRemote(ctx context.Context, req *clientpb.MSFRemoteReq) (*
 	if err != nil {
 		return nil, err
 	}
-	taskReq := &sliverpb.TaskReq{
+	taskReq := &glodpb.TaskReq{
 		Pid:      req.PID,
 		Encoder:  "raw",
 		Data:     rawPayload,
 		RWXPages: true,
 		Request:  req.Request,
 	}
-	resp := &sliverpb.Task{Response: &commonpb.Response{}}
+	resp := &glodpb.Task{Response: &commonpb.Response{}}
 	err = rpc.GenericHandler(taskReq, resp)
 	if err != nil {
 		return nil, err

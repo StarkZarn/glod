@@ -22,7 +22,7 @@ import (
 	"context"
 
 	"github.com/starkzarn/glod/client/console"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/desertbit/grumble"
 )
 
@@ -37,7 +37,7 @@ func CloseSessionCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 	}
 
 	// Close the session
-	_, err := con.Rpc.CloseSession(context.Background(), &sliverpb.CloseSession{
+	_, err := con.Rpc.CloseSession(context.Background(), &glodpb.CloseSession{
 		Request: con.ActiveTarget.Request(ctx),
 	})
 	if err != nil {

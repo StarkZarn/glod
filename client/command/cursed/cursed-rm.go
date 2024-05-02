@@ -24,7 +24,7 @@ import (
 	"github.com/AlecAivazis/survey/v2"
 	"github.com/starkzarn/glod/client/console"
 	"github.com/starkzarn/glod/client/core"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/desertbit/grumble"
 )
 
@@ -59,7 +59,7 @@ func CursedRmCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 			con.PrintErrorf("Failed to find cursed process\n")
 			return
 		}
-		terminateResp, err := con.Rpc.Terminate(context.Background(), &sliverpb.TerminateReq{
+		terminateResp, err := con.Rpc.Terminate(context.Background(), &glodpb.TerminateReq{
 			Request: con.ActiveTarget.Request(ctx),
 			Pid:     int32(cursedProc.PID),
 		})

@@ -24,7 +24,7 @@ import (
 	"time"
 
 	"github.com/starkzarn/glod/protobuf/commonpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/starkzarn/glod/server/core"
 	"github.com/starkzarn/glod/server/db"
 	"github.com/starkzarn/glod/server/db/models"
@@ -32,7 +32,7 @@ import (
 )
 
 // Kill - Kill the implant process
-func (rpc *Server) Kill(ctx context.Context, kill *sliverpb.KillReq) (*commonpb.Empty, error) {
+func (rpc *Server) Kill(ctx context.Context, kill *glodpb.KillReq) (*commonpb.Empty, error) {
 	var (
 		beacon *models.Beacon
 		err    error
@@ -49,19 +49,19 @@ func (rpc *Server) Kill(ctx context.Context, kill *sliverpb.KillReq) (*commonpb.
 	return rpc.killSession(kill, session)
 }
 
-func (rpc *Server) killSession(kill *sliverpb.KillReq, session *core.Session) (*commonpb.Empty, error) {
+func (rpc *Server) killSession(kill *glodpb.KillReq, session *core.Session) (*commonpb.Empty, error) {
 	data, err := proto.Marshal(kill)
 	if err != nil {
 		return nil, err
 	}
 	timeout := time.Duration(kill.Request.GetTimeout())
 	// Do not block waiting for the msg send, the implant connection may already be dead
-	go session.Request(sliverpb.MsgNumber(kill), timeout, data)
+	go session.Request(glodpb.MsgNumber(kill), timeout, data)
 	core.Sessions.Remove(session.ID)
 	return &commonpb.Empty{}, nil
 }
 
-func (rpc *Server) killBeacon(kill *sliverpb.KillReq, beacon *models.Beacon) (*commonpb.Empty, error) {
+func (rpc *Server) killBeacon(kill *glodpb.KillReq, beacon *models.Beacon) (*commonpb.Empty, error) {
 	resp := &commonpb.Empty{}
 	request := kill.GetRequest()
 	request.SessionID = ""
@@ -71,8 +71,8 @@ func (rpc *Server) killBeacon(kill *sliverpb.KillReq, beacon *models.Beacon) (*c
 	if err != nil {
 		return nil, err
 	}
-	task, err := beacon.Task(&sliverpb.Envelope{
-		Type: sliverpb.MsgKillSessionReq,
+	task, err := beacon.Task(&glodpb.Envelope{
+		Type: glodpb.MsgKillSessionReq,
 		Data: reqData,
 	})
 	if err != nil {

@@ -23,7 +23,7 @@ import (
 	"fmt"
 
 	"github.com/starkzarn/glod/client/console"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/desertbit/grumble"
 )
 
@@ -35,8 +35,8 @@ func StartTCPListenerCmd(ctx *grumble.Context, con *console.SliverConsoleClient)
 	}
 	bind := ctx.Flags.String("bind")
 	lport := uint16(ctx.Flags.Int("lport"))
-	listener, err := con.Rpc.PivotStartListener(context.Background(), &sliverpb.PivotStartListenerReq{
-		Type:        sliverpb.PivotType_TCP,
+	listener, err := con.Rpc.PivotStartListener(context.Background(), &glodpb.PivotStartListenerReq{
+		Type:        glodpb.PivotType_TCP,
 		BindAddress: fmt.Sprintf("%s:%d", bind, lport),
 		Request:     con.ActiveTarget.Request(ctx),
 	})
@@ -59,8 +59,8 @@ func StartNamedPipeListenerCmd(ctx *grumble.Context, con *console.SliverConsoleC
 	}
 	var options []bool
 	options = append(options, ctx.Flags.Bool("allow-all"))
-	listener, err := con.Rpc.PivotStartListener(context.Background(), &sliverpb.PivotStartListenerReq{
-		Type:        sliverpb.PivotType_NamedPipe,
+	listener, err := con.Rpc.PivotStartListener(context.Background(), &glodpb.PivotStartListenerReq{
+		Type:        glodpb.PivotType_NamedPipe,
 		BindAddress: ctx.Flags.String("bind"),
 		Request:     con.ActiveTarget.Request(ctx),
 		Options:     options,

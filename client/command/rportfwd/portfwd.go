@@ -23,7 +23,7 @@ import (
 
 	"github.com/starkzarn/glod/client/command/settings"
 	"github.com/starkzarn/glod/client/console"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/desertbit/grumble"
 	"github.com/jedib0t/go-pretty/v6/table"
 )
@@ -35,7 +35,7 @@ func RportFwdListenersCmd(ctx *grumble.Context, con *console.SliverConsoleClient
 		return
 	}
 
-	rportfwdListeners, err := con.Rpc.GetRportFwdListeners(context.Background(), &sliverpb.RportFwdListenersReq{
+	rportfwdListeners, err := con.Rpc.GetRportFwdListeners(context.Background(), &glodpb.RportFwdListenersReq{
 		Request: con.ActiveTarget.Request(ctx),
 	})
 	if err != nil {
@@ -45,7 +45,7 @@ func RportFwdListenersCmd(ctx *grumble.Context, con *console.SliverConsoleClient
 	PrintRportFwdListeners(rportfwdListeners, ctx.Flags, con)
 }
 
-func PrintRportFwdListeners(rportfwdListeners *sliverpb.RportFwdListeners, flags grumble.FlagMap, con *console.SliverConsoleClient) {
+func PrintRportFwdListeners(rportfwdListeners *glodpb.RportFwdListeners, flags grumble.FlagMap, con *console.SliverConsoleClient) {
 	if rportfwdListeners.Response != nil && rportfwdListeners.Response.Err != "" {
 		con.PrintErrorf("%s\n", rportfwdListeners.Response.Err)
 		return

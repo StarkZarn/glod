@@ -25,12 +25,12 @@ import (
 
 	"github.com/starkzarn/glod/implant/sliver/ps"
 	"github.com/starkzarn/glod/protobuf/commonpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"google.golang.org/protobuf/proto"
 )
 
 func psHandler(data []byte, resp RPCResponse) {
-	psListReq := &sliverpb.PsReq{}
+	psListReq := &glodpb.PsReq{}
 	err := proto.Unmarshal(data, psListReq)
 	if err != nil {
 		// {{if .Config.Debug}}
@@ -45,7 +45,7 @@ func psHandler(data []byte, resp RPCResponse) {
 		// {{end}}
 	}
 
-	psList := &sliverpb.Ps{
+	psList := &glodpb.Ps{
 		Processes: []*commonpb.Process{},
 	}
 

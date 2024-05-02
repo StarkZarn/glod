@@ -33,7 +33,7 @@ import (
 	"github.com/starkzarn/glod/client/tcpproxy"
 	"github.com/starkzarn/glod/protobuf/clientpb"
 	"github.com/starkzarn/glod/protobuf/commonpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/desertbit/grumble"
 )
 
@@ -97,7 +97,7 @@ func avadaKedavraElectron(electronExe string, session *clientpb.Session, ctx *gr
 			con.PrintErrorf("User cancel\n")
 			return nil
 		}
-		terminateResp, err := con.Rpc.Terminate(context.Background(), &sliverpb.TerminateReq{
+		terminateResp, err := con.Rpc.Terminate(context.Background(), &glodpb.TerminateReq{
 			Request: con.ActiveTarget.Request(ctx),
 			Pid:     electronProcess.Pid,
 		})
@@ -119,7 +119,7 @@ func avadaKedavraElectron(electronExe string, session *clientpb.Session, ctx *gr
 }
 
 func checkElectronPath(electronExe string, session *clientpb.Session, ctx *grumble.Context, con *console.SliverConsoleClient) (bool, error) {
-	ls, err := con.Rpc.Ls(context.Background(), &sliverpb.LsReq{
+	ls, err := con.Rpc.Ls(context.Background(), &glodpb.LsReq{
 		Request: con.ActiveTarget.Request(ctx),
 		Path:    electronExe,
 	})
@@ -130,7 +130,7 @@ func checkElectronPath(electronExe string, session *clientpb.Session, ctx *grumb
 }
 
 func checkElectronProcess(electronExe string, session *clientpb.Session, ctx *grumble.Context, con *console.SliverConsoleClient) (*commonpb.Process, error) {
-	ps, err := con.Rpc.Ps(context.Background(), &sliverpb.PsReq{
+	ps, err := con.Rpc.Ps(context.Background(), &glodpb.PsReq{
 		Request: con.ActiveTarget.Request(ctx),
 	})
 	if err != nil {
@@ -160,7 +160,7 @@ func startCursedElectronProcess(electronExe string, session *clientpb.Session, c
 
 	// Execute the Chrome process with the extra flags
 	// TODO: PPID spoofing, etc.
-	electronExec, err := con.Rpc.Execute(context.Background(), &sliverpb.ExecuteReq{
+	electronExec, err := con.Rpc.Execute(context.Background(), &glodpb.ExecuteReq{
 		Request: con.ActiveTarget.Request(ctx),
 		Path:    electronExe,
 		Args:    args,
@@ -215,7 +215,7 @@ func startCursedElectronProcess(electronExe string, session *clientpb.Session, c
 }
 
 func getElectronProcess(session *clientpb.Session, ctx *grumble.Context, con *console.SliverConsoleClient) (*commonpb.Process, error) {
-	ps, err := con.Rpc.Ps(context.Background(), &sliverpb.PsReq{
+	ps, err := con.Rpc.Ps(context.Background(), &glodpb.PsReq{
 		Request: con.ActiveTarget.Request(ctx),
 	})
 	if err != nil {

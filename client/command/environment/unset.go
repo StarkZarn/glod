@@ -23,7 +23,7 @@ import (
 
 	"github.com/starkzarn/glod/client/console"
 	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/desertbit/grumble"
 	"google.golang.org/protobuf/proto"
 )
@@ -41,7 +41,7 @@ func EnvUnsetCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 		return
 	}
 
-	unsetResp, err := con.Rpc.UnsetEnv(context.Background(), &sliverpb.UnsetEnvReq{
+	unsetResp, err := con.Rpc.UnsetEnv(context.Background(), &glodpb.UnsetEnvReq{
 		Name:    name,
 		Request: con.ActiveTarget.Request(ctx),
 	})
@@ -67,7 +67,7 @@ func EnvUnsetCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 }
 
 // PrintUnsetEnvInfo - Print the set environment info
-func PrintUnsetEnvInfo(name string, envInfo *sliverpb.UnsetEnv, con *console.SliverConsoleClient) {
+func PrintUnsetEnvInfo(name string, envInfo *glodpb.UnsetEnv, con *console.SliverConsoleClient) {
 	if envInfo.Response != nil && envInfo.Response.Err != "" {
 		con.PrintErrorf("%s\n", envInfo.Response.Err)
 		return

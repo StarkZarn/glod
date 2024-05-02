@@ -28,7 +28,7 @@ import (
 	"github.com/starkzarn/glod/client/command/settings"
 	"github.com/starkzarn/glod/client/console"
 	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/desertbit/grumble"
 	"github.com/jedib0t/go-pretty/v6/table"
 	"google.golang.org/protobuf/proto"
@@ -40,7 +40,7 @@ func IfconfigCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 	if session == nil && beacon == nil {
 		return
 	}
-	ifconfig, err := con.Rpc.Ifconfig(context.Background(), &sliverpb.IfconfigReq{
+	ifconfig, err := con.Rpc.Ifconfig(context.Background(), &glodpb.IfconfigReq{
 		Request: con.ActiveTarget.Request(ctx),
 	})
 	if err != nil {
@@ -64,7 +64,7 @@ func IfconfigCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 }
 
 // PrintIfconfig - Print the ifconfig response
-func PrintIfconfig(ifconfig *sliverpb.Ifconfig, all bool, con *console.SliverConsoleClient) {
+func PrintIfconfig(ifconfig *glodpb.Ifconfig, all bool, con *console.SliverConsoleClient) {
 	var err error
 	interfaces := ifconfig.NetInterfaces
 	sort.Slice(interfaces, func(i, j int) bool {

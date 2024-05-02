@@ -29,7 +29,7 @@ import (
 	"github.com/starkzarn/glod/implant/sliver/forwarder"
 	"github.com/starkzarn/glod/implant/sliver/transports/wireguard"
 	"github.com/starkzarn/glod/protobuf/commonpb"
-	pb "github.com/starkzarn/glod/protobuf/sliverpb"
+	pb "github.com/starkzarn/glod/protobuf/glodpb"
 	"google.golang.org/protobuf/proto"
 )
 

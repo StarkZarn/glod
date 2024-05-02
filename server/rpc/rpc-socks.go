@@ -25,36 +25,36 @@ import (
 
 	"github.com/starkzarn/glod/protobuf/commonpb"
 	"github.com/starkzarn/glod/protobuf/rpcpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/starkzarn/glod/server/core"
 	"google.golang.org/protobuf/proto"
 )
 
 var (
-	// SessionID->Tunnels[TunnelID]->Tunnel->Cache map[uint64]*sliverpb.SocksData{}
-	toImplantCacheSocks = socksDataCache{mutex: &sync.RWMutex{}, cache: map[uint64]map[uint64]*sliverpb.SocksData{}}
+	// SessionID->Tunnels[TunnelID]->Tunnel->Cache map[uint64]*glodpb.SocksData{}
+	toImplantCacheSocks = socksDataCache{mutex: &sync.RWMutex{}, cache: map[uint64]map[uint64]*glodpb.SocksData{}}
 
 	// SessionID->Tunnels[TunnelID]->Tunnel->Cache
-	fromImplantCacheSocks = socksDataCache{mutex: &sync.RWMutex{}, cache: map[uint64]map[uint64]*sliverpb.SocksData{}}
+	fromImplantCacheSocks = socksDataCache{mutex: &sync.RWMutex{}, cache: map[uint64]map[uint64]*glodpb.SocksData{}}
 )
 
 type socksDataCache struct {
 	mutex *sync.RWMutex
-	cache map[uint64]map[uint64]*sliverpb.SocksData
+	cache map[uint64]map[uint64]*glodpb.SocksData
 }
 
-func (c *socksDataCache) Add(tunnelID uint64, sequence uint64, tunnelData *sliverpb.SocksData) {
+func (c *socksDataCache) Add(tunnelID uint64, sequence uint64, tunnelData *glodpb.SocksData) {
 	c.mutex.Lock()
 	defer c.mutex.Unlock()
 
 	if _, ok := c.cache[tunnelID]; !ok {
-		c.cache[tunnelID] = map[uint64]*sliverpb.SocksData{}
+		c.cache[tunnelID] = map[uint64]*glodpb.SocksData{}
 	}
 
 	c.cache[tunnelID][sequence] = tunnelData
 }
 
-func (c *socksDataCache) Get(tunnelID uint64, sequence uint64) (*sliverpb.SocksData, bool) {
+func (c *socksDataCache) Get(tunnelID uint64, sequence uint64) (*glodpb.SocksData, bool) {
 	c.mutex.RLock()
 	defer c.mutex.RUnlock()
 
@@ -113,7 +113,7 @@ func (s *Server) SocksProxy(stream rpcpb.SliverRPC_SocksProxyServer) error {
 
 					for recv, ok := fromImplantCacheSocks.Get(fromClient.TunnelID, socks.FromImplantSequence); ok; recv, ok = fromImplantCacheSocks.Get(fromClient.TunnelID, socks.FromImplantSequence) {
 						rpcLog.Debugf("[socks] agent to (Server To Client)  Data Sequence %d , Data Size %d ,Data %v\n", socks.FromImplantSequence, len(recv.Data), recv.Data)
-						socks.Client.Send(&sliverpb.SocksData{
+						socks.Client.Send(&glodpb.SocksData{
 							CloseConn: recv.CloseConn,
 							TunnelID:  recv.TunnelID,
 							Data:      recv.Data,
@@ -136,8 +136,8 @@ func (s *Server) SocksProxy(stream rpcpb.SliverRPC_SocksProxyServer) error {
 				data, _ := proto.Marshal(recv)
 
 				session := core.Sessions.Get(fromClient.Request.SessionID)
-				session.Connection.Send <- &sliverpb.Envelope{
-					Type: sliverpb.MsgSocksData,
+				session.Connection.Send <- &glodpb.Envelope{
+					Type: glodpb.MsgSocksData,
 					Data: data,
 				}
 
@@ -151,7 +151,7 @@ func (s *Server) SocksProxy(stream rpcpb.SliverRPC_SocksProxyServer) error {
 }
 
 // CreateSocks5 - Create requests we close a Socks
-func (s *Server) CreateSocks(ctx context.Context, req *sliverpb.Socks) (*sliverpb.Socks, error) {
+func (s *Server) CreateSocks(ctx context.Context, req *glodpb.Socks) (*glodpb.Socks, error) {
 	session := core.Sessions.Get(req.SessionID)
 	if session == nil {
 		return nil, ErrInvalidSessionID
@@ -161,14 +161,14 @@ func (s *Server) CreateSocks(ctx context.Context, req *sliverpb.Socks) (*sliverp
 		return nil, ErrTunnelInitFailure
 	}
 
-	return &sliverpb.Socks{
+	return &glodpb.Socks{
 		SessionID: session.ID,
 		TunnelID:  tunnel.ID,
 	}, nil
 }
 
 // CloseSocks - Client requests we close a Socks
-func (s *Server) CloseSocks(ctx context.Context, req *sliverpb.Socks) (*commonpb.Empty, error) {
+func (s *Server) CloseSocks(ctx context.Context, req *glodpb.Socks) (*commonpb.Empty, error) {
 	err := core.SocksTunnels.Close(req.TunnelID)
 	toImplantCacheSocks.DeleteTun(req.TunnelID)
 	fromImplantCacheSocks.DeleteTun(req.TunnelID)

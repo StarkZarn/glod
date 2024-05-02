@@ -22,17 +22,17 @@ import (
 	"sync"
 	"time"
 
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/gofrs/uuid"
 )
 
 // ImplantConnection - Abstract connection to an implant
 type ImplantConnection struct {
 	ID               string
-	Send             chan *sliverpb.Envelope
+	Send             chan *glodpb.Envelope
 	RespMutex        *sync.RWMutex
 	LastMessageMutex *sync.RWMutex
-	Resp             map[int64]chan *sliverpb.Envelope
+	Resp             map[int64]chan *glodpb.Envelope
 	Transport        string
 	RemoteAddress    string
 	LastMessage      time.Time
@@ -59,10 +59,10 @@ func (c *ImplantConnection) UpdateLastMessage() {
 func NewImplantConnection(transport string, remoteAddress string) *ImplantConnection {
 	return &ImplantConnection{
 		ID:               generateImplantConnectionID(),
-		Send:             make(chan *sliverpb.Envelope),
+		Send:             make(chan *glodpb.Envelope),
 		RespMutex:        &sync.RWMutex{},
 		LastMessageMutex: &sync.RWMutex{},
-		Resp:             map[int64]chan *sliverpb.Envelope{},
+		Resp:             map[int64]chan *glodpb.Envelope{},
 		Transport:        transport,
 		RemoteAddress:    remoteAddress,
 		Cleanup:          func() {},
@@ -75,8 +75,8 @@ func generateImplantConnectionID() string {
 }
 
 func (c *ImplantConnection) RequestResend(data []byte) {
-	c.Send <- &sliverpb.Envelope{
-		Type: sliverpb.MsgTunnelData,
+	c.Send <- &glodpb.Envelope{
+		Type: glodpb.MsgTunnelData,
 		Data: data,
 	}
 }

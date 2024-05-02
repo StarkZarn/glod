@@ -39,7 +39,7 @@ import (
 	"log"
 	// {{end}}
 
-	pb "github.com/starkzarn/glod/protobuf/sliverpb"
+	pb "github.com/starkzarn/glod/protobuf/glodpb"
 
 	"github.com/starkzarn/glod/implant/sliver/netstack"
 	"golang.zx2c4.com/wireguard/conn"

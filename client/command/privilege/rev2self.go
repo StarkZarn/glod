@@ -23,7 +23,7 @@ import (
 
 	"github.com/starkzarn/glod/client/console"
 	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/desertbit/grumble"
 	"google.golang.org/protobuf/proto"
 )
@@ -35,7 +35,7 @@ func RevToSelfCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 		return
 	}
 
-	revert, err := con.Rpc.RevToSelf(context.Background(), &sliverpb.RevToSelfReq{
+	revert, err := con.Rpc.RevToSelf(context.Background(), &glodpb.RevToSelfReq{
 		Request: con.ActiveTarget.Request(ctx),
 	})
 	if err != nil {
@@ -59,7 +59,7 @@ func RevToSelfCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 }
 
 // PrintRev2Self - Print the result of revert to self
-func PrintRev2Self(revert *sliverpb.RevToSelf, con *console.SliverConsoleClient) {
+func PrintRev2Self(revert *glodpb.RevToSelf, con *console.SliverConsoleClient) {
 	if revert.Response != nil && revert.Response.GetErr() != "" {
 		con.PrintErrorf("%s\n", revert.Response.GetErr())
 		return

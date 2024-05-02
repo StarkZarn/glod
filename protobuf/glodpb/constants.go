@@ -1,4 +1,4 @@
-package sliverpb
+package glodpb
 
 import (
 	"google.golang.org/protobuf/proto"

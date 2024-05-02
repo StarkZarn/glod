@@ -22,7 +22,7 @@ import (
 	"context"
 
 	"github.com/starkzarn/glod/client/console"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/desertbit/grumble"
 )
 
@@ -39,7 +39,7 @@ func WGSocksStopCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 
 	socksID := ctx.Args.Int("id")
 
-	stopReq, err := con.Rpc.WGStopSocks(context.Background(), &sliverpb.WGSocksStopReq{
+	stopReq, err := con.Rpc.WGStopSocks(context.Background(), &glodpb.WGSocksStopReq{
 		ID:      int32(socksID),
 		Request: con.ActiveTarget.Request(ctx),
 	})

@@ -24,7 +24,7 @@ import (
 	"time"
 
 	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/gofrs/uuid"
 	"google.golang.org/protobuf/proto"
 	"gorm.io/gorm"
@@ -97,7 +97,7 @@ func (b *Beacon) ToProtobuf() *clientpb.Beacon {
 	}
 }
 
-func (b *Beacon) Task(envelope *sliverpb.Envelope) (*BeaconTask, error) {
+func (b *Beacon) Task(envelope *glodpb.Envelope) (*BeaconTask, error) {
 	data, err := proto.Marshal(envelope)
 	if err != nil {
 		return nil, err
@@ -127,8 +127,8 @@ type BeaconTask struct {
 	SentAt      time.Time
 	CompletedAt time.Time
 	Description string
-	Request     []byte // *sliverpb.Envelope
-	Response    []byte // *sliverpb.Envelope
+	Request     []byte // *glodpb.Envelope
+	Response    []byte // *glodpb.Envelope
 }
 
 // BeforeCreate - GORM hook

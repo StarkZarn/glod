@@ -27,7 +27,7 @@ import (
 	"github.com/starkzarn/glod/client/prelude/util"
 	"github.com/starkzarn/glod/protobuf/clientpb"
 	"github.com/starkzarn/glod/protobuf/rpcpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 )
 
 var ImplantMapper *OperatorImplantMapper
@@ -78,7 +78,7 @@ func (p *OperatorImplantMapper) AddImplant(a ActiveImplant, callback func(string
 	if err != nil {
 		return err
 	}
-	pwdResp, err := p.conf.RPC.Pwd(context.Background(), &sliverpb.PwdReq{
+	pwdResp, err := p.conf.RPC.Pwd(context.Background(), &glodpb.PwdReq{
 		Request: MakeRequest(a),
 	})
 	if err != nil {

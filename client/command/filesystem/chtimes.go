@@ -23,7 +23,7 @@ import (
 
 	"github.com/starkzarn/glod/client/console"
 	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"google.golang.org/protobuf/proto"
 
 	"github.com/desertbit/grumble"
@@ -72,7 +72,7 @@ func ChtimesCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 	}
 	unixMtime := t_b.Unix()
 	
-	chtimes, err := con.Rpc.Chtimes(context.Background(), &sliverpb.ChtimesReq{
+	chtimes, err := con.Rpc.Chtimes(context.Background(), &glodpb.ChtimesReq{
 		Request:   con.ActiveTarget.Request(ctx),
 		Path:      filePath,
 		ATime:  unixAtime,
@@ -98,7 +98,7 @@ func ChtimesCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 }
 
 // PrintChtimes - Print the Chtimes response
-func PrintChtimes(chtimes *sliverpb.Chtimes, con *console.SliverConsoleClient) {
+func PrintChtimes(chtimes *glodpb.Chtimes, con *console.SliverConsoleClient) {
 	if chtimes.Response != nil && chtimes.Response.Err != "" {
 		con.PrintErrorf("%s\n", chtimes.Response.Err)
 		return

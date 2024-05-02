@@ -22,12 +22,12 @@ import (
 	"context"
 
 	"github.com/starkzarn/glod/protobuf/commonpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 )
 
 // RegistryRead - gRPC interface to read a registry key from a session
-func (rpc *Server) RegistryRead(ctx context.Context, req *sliverpb.RegistryReadReq) (*sliverpb.RegistryRead, error) {
-	resp := &sliverpb.RegistryRead{Response: &commonpb.Response{}}
+func (rpc *Server) RegistryRead(ctx context.Context, req *glodpb.RegistryReadReq) (*glodpb.RegistryRead, error) {
+	resp := &glodpb.RegistryRead{Response: &commonpb.Response{}}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err
@@ -36,8 +36,8 @@ func (rpc *Server) RegistryRead(ctx context.Context, req *sliverpb.RegistryReadR
 }
 
 // RegistryWrite - gRPC interface to write to a registry key on a session
-func (rpc *Server) RegistryWrite(ctx context.Context, req *sliverpb.RegistryWriteReq) (*sliverpb.RegistryWrite, error) {
-	resp := &sliverpb.RegistryWrite{Response: &commonpb.Response{}}
+func (rpc *Server) RegistryWrite(ctx context.Context, req *glodpb.RegistryWriteReq) (*glodpb.RegistryWrite, error) {
+	resp := &glodpb.RegistryWrite{Response: &commonpb.Response{}}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err
@@ -46,8 +46,8 @@ func (rpc *Server) RegistryWrite(ctx context.Context, req *sliverpb.RegistryWrit
 }
 
 // RegistryCreateKey - gRPC interface to create a registry key on a session
-func (rpc *Server) RegistryCreateKey(ctx context.Context, req *sliverpb.RegistryCreateKeyReq) (*sliverpb.RegistryCreateKey, error) {
-	resp := &sliverpb.RegistryCreateKey{Response: &commonpb.Response{}}
+func (rpc *Server) RegistryCreateKey(ctx context.Context, req *glodpb.RegistryCreateKeyReq) (*glodpb.RegistryCreateKey, error) {
+	resp := &glodpb.RegistryCreateKey{Response: &commonpb.Response{}}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err
@@ -56,8 +56,8 @@ func (rpc *Server) RegistryCreateKey(ctx context.Context, req *sliverpb.Registry
 }
 
 // RegistryDeleteKey - gRPC interface to delete a registry key on a session
-func (rpc *Server) RegistryDeleteKey(ctx context.Context, req *sliverpb.RegistryDeleteKeyReq) (*sliverpb.RegistryDeleteKey, error) {
-	resp := &sliverpb.RegistryDeleteKey{Response: &commonpb.Response{}}
+func (rpc *Server) RegistryDeleteKey(ctx context.Context, req *glodpb.RegistryDeleteKeyReq) (*glodpb.RegistryDeleteKey, error) {
+	resp := &glodpb.RegistryDeleteKey{Response: &commonpb.Response{}}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err
@@ -66,8 +66,8 @@ func (rpc *Server) RegistryDeleteKey(ctx context.Context, req *sliverpb.Registry
 }
 
 // RegistryListSubKeys - gRPC interface to list the sub keys of a registry key
-func (rpc *Server) RegistryListSubKeys(ctx context.Context, req *sliverpb.RegistrySubKeyListReq) (*sliverpb.RegistrySubKeyList, error) {
-	resp := &sliverpb.RegistrySubKeyList{Response: &commonpb.Response{}}
+func (rpc *Server) RegistryListSubKeys(ctx context.Context, req *glodpb.RegistrySubKeyListReq) (*glodpb.RegistrySubKeyList, error) {
+	resp := &glodpb.RegistrySubKeyList{Response: &commonpb.Response{}}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err
@@ -76,8 +76,8 @@ func (rpc *Server) RegistryListSubKeys(ctx context.Context, req *sliverpb.Regist
 }
 
 // RegistryListSubKeys - gRPC interface to list the sub keys of a registry key
-func (rpc *Server) RegistryListValues(ctx context.Context, req *sliverpb.RegistryListValuesReq) (*sliverpb.RegistryValuesList, error) {
-	resp := &sliverpb.RegistryValuesList{Response: &commonpb.Response{}}
+func (rpc *Server) RegistryListValues(ctx context.Context, req *glodpb.RegistryListValuesReq) (*glodpb.RegistryValuesList, error) {
+	resp := &glodpb.RegistryValuesList{Response: &commonpb.Response{}}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err

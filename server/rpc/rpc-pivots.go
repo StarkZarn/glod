@@ -23,7 +23,7 @@ import (
 
 	"github.com/starkzarn/glod/protobuf/clientpb"
 	"github.com/starkzarn/glod/protobuf/commonpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/starkzarn/glod/server/core"
 )
 
@@ -39,8 +39,8 @@ func (rpc *Server) PivotGraph(ctx context.Context, req *commonpb.Empty) (*client
 }
 
 // PivotSessionListeners - Get a list of all pivot listeners from an implant
-func (rpc *Server) PivotSessionListeners(ctx context.Context, req *sliverpb.PivotListenersReq) (*sliverpb.PivotListeners, error) {
-	resp := &sliverpb.PivotListeners{Response: &commonpb.Response{}}
+func (rpc *Server) PivotSessionListeners(ctx context.Context, req *glodpb.PivotListenersReq) (*glodpb.PivotListeners, error) {
+	resp := &glodpb.PivotListeners{Response: &commonpb.Response{}}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err
@@ -49,8 +49,8 @@ func (rpc *Server) PivotSessionListeners(ctx context.Context, req *sliverpb.Pivo
 }
 
 // PivotStartListener - Instruct the implant to start a pivot listener
-func (rpc *Server) PivotStartListener(ctx context.Context, req *sliverpb.PivotStartListenerReq) (*sliverpb.PivotListener, error) {
-	resp := &sliverpb.PivotListener{Response: &commonpb.Response{}}
+func (rpc *Server) PivotStartListener(ctx context.Context, req *glodpb.PivotStartListenerReq) (*glodpb.PivotListener, error) {
+	resp := &glodpb.PivotListener{Response: &commonpb.Response{}}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err
@@ -59,8 +59,8 @@ func (rpc *Server) PivotStartListener(ctx context.Context, req *sliverpb.PivotSt
 }
 
 // PivotStopListener - Instruct the implant to stop a pivot listener
-func (rpc *Server) PivotStopListener(ctx context.Context, req *sliverpb.PivotStopListenerReq) (*commonpb.Empty, error) {
-	resp := &sliverpb.PivotListener{Response: &commonpb.Response{}}
+func (rpc *Server) PivotStopListener(ctx context.Context, req *glodpb.PivotStopListenerReq) (*commonpb.Empty, error) {
+	resp := &glodpb.PivotListener{Response: &commonpb.Response{}}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err

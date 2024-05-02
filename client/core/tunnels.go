@@ -24,7 +24,7 @@ import (
 	"sync"
 
 	"github.com/starkzarn/glod/protobuf/rpcpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 )
 
 var (
@@ -82,7 +82,7 @@ func (t *tunnels) Get(tunnelID uint64) *TunnelIO {
 
 // send - safe way to send a message to the stream
 // protobuf stream allow only one writer at a time, so just in case there is a mutex for it
-func (t *tunnels) send(tunnelData *sliverpb.TunnelData) error {
+func (t *tunnels) send(tunnelData *glodpb.TunnelData) error {
 	t.streamMutex.Lock()
 	defer t.streamMutex.Unlock()
 
@@ -111,7 +111,7 @@ func (t *tunnels) Start(tunnelID uint64, sessionID string) *TunnelIO {
 		for data := range tunnel.Send {
 			log.Printf("Send %d bytes on tunnel %d", len(data), tunnel.ID)
 
-			err := t.send(&sliverpb.TunnelData{
+			err := t.send(&glodpb.TunnelData{
 				TunnelID:  tunnel.ID,
 				SessionID: tunnel.SessionID,
 				Data:      data,

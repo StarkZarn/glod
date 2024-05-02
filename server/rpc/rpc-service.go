@@ -4,12 +4,12 @@ import (
 	"context"
 
 	"github.com/starkzarn/glod/protobuf/commonpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 )
 
 // StartService creates and starts a Windows service on a remote host
-func (rpc *Server) StartService(ctx context.Context, req *sliverpb.StartServiceReq) (*sliverpb.ServiceInfo, error) {
-	resp := &sliverpb.ServiceInfo{Response: &commonpb.Response{}}
+func (rpc *Server) StartService(ctx context.Context, req *glodpb.StartServiceReq) (*glodpb.ServiceInfo, error) {
+	resp := &glodpb.ServiceInfo{Response: &commonpb.Response{}}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err
@@ -18,8 +18,8 @@ func (rpc *Server) StartService(ctx context.Context, req *sliverpb.StartServiceR
 }
 
 // StopService stops a remote service
-func (rpc *Server) StopService(ctx context.Context, req *sliverpb.StopServiceReq) (*sliverpb.ServiceInfo, error) {
-	resp := &sliverpb.ServiceInfo{Response: &commonpb.Response{}}
+func (rpc *Server) StopService(ctx context.Context, req *glodpb.StopServiceReq) (*glodpb.ServiceInfo, error) {
+	resp := &glodpb.ServiceInfo{Response: &commonpb.Response{}}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err
@@ -28,8 +28,8 @@ func (rpc *Server) StopService(ctx context.Context, req *sliverpb.StopServiceReq
 }
 
 // RemoveService deletes a service from the remote system
-func (rpc *Server) RemoveService(ctx context.Context, req *sliverpb.RemoveServiceReq) (*sliverpb.ServiceInfo, error) {
-	resp := &sliverpb.ServiceInfo{Response: &commonpb.Response{}}
+func (rpc *Server) RemoveService(ctx context.Context, req *glodpb.RemoveServiceReq) (*glodpb.ServiceInfo, error) {
+	resp := &glodpb.ServiceInfo{Response: &commonpb.Response{}}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err

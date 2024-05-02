@@ -28,7 +28,7 @@ import (
 	"github.com/starkzarn/glod/client/command/settings"
 	"github.com/starkzarn/glod/client/console"
 	"github.com/starkzarn/glod/client/core"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"golang.org/x/crypto/ssh/terminal"
 
 	"github.com/desertbit/grumble"
@@ -72,7 +72,7 @@ func runInteractive(ctx *grumble.Context, shellPath string, noPty bool, con *con
 	// Create an RPC tunnel, then start it before binding the shell to the newly created tunnel
 	ctxTunnel, cancelTunnel := context.WithCancel(context.Background())
 
-	rpcTunnel, err := con.Rpc.CreateTunnel(ctxTunnel, &sliverpb.Tunnel{
+	rpcTunnel, err := con.Rpc.CreateTunnel(ctxTunnel, &glodpb.Tunnel{
 		SessionID: session.ID,
 	})
 	defer cancelTunnel()
@@ -85,7 +85,7 @@ func runInteractive(ctx *grumble.Context, shellPath string, noPty bool, con *con
 	// Start() takes an RPC tunnel and creates a local Reader/Writer tunnel object
 	tunnel := core.GetTunnels().Start(rpcTunnel.TunnelID, rpcTunnel.SessionID)
 
-	shell, err := con.Rpc.Shell(context.Background(), &sliverpb.ShellReq{
+	shell, err := con.Rpc.Shell(context.Background(), &glodpb.ShellReq{
 		Request:   con.ActiveTarget.Request(ctx),
 		Path:      shellPath,
 		EnablePTY: !noPty,
@@ -98,7 +98,7 @@ func runInteractive(ctx *grumble.Context, shellPath string, noPty bool, con *con
 	//
 	if shell.Response != nil && shell.Response.Err != "" {
 		con.PrintErrorf("Error: %s\n", shell.Response.Err)
-		_, err = con.Rpc.CloseTunnel(context.Background(), &sliverpb.Tunnel{
+		_, err = con.Rpc.CloseTunnel(context.Background(), &glodpb.Tunnel{
 			TunnelID:  tunnel.ID,
 			SessionID: session.ID,
 		})

@@ -25,12 +25,12 @@ import (
 	// {{end}}
 
 	"github.com/starkzarn/glod/implant/sliver/transports"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"google.golang.org/protobuf/proto"
 )
 
-func TunnelDataHandler(envelope *sliverpb.Envelope, connection *transports.Connection) {
-	tunnelData := &sliverpb.TunnelData{}
+func TunnelDataHandler(envelope *glodpb.Envelope, connection *transports.Connection) {
+	tunnelData := &glodpb.TunnelData{}
 	proto.Unmarshal(envelope.Data, tunnelData)
 	tunnel := connection.Tunnel(tunnelData.TunnelID)
 	if tunnel != nil {
@@ -71,7 +71,7 @@ func TunnelDataHandler(envelope *sliverpb.Envelope, connection *transports.Conne
 		//If cache is building up it probably means a msg was lost and the server is currently hung waiting for it.
 		//Send a Resend packet to have the msg resent from the cache
 		if tunnelDataCache.Len(tunnel.ID) > 3 {
-			data, err := proto.Marshal(&sliverpb.TunnelData{
+			data, err := proto.Marshal(&glodpb.TunnelData{
 				Sequence: tunnel.WriteSequence(), // The tunnel write sequence
 				Ack:      tunnel.ReadSequence(),
 				Resend:   true,

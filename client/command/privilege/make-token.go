@@ -23,7 +23,7 @@ import (
 
 	"github.com/starkzarn/glod/client/console"
 	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/desertbit/grumble"
 	"google.golang.org/protobuf/proto"
 )
@@ -63,7 +63,7 @@ func MakeTokenCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 	ctrl := make(chan bool)
 	con.SpinUntil("Creating new logon session ...", ctrl)
 
-	makeToken, err := con.Rpc.MakeToken(context.Background(), &sliverpb.MakeTokenReq{
+	makeToken, err := con.Rpc.MakeToken(context.Background(), &glodpb.MakeTokenReq{
 		Request:   con.ActiveTarget.Request(ctx),
 		Username:  username,
 		Domain:    domain,
@@ -93,7 +93,7 @@ func MakeTokenCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 }
 
 // PrintMakeToken - Print the results of attempting to make a token
-func PrintMakeToken(makeToken *sliverpb.MakeToken, domain string, username string, con *console.SliverConsoleClient) {
+func PrintMakeToken(makeToken *glodpb.MakeToken, domain string, username string, con *console.SliverConsoleClient) {
 	if makeToken.Response != nil && makeToken.Response.GetErr() != "" {
 		con.PrintErrorf("%s\n", makeToken.Response.GetErr())
 		return

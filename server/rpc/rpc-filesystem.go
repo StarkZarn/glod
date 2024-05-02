@@ -24,7 +24,7 @@ import (
 	"fmt"
 
 	"github.com/starkzarn/glod/protobuf/commonpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/starkzarn/glod/server/core"
 	"github.com/starkzarn/glod/server/db"
 	"github.com/starkzarn/glod/server/db/models"
@@ -36,8 +36,8 @@ var (
 )
 
 // Ls - List a directory
-func (rpc *Server) Ls(ctx context.Context, req *sliverpb.LsReq) (*sliverpb.Ls, error) {
-	resp := &sliverpb.Ls{Response: &commonpb.Response{}}
+func (rpc *Server) Ls(ctx context.Context, req *glodpb.LsReq) (*glodpb.Ls, error) {
+	resp := &glodpb.Ls{Response: &commonpb.Response{}}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err
@@ -46,8 +46,8 @@ func (rpc *Server) Ls(ctx context.Context, req *sliverpb.LsReq) (*sliverpb.Ls, e
 }
 
 // Mv - Move or rename a file
-func (rpc *Server) Mv(ctx context.Context, req *sliverpb.MvReq) (*sliverpb.Mv, error) {
-	resp := &sliverpb.Mv{Response: &commonpb.Response{}}
+func (rpc *Server) Mv(ctx context.Context, req *glodpb.MvReq) (*glodpb.Mv, error) {
+	resp := &glodpb.Mv{Response: &commonpb.Response{}}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err
@@ -56,8 +56,8 @@ func (rpc *Server) Mv(ctx context.Context, req *sliverpb.MvReq) (*sliverpb.Mv, e
 }
 
 // Rm - Remove file or directory
-func (rpc *Server) Rm(ctx context.Context, req *sliverpb.RmReq) (*sliverpb.Rm, error) {
-	resp := &sliverpb.Rm{Response: &commonpb.Response{}}
+func (rpc *Server) Rm(ctx context.Context, req *glodpb.RmReq) (*glodpb.Rm, error) {
+	resp := &glodpb.Rm{Response: &commonpb.Response{}}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err
@@ -66,8 +66,8 @@ func (rpc *Server) Rm(ctx context.Context, req *sliverpb.RmReq) (*sliverpb.Rm, e
 }
 
 // Mkdir - Make a directory
-func (rpc *Server) Mkdir(ctx context.Context, req *sliverpb.MkdirReq) (*sliverpb.Mkdir, error) {
-	resp := &sliverpb.Mkdir{Response: &commonpb.Response{}}
+func (rpc *Server) Mkdir(ctx context.Context, req *glodpb.MkdirReq) (*glodpb.Mkdir, error) {
+	resp := &glodpb.Mkdir{Response: &commonpb.Response{}}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err
@@ -76,8 +76,8 @@ func (rpc *Server) Mkdir(ctx context.Context, req *sliverpb.MkdirReq) (*sliverpb
 }
 
 // Cd - Change directory
-func (rpc *Server) Cd(ctx context.Context, req *sliverpb.CdReq) (*sliverpb.Pwd, error) {
-	resp := &sliverpb.Pwd{Response: &commonpb.Response{}}
+func (rpc *Server) Cd(ctx context.Context, req *glodpb.CdReq) (*glodpb.Pwd, error) {
+	resp := &glodpb.Pwd{Response: &commonpb.Response{}}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err
@@ -86,8 +86,8 @@ func (rpc *Server) Cd(ctx context.Context, req *sliverpb.CdReq) (*sliverpb.Pwd, 
 }
 
 // Pwd - Print working directory
-func (rpc *Server) Pwd(ctx context.Context, req *sliverpb.PwdReq) (*sliverpb.Pwd, error) {
-	resp := &sliverpb.Pwd{Response: &commonpb.Response{}}
+func (rpc *Server) Pwd(ctx context.Context, req *glodpb.PwdReq) (*glodpb.Pwd, error) {
+	resp := &glodpb.Pwd{Response: &commonpb.Response{}}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err
@@ -96,8 +96,8 @@ func (rpc *Server) Pwd(ctx context.Context, req *sliverpb.PwdReq) (*sliverpb.Pwd
 }
 
 // Download - Download a file from the remote file system
-func (rpc *Server) Download(ctx context.Context, req *sliverpb.DownloadReq) (*sliverpb.Download, error) {
-	resp := &sliverpb.Download{Response: &commonpb.Response{}}
+func (rpc *Server) Download(ctx context.Context, req *glodpb.DownloadReq) (*glodpb.Download, error) {
+	resp := &glodpb.Download{Response: &commonpb.Response{}}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err
@@ -106,8 +106,8 @@ func (rpc *Server) Download(ctx context.Context, req *sliverpb.DownloadReq) (*sl
 }
 
 // Upload - Upload a file from the remote file system
-func (rpc *Server) Upload(ctx context.Context, req *sliverpb.UploadReq) (*sliverpb.Upload, error) {
-	resp := &sliverpb.Upload{Response: &commonpb.Response{}}
+func (rpc *Server) Upload(ctx context.Context, req *glodpb.UploadReq) (*glodpb.Upload, error) {
+	resp := &glodpb.Upload{Response: &commonpb.Response{}}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err
@@ -119,8 +119,8 @@ func (rpc *Server) Upload(ctx context.Context, req *sliverpb.UploadReq) (*sliver
 }
 
 // Chmod - Change permission on a file or directory
-func (rpc *Server) Chmod(ctx context.Context, req *sliverpb.ChmodReq) (*sliverpb.Chmod, error) {
-	resp := &sliverpb.Chmod{Response: &commonpb.Response{}}
+func (rpc *Server) Chmod(ctx context.Context, req *glodpb.ChmodReq) (*glodpb.Chmod, error) {
+	resp := &glodpb.Chmod{Response: &commonpb.Response{}}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err
@@ -129,8 +129,8 @@ func (rpc *Server) Chmod(ctx context.Context, req *sliverpb.ChmodReq) (*sliverpb
 }
 
 // Chown - Change owner on a file or directory
-func (rpc *Server) Chown(ctx context.Context, req *sliverpb.ChownReq) (*sliverpb.Chown, error) {
-	resp := &sliverpb.Chown{Response: &commonpb.Response{}}
+func (rpc *Server) Chown(ctx context.Context, req *glodpb.ChownReq) (*glodpb.Chown, error) {
+	resp := &glodpb.Chown{Response: &commonpb.Response{}}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err
@@ -139,8 +139,8 @@ func (rpc *Server) Chown(ctx context.Context, req *sliverpb.ChownReq) (*sliverpb
 }
 
 // Chtimes - Change file access and modification times on a file or directory
-func (rpc *Server) Chtimes(ctx context.Context, req *sliverpb.ChtimesReq) (*sliverpb.Chtimes, error) {
-	resp := &sliverpb.Chtimes{Response: &commonpb.Response{}}
+func (rpc *Server) Chtimes(ctx context.Context, req *glodpb.ChtimesReq) (*glodpb.Chtimes, error) {
+	resp := &glodpb.Chtimes{Response: &commonpb.Response{}}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err
@@ -149,8 +149,8 @@ func (rpc *Server) Chtimes(ctx context.Context, req *sliverpb.ChtimesReq) (*sliv
 }
 
 // MemfilesList - List memfiles
-func (rpc *Server) MemfilesList(ctx context.Context, req *sliverpb.MemfilesListReq) (*sliverpb.Ls, error) {
-	resp := &sliverpb.Ls{Response: &commonpb.Response{}}
+func (rpc *Server) MemfilesList(ctx context.Context, req *glodpb.MemfilesListReq) (*glodpb.Ls, error) {
+	resp := &glodpb.Ls{Response: &commonpb.Response{}}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err
@@ -159,8 +159,8 @@ func (rpc *Server) MemfilesList(ctx context.Context, req *sliverpb.MemfilesListR
 }
 
 // MemfilesAdd - Add memfile
-func (rpc *Server) MemfilesAdd(ctx context.Context, req *sliverpb.MemfilesAddReq) (*sliverpb.MemfilesAdd, error) {
-	resp := &sliverpb.MemfilesAdd{Response: &commonpb.Response{}}
+func (rpc *Server) MemfilesAdd(ctx context.Context, req *glodpb.MemfilesAddReq) (*glodpb.MemfilesAdd, error) {
+	resp := &glodpb.MemfilesAdd{Response: &commonpb.Response{}}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err
@@ -169,8 +169,8 @@ func (rpc *Server) MemfilesAdd(ctx context.Context, req *sliverpb.MemfilesAddReq
 }
 
 // MemfilesRm - Close memfile
-func (rpc *Server) MemfilesRm(ctx context.Context, req *sliverpb.MemfilesRmReq) (*sliverpb.MemfilesRm, error) {
-	resp := &sliverpb.MemfilesRm{Response: &commonpb.Response{}}
+func (rpc *Server) MemfilesRm(ctx context.Context, req *glodpb.MemfilesRmReq) (*glodpb.MemfilesRm, error) {
+	resp := &glodpb.MemfilesRm{Response: &commonpb.Response{}}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err
@@ -178,7 +178,7 @@ func (rpc *Server) MemfilesRm(ctx context.Context, req *sliverpb.MemfilesRmReq) 
 	return resp, nil
 }
 
-func trackIOC(req *sliverpb.UploadReq, resp *sliverpb.Upload) {
+func trackIOC(req *glodpb.UploadReq, resp *glodpb.Upload) {
 	fsLog.Debugf("Adding IOC to database ...")
 	request := req.GetRequest()
 	if request == nil {

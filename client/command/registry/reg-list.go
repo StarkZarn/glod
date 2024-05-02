@@ -23,7 +23,7 @@ import (
 
 	"github.com/starkzarn/glod/client/console"
 	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/desertbit/grumble"
 	"google.golang.org/protobuf/proto"
 )
@@ -44,7 +44,7 @@ func RegListSubKeysCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 	hive := ctx.Flags.String("hive")
 	hostname := ctx.Flags.String("hostname")
 
-	regList, err := con.Rpc.RegistryListSubKeys(context.Background(), &sliverpb.RegistrySubKeyListReq{
+	regList, err := con.Rpc.RegistryListSubKeys(context.Background(), &glodpb.RegistrySubKeyListReq{
 		Hive:     hive,
 		Hostname: hostname,
 		Path:     regPath,
@@ -71,7 +71,7 @@ func RegListSubKeysCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 }
 
 // PrintListSubKeys - Print the list sub keys command result
-func PrintListSubKeys(regList *sliverpb.RegistrySubKeyList, hive string, regPath string, con *console.SliverConsoleClient) {
+func PrintListSubKeys(regList *glodpb.RegistrySubKeyList, hive string, regPath string, con *console.SliverConsoleClient) {
 	if regList.Response != nil && regList.Response.Err != "" {
 		con.PrintErrorf("%s\n", regList.Response.Err)
 		return
@@ -95,7 +95,7 @@ func RegListValuesCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 	hive := ctx.Flags.String("hive")
 	hostname := ctx.Flags.String("hostname")
 
-	regList, err := con.Rpc.RegistryListValues(context.Background(), &sliverpb.RegistryListValuesReq{
+	regList, err := con.Rpc.RegistryListValues(context.Background(), &glodpb.RegistryListValuesReq{
 		Hive:     hive,
 		Hostname: hostname,
 		Path:     regPath,
@@ -122,7 +122,7 @@ func RegListValuesCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 }
 
 // PrintListValues - Print the registry list values
-func PrintListValues(regList *sliverpb.RegistryValuesList, hive string, regPath string, con *console.SliverConsoleClient) {
+func PrintListValues(regList *glodpb.RegistryValuesList, hive string, regPath string, con *console.SliverConsoleClient) {
 	if regList.Response != nil && regList.Response.Err != "" {
 		con.PrintErrorf("%s\n", regList.Response.Err)
 		return

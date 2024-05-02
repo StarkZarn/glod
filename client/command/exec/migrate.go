@@ -25,7 +25,7 @@ import (
 
 	"github.com/starkzarn/glod/client/console"
 	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/desertbit/grumble"
 )
 
@@ -45,7 +45,7 @@ func MigrateCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 	if procName != "" {
 		procCtrl := make(chan bool)
 		con.SpinUntil(fmt.Sprintf("Searching for %s ...", procName), procCtrl)
-		proc, err := con.Rpc.Ps(context.Background(), &sliverpb.PsReq{
+		proc, err := con.Rpc.Ps(context.Background(), &glodpb.PsReq{
 			Request: con.ActiveTarget.Request(ctx),
 		})
 		if err != nil {

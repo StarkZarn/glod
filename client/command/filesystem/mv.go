@@ -23,7 +23,7 @@ import (
 
 	"github.com/starkzarn/glod/client/console"
 	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"google.golang.org/protobuf/proto"
 
 	"github.com/desertbit/grumble"
@@ -47,7 +47,7 @@ func MvCmd(ctx *grumble.Context, con *console.SliverConsoleClient) (err error) {
 		return
 	}
 
-	mv, err := con.Rpc.Mv(context.Background(), &sliverpb.MvReq{
+	mv, err := con.Rpc.Mv(context.Background(), &glodpb.MvReq{
 		Request: con.ActiveTarget.Request(ctx),
 		Src:     src,
 		Dst:     dst,
@@ -75,7 +75,7 @@ func MvCmd(ctx *grumble.Context, con *console.SliverConsoleClient) (err error) {
 }
 
 // PrintMv - Print the renamed file
-func PrintMv(mv *sliverpb.Mv, con *console.SliverConsoleClient) {
+func PrintMv(mv *glodpb.Mv, con *console.SliverConsoleClient) {
 	if mv.Response != nil && mv.Response.Err != "" {
 		con.PrintErrorf("%s\n", mv.Response.Err)
 		return

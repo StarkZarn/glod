@@ -25,7 +25,7 @@ import (
 
 	"github.com/starkzarn/glod/client/console"
 	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/desertbit/grumble"
 	"google.golang.org/protobuf/proto"
 )
@@ -42,7 +42,7 @@ func GetPrivsCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 		return
 	}
 
-	privs, err := con.Rpc.GetPrivs(context.Background(), &sliverpb.GetPrivsReq{
+	privs, err := con.Rpc.GetPrivs(context.Background(), &glodpb.GetPrivsReq{
 		Request: con.ActiveTarget.Request(ctx),
 	})
 	if err != nil {
@@ -66,7 +66,7 @@ func GetPrivsCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 }
 
 // PrintGetPrivs - Print the results of the get privs command
-func PrintGetPrivs(privs *sliverpb.GetPrivs, pid int32, con *console.SliverConsoleClient) {
+func PrintGetPrivs(privs *glodpb.GetPrivs, pid int32, con *console.SliverConsoleClient) {
 	// Response is the Envelope (see RPC API), Err is part of it.
 	if privs.Response != nil && privs.Response.Err != "" {
 		con.PrintErrorf("NOTE: Information may be incomplete due to an error:\n")

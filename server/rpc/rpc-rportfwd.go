@@ -22,12 +22,12 @@ import (
 	"context"
 
 	"github.com/starkzarn/glod/protobuf/commonpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 )
 
 // GetRportFwdListeners - Get a list of all reverse port forwards listeners from an implant
-func (rpc *Server) GetRportFwdListeners(ctx context.Context, req *sliverpb.RportFwdListenersReq) (*sliverpb.RportFwdListeners, error) {
-	resp := &sliverpb.RportFwdListeners{Response: &commonpb.Response{}}
+func (rpc *Server) GetRportFwdListeners(ctx context.Context, req *glodpb.RportFwdListenersReq) (*glodpb.RportFwdListeners, error) {
+	resp := &glodpb.RportFwdListeners{Response: &commonpb.Response{}}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err
@@ -36,8 +36,8 @@ func (rpc *Server) GetRportFwdListeners(ctx context.Context, req *sliverpb.Rport
 }
 
 // StartRportfwdListener - Instruct the implant to start a reverse port forward
-func (rpc *Server) StartRportFwdListener(ctx context.Context, req *sliverpb.RportFwdStartListenerReq) (*sliverpb.RportFwdListener, error) {
-	resp := &sliverpb.RportFwdListener{Response: &commonpb.Response{}}
+func (rpc *Server) StartRportFwdListener(ctx context.Context, req *glodpb.RportFwdStartListenerReq) (*glodpb.RportFwdListener, error) {
+	resp := &glodpb.RportFwdListener{Response: &commonpb.Response{}}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err
@@ -46,8 +46,8 @@ func (rpc *Server) StartRportFwdListener(ctx context.Context, req *sliverpb.Rpor
 }
 
 // StopRportfwdListener - Instruct the implant to stop a reverse port forward
-func (rpc *Server) StopRportFwdListener(ctx context.Context, req *sliverpb.RportFwdStopListenerReq) (*sliverpb.RportFwdListener, error) {
-	resp := &sliverpb.RportFwdListener{Response: &commonpb.Response{}}
+func (rpc *Server) StopRportFwdListener(ctx context.Context, req *glodpb.RportFwdStopListenerReq) (*glodpb.RportFwdListener, error) {
+	resp := &glodpb.RportFwdListener{Response: &commonpb.Response{}}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err

@@ -26,7 +26,7 @@ import (
 	"github.com/starkzarn/glod/client/console"
 	consts "github.com/starkzarn/glod/client/constants"
 	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"google.golang.org/protobuf/proto"
 
 	"github.com/desertbit/grumble"
@@ -171,7 +171,7 @@ func WhoamiCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 	}
 
 	if isWin {
-		cto, err := con.Rpc.CurrentTokenOwner(context.Background(), &sliverpb.CurrentTokenOwnerReq{
+		cto, err := con.Rpc.CurrentTokenOwner(context.Background(), &glodpb.CurrentTokenOwnerReq{
 			Request: con.ActiveTarget.Request(ctx),
 		})
 		if err != nil {
@@ -195,7 +195,7 @@ func WhoamiCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 	}
 }
 
-func PrintTokenOwner(cto *sliverpb.CurrentTokenOwner, con *console.SliverConsoleClient) {
+func PrintTokenOwner(cto *glodpb.CurrentTokenOwner, con *console.SliverConsoleClient) {
 	if cto.Response != nil && cto.Response.Err != "" {
 		con.PrintErrorf("%s\n", cto.Response.Err)
 		return

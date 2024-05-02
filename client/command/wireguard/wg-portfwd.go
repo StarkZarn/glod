@@ -23,7 +23,7 @@ import (
 
 	"github.com/starkzarn/glod/client/command/settings"
 	"github.com/starkzarn/glod/client/console"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/desertbit/grumble"
 	"github.com/jedib0t/go-pretty/v6/table"
 )
@@ -39,7 +39,7 @@ func WGPortFwdListCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 		return
 	}
 
-	fwdList, err := con.Rpc.WGListForwarders(context.Background(), &sliverpb.WGTCPForwardersReq{
+	fwdList, err := con.Rpc.WGListForwarders(context.Background(), &glodpb.WGTCPForwardersReq{
 		Request: con.ActiveTarget.Request(ctx),
 	})
 	if err != nil {

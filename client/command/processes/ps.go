@@ -28,7 +28,7 @@ import (
 	"github.com/starkzarn/glod/client/console"
 	"github.com/starkzarn/glod/protobuf/clientpb"
 	"github.com/starkzarn/glod/protobuf/commonpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/desertbit/grumble"
 	"github.com/jedib0t/go-pretty/v6/table"
 	"google.golang.org/protobuf/proto"
@@ -94,7 +94,7 @@ func PsCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 	if session == nil && beacon == nil {
 		return
 	}
-	ps, err := con.Rpc.Ps(context.Background(), &sliverpb.PsReq{
+	ps, err := con.Rpc.Ps(context.Background(), &glodpb.PsReq{
 		Request: con.ActiveTarget.Request(ctx),
 	})
 	if err != nil {
@@ -137,7 +137,7 @@ func getOS(session *clientpb.Session, beacon *clientpb.Beacon) string {
 }
 
 // PrintPS - Prints the process list
-func PrintPS(os string, ps *sliverpb.Ps, interactive bool, ctx *grumble.Context, con *console.SliverConsoleClient) {
+func PrintPS(os string, ps *glodpb.Ps, interactive bool, ctx *grumble.Context, con *console.SliverConsoleClient) {
 	pidFilter := ctx.Flags.Int("pid")
 	exeFilter := ctx.Flags.String("exe")
 	ownerFilter := ctx.Flags.String("owner")
@@ -201,7 +201,7 @@ func PrintPS(os string, ps *sliverpb.Ps, interactive bool, ctx *grumble.Context,
 	settings.PaginateTable(tw, skipPages, overflow, interactive, con)
 }
 
-func findKnownSecurityProducts(ps *sliverpb.Ps) []string {
+func findKnownSecurityProducts(ps *glodpb.Ps) []string {
 	products := []string{}
 	for _, proc := range ps.Processes {
 		if secTool, ok := knownSecurityTools[proc.Executable]; ok {
@@ -288,7 +288,7 @@ func procRow(tw table.Writer, proc *commonpb.Process, cmdLine bool, con *console
 
 // GetPIDByName - Get a PID by name from the active session
 func GetPIDByName(ctx *grumble.Context, name string, con *console.SliverConsoleClient) int {
-	ps, err := con.Rpc.Ps(context.Background(), &sliverpb.PsReq{
+	ps, err := con.Rpc.Ps(context.Background(), &glodpb.PsReq{
 		Request: con.ActiveTarget.Request(ctx),
 	})
 	if err != nil {

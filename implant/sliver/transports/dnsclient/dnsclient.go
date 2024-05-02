@@ -71,7 +71,7 @@ import (
 	"github.com/starkzarn/glod/implant/sliver/cryptography"
 	"github.com/starkzarn/glod/implant/sliver/encoders"
 	"github.com/starkzarn/glod/protobuf/dnspb"
-	pb "github.com/starkzarn/glod/protobuf/sliverpb"
+	pb "github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/miekg/dns"
 	"google.golang.org/protobuf/proto"
 )

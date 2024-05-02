@@ -26,7 +26,7 @@ import (
 	"github.com/starkzarn/glod/client/command/generate"
 	"github.com/starkzarn/glod/client/console"
 	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/desertbit/grumble"
 )
 
@@ -147,7 +147,7 @@ func InteractiveCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 		}
 	}
 
-	openSession := &sliverpb.OpenSession{
+	openSession := &glodpb.OpenSession{
 		Request: con.ActiveTarget.Request(ctx),
 		C2S:     []string{},
 		Delay:   int64(delay),

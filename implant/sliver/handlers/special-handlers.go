@@ -25,7 +25,7 @@ import (
 	"time"
 
 	"github.com/starkzarn/glod/implant/sliver/transports"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 
 	// {{if .Config.Debug}}
 	"log"
@@ -35,7 +35,7 @@ import (
 )
 
 var specialHandlers = map[uint32]SpecialHandler{
-	sliverpb.MsgKillSessionReq: killHandler,
+	glodpb.MsgKillSessionReq: killHandler,
 }
 
 // GetSpecialHandlers returns the specialHandlers map
@@ -44,7 +44,7 @@ func GetSpecialHandlers() map[uint32]SpecialHandler {
 }
 
 func killHandler(data []byte, _ *transports.Connection) error {
-	killReq := &sliverpb.KillReq{}
+	killReq := &glodpb.KillReq{}
 	err := proto.Unmarshal(data, killReq)
 	// {{if .Config.Debug}}
 	log.Println("KILL called")

@@ -27,7 +27,7 @@ import (
 	"github.com/AlecAivazis/survey/v2"
 	"github.com/starkzarn/glod/client/console"
 	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/desertbit/grumble"
 	"google.golang.org/protobuf/proto"
 )
@@ -85,7 +85,7 @@ func ExecuteAssemblyCmd(ctx *grumble.Context, con *console.SliverConsoleClient) 
 
 	ctrl := make(chan bool)
 	con.SpinUntil("Executing assembly ...", ctrl)
-	execAssembly, err := con.Rpc.ExecuteAssembly(context.Background(), &sliverpb.ExecuteAssemblyReq{
+	execAssembly, err := con.Rpc.ExecuteAssembly(context.Background(), &glodpb.ExecuteAssemblyReq{
 		Request:     con.ActiveTarget.Request(ctx),
 		IsDLL:       isDLL,
 		Process:     process,
@@ -125,7 +125,7 @@ func ExecuteAssemblyCmd(ctx *grumble.Context, con *console.SliverConsoleClient) 
 	}
 }
 
-func HandleExecuteAssemblyResponse(execAssembly *sliverpb.ExecuteAssembly, assemblyPath string, hostName string, ctx *grumble.Context, con *console.SliverConsoleClient) {
+func HandleExecuteAssemblyResponse(execAssembly *glodpb.ExecuteAssembly, assemblyPath string, hostName string, ctx *grumble.Context, con *console.SliverConsoleClient) {
 	saveLoot := ctx.Flags.Bool("loot")
 	lootName := ctx.Flags.String("name")
 

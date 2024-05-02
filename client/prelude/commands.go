@@ -25,7 +25,7 @@ import (
 	"strings"
 
 	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -92,7 +92,7 @@ func execute(cmd string, executor string, implantBridge *OperatorImplantBridge, 
 		executor = commandSections[0]
 		args = commandSections[1:]
 	}
-	execResp, err := implantBridge.RPC.Execute(context.Background(), &sliverpb.ExecuteReq{
+	execResp, err := implantBridge.RPC.Execute(context.Background(), &glodpb.ExecuteReq{
 		Path:    executor,
 		Args:    args,
 		Output:  true,
@@ -149,7 +149,7 @@ func splitMessage(message string, splitRune rune) []string {
 }
 
 func shutdown(agentSession *OperatorImplantBridge) (string, int, int) {
-	_, err := agentSession.RPC.Kill(context.Background(), &sliverpb.KillReq{
+	_, err := agentSession.RPC.Kill(context.Background(), &glodpb.KillReq{
 		Force:   false,
 		Request: MakeRequest(agentSession.Implant),
 	})

@@ -21,13 +21,13 @@ package rpc
 import (
 	"context"
 
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/starkzarn/glod/server/core"
 	"google.golang.org/protobuf/proto"
 )
 
 // Portfwd - Open an in-band port forward
-func (s *Server) Portfwd(ctx context.Context, req *sliverpb.PortfwdReq) (*sliverpb.Portfwd, error) {
+func (s *Server) Portfwd(ctx context.Context, req *glodpb.PortfwdReq) (*glodpb.Portfwd, error) {
 	session := core.Sessions.Get(req.Request.SessionID)
 	if session == nil {
 		return nil, ErrInvalidSessionID
@@ -40,11 +40,11 @@ func (s *Server) Portfwd(ctx context.Context, req *sliverpb.PortfwdReq) (*sliver
 	if err != nil {
 		return nil, err
 	}
-	data, err := session.Request(sliverpb.MsgNumber(req), s.getTimeout(req), reqData)
+	data, err := session.Request(glodpb.MsgNumber(req), s.getTimeout(req), reqData)
 	if err != nil {
 		return nil, err
 	}
-	portfwd := &sliverpb.Portfwd{}
+	portfwd := &glodpb.Portfwd{}
 	err = proto.Unmarshal(data, portfwd)
 	return portfwd, err
 }

@@ -26,7 +26,7 @@ import (
 	"github.com/starkzarn/glod/client/command/loot"
 	"github.com/starkzarn/glod/client/console"
 	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/desertbit/grumble"
 	"google.golang.org/protobuf/proto"
 )
@@ -56,13 +56,13 @@ func ExecuteCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 		con.PrintWarnf("Using --output in beacon mode, if the command blocks the task will never complete\n\n")
 	}
 
-	var exec *sliverpb.Execute
+	var exec *glodpb.Execute
 	var err error
 
 	ctrl := make(chan bool)
 	con.SpinUntil(fmt.Sprintf("Executing %s %s ...", cmdPath, strings.Join(args, " ")), ctrl)
 	if token || ppid != 0 {
-		exec, err = con.Rpc.ExecuteWindows(context.Background(), &sliverpb.ExecuteWindowsReq{
+		exec, err = con.Rpc.ExecuteWindows(context.Background(), &glodpb.ExecuteWindowsReq{
 			Request:  con.ActiveTarget.Request(ctx),
 			Path:     cmdPath,
 			Args:     args,
@@ -73,7 +73,7 @@ func ExecuteCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 			PPid:     uint32(ppid),
 		})
 	} else {
-		exec, err = con.Rpc.Execute(context.Background(), &sliverpb.ExecuteReq{
+		exec, err = con.Rpc.Execute(context.Background(), &glodpb.ExecuteReq{
 			Request: con.ActiveTarget.Request(ctx),
 			Path:    cmdPath,
 			Args:    args,
@@ -104,7 +104,7 @@ func ExecuteCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 	}
 }
 
-func HandleExecuteResponse(exec *sliverpb.Execute, cmdPath string, hostName string, ctx *grumble.Context, con *console.SliverConsoleClient) {
+func HandleExecuteResponse(exec *glodpb.Execute, cmdPath string, hostName string, ctx *grumble.Context, con *console.SliverConsoleClient) {
 	var lootedOutput []byte
 	stdout := ctx.Flags.String("stdout")
 	saveLoot := ctx.Flags.Bool("loot")
@@ -128,7 +128,7 @@ func HandleExecuteResponse(exec *sliverpb.Execute, cmdPath string, hostName stri
 }
 
 // PrintExecute - Print the output of an executed command
-func PrintExecute(exec *sliverpb.Execute, ctx *grumble.Context, con *console.SliverConsoleClient) {
+func PrintExecute(exec *glodpb.Execute, ctx *grumble.Context, con *console.SliverConsoleClient) {
 	ignoreStderr := ctx.Flags.Bool("ignore-stderr")
 	stdout := ctx.Flags.String("stdout")
 	stderr := ctx.Flags.String("stderr")
@@ -184,7 +184,7 @@ func determineCommandName(command string) string {
 	return commandName
 }
 
-func combineCommandOutput(exec *sliverpb.Execute, combineStdOut bool, combineStdErr bool) []byte {
+func combineCommandOutput(exec *glodpb.Execute, combineStdOut bool, combineStdErr bool) []byte {
 	var outputString string = ""
 
 	if combineStdOut {

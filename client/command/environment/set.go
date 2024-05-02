@@ -24,7 +24,7 @@ import (
 	"github.com/starkzarn/glod/client/console"
 	"github.com/starkzarn/glod/protobuf/clientpb"
 	"github.com/starkzarn/glod/protobuf/commonpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/desertbit/grumble"
 	"google.golang.org/protobuf/proto"
 )
@@ -43,7 +43,7 @@ func EnvSetCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 		return
 	}
 
-	envInfo, err := con.Rpc.SetEnv(context.Background(), &sliverpb.SetEnvReq{
+	envInfo, err := con.Rpc.SetEnv(context.Background(), &glodpb.SetEnvReq{
 		Variable: &commonpb.EnvVar{
 			Key:   name,
 			Value: value,
@@ -71,7 +71,7 @@ func EnvSetCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 }
 
 // PrintSetEnvInfo - Print the set environment info
-func PrintSetEnvInfo(name string, value string, envInfo *sliverpb.SetEnv, con *console.SliverConsoleClient) {
+func PrintSetEnvInfo(name string, value string, envInfo *glodpb.SetEnv, con *console.SliverConsoleClient) {
 	if envInfo.Response != nil && envInfo.Response.Err != "" {
 		con.PrintErrorf("%s\n", envInfo.Response.Err)
 		return

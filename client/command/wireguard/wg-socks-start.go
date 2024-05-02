@@ -22,7 +22,7 @@ import (
 	"context"
 
 	"github.com/starkzarn/glod/client/console"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/desertbit/grumble"
 )
 
@@ -39,7 +39,7 @@ func WGSocksStartCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 
 	bindPort := ctx.Flags.Int("bind")
 
-	socks, err := con.Rpc.WGStartSocks(context.Background(), &sliverpb.WGSocksStartReq{
+	socks, err := con.Rpc.WGStartSocks(context.Background(), &glodpb.WGSocksStartReq{
 		Port:    int32(bindPort),
 		Request: con.ActiveTarget.Request(ctx),
 	})

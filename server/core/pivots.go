@@ -22,7 +22,7 @@ import (
 	"sync"
 
 	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/starkzarn/glod/server/cryptography"
 	"github.com/gofrs/uuid"
 	"google.golang.org/protobuf/proto"
@@ -43,7 +43,7 @@ type Pivot struct {
 	ImplantConn          *ImplantConnection
 	ImmediateImplantConn *ImplantConnection
 	CipherCtx            *cryptography.CipherContext
-	Peers                []*sliverpb.PivotPeer
+	Peers                []*glodpb.PivotPeer
 }
 
 // Start - Starts the pivot send loop which forwards envelopes from the pivot ImplantConnection
@@ -64,7 +64,7 @@ func (p *Pivot) Start() {
 				coreLog.Errorf("failed to encrypt envelope: %v", err)
 				continue
 			}
-			peerEnvelopeData, _ := proto.Marshal(&sliverpb.PivotPeerEnvelope{
+			peerEnvelopeData, _ := proto.Marshal(&glodpb.PivotPeerEnvelope{
 				Type:  envelope.Type,
 				Peers: p.Peers,
 				Data:  ciphertext,
@@ -73,8 +73,8 @@ func (p *Pivot) Start() {
 				coreLog.Errorf("failed to wrap pivot peer envelope: %v", err)
 				continue
 			}
-			p.ImmediateImplantConn.Send <- &sliverpb.Envelope{
-				Type: sliverpb.MsgPivotPeerEnvelope,
+			p.ImmediateImplantConn.Send <- &glodpb.Envelope{
+				Type: glodpb.MsgPivotPeerEnvelope,
 				Data: peerEnvelopeData,
 			}
 		}
@@ -82,7 +82,7 @@ func (p *Pivot) Start() {
 }
 
 // NewPivotSession - Creates a new pivot session
-func NewPivotSession(chain []*sliverpb.PivotPeer) *Pivot {
+func NewPivotSession(chain []*glodpb.PivotPeer) *Pivot {
 	id, _ := uuid.NewV4()
 	return &Pivot{
 		ID:    id.String(),

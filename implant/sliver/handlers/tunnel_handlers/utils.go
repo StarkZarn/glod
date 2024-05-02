@@ -20,11 +20,11 @@ package tunnel_handlers
 
 import (
 	"github.com/starkzarn/glod/implant/sliver/transports"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 )
 
-func reportError(envelope *sliverpb.Envelope, connection *transports.Connection, data []byte) {
-	connection.Send <- &sliverpb.Envelope{
+func reportError(envelope *glodpb.Envelope, connection *transports.Connection, data []byte) {
+	connection.Send <- &glodpb.Envelope{
 		Data: data,
 		ID:   envelope.ID,
 	}

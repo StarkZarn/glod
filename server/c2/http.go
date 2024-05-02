@@ -37,7 +37,7 @@ import (
 	"time"
 	"unicode"
 
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/starkzarn/glod/server/certs"
 	"github.com/starkzarn/glod/server/configs"
 	"github.com/starkzarn/glod/server/core"
@@ -580,7 +580,7 @@ func (s *SliverHTTPC2) startSessionHandler(resp http.ResponseWriter, req *http.R
 		s.defaultHandler(resp, req)
 		return
 	}
-	sessionInit := &sliverpb.HTTPSessionInit{}
+	sessionInit := &glodpb.HTTPSessionInit{}
 	err = proto.Unmarshal(sessionInitData, sessionInit)
 	if err != nil {
 		httpLog.Error("Failed to decode session init")
@@ -630,7 +630,7 @@ func (s *SliverHTTPC2) sessionHandler(resp http.ResponseWriter, req *http.Reques
 		s.defaultHandler(resp, req)
 		return
 	}
-	envelope := &sliverpb.Envelope{}
+	envelope := &glodpb.Envelope{}
 	err = proto.Unmarshal(plaintext, envelope)
 	if err != nil {
 		httpLog.Warnf("Failed to decode request body: %s", err)

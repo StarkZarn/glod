@@ -32,7 +32,7 @@ import (
 	"github.com/starkzarn/glod/protobuf/clientpb"
 	"github.com/starkzarn/glod/protobuf/commonpb"
 	"github.com/starkzarn/glod/protobuf/rpcpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 )
 
 var (
@@ -196,7 +196,7 @@ func (p *ChannelProxy) dialImplant(ctx context.Context) (*TunnelIO, error) {
 	log.Printf("[tcpproxy] Dialing implant to create tunnel ...")
 
 	// Create an RPC tunnel, then start it before binding the shell to the newly created tunnel
-	rpcTunnel, err := p.Rpc.CreateTunnel(ctx, &sliverpb.Tunnel{
+	rpcTunnel, err := p.Rpc.CreateTunnel(ctx, &glodpb.Tunnel{
 		SessionID: p.Session.ID,
 	})
 	if err != nil {
@@ -208,13 +208,13 @@ func (p *ChannelProxy) dialImplant(ctx context.Context) (*TunnelIO, error) {
 	tunnel := GetTunnels().Start(rpcTunnel.TunnelID, rpcTunnel.SessionID)
 
 	log.Printf("[tcpproxy] Binding tunnel to portfwd %d", p.Port())
-	portfwdResp, err := p.Rpc.Portfwd(ctx, &sliverpb.PortfwdReq{
+	portfwdResp, err := p.Rpc.Portfwd(ctx, &glodpb.PortfwdReq{
 		Request: &commonpb.Request{
 			SessionID: p.Session.ID,
 		},
 		Host:     p.Host(),
 		Port:     p.Port(),
-		Protocol: sliverpb.PortFwdProtoTCP,
+		Protocol: glodpb.PortFwdProtoTCP,
 		TunnelID: tunnel.ID,
 	})
 	if err != nil {
@@ -222,7 +222,7 @@ func (p *ChannelProxy) dialImplant(ctx context.Context) (*TunnelIO, error) {
 	}
 	// Close tunnel in case of error on the implant side
 	if portfwdResp.Response != nil && portfwdResp.Response.Err != "" {
-		p.Rpc.CloseTunnel(ctx, &sliverpb.Tunnel{
+		p.Rpc.CloseTunnel(ctx, &glodpb.Tunnel{
 			TunnelID:  tunnel.ID,
 			SessionID: p.Session.ID,
 		})

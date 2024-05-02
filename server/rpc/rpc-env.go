@@ -22,12 +22,12 @@ import (
 	"context"
 
 	"github.com/starkzarn/glod/protobuf/commonpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 )
 
 // GetEnv - Retrieve the environment variables list from the current session
-func (rpc *Server) GetEnv(ctx context.Context, req *sliverpb.EnvReq) (*sliverpb.EnvInfo, error) {
-	resp := &sliverpb.EnvInfo{Response: &commonpb.Response{}}
+func (rpc *Server) GetEnv(ctx context.Context, req *glodpb.EnvReq) (*glodpb.EnvInfo, error) {
+	resp := &glodpb.EnvInfo{Response: &commonpb.Response{}}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err
@@ -36,8 +36,8 @@ func (rpc *Server) GetEnv(ctx context.Context, req *sliverpb.EnvReq) (*sliverpb.
 }
 
 // SetEnv - Set an environment variable
-func (rpc *Server) SetEnv(ctx context.Context, req *sliverpb.SetEnvReq) (*sliverpb.SetEnv, error) {
-	resp := &sliverpb.SetEnv{Response: &commonpb.Response{}}
+func (rpc *Server) SetEnv(ctx context.Context, req *glodpb.SetEnvReq) (*glodpb.SetEnv, error) {
+	resp := &glodpb.SetEnv{Response: &commonpb.Response{}}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err
@@ -46,8 +46,8 @@ func (rpc *Server) SetEnv(ctx context.Context, req *sliverpb.SetEnvReq) (*sliver
 }
 
 // UnsetEnv - Set an environment variable
-func (rpc *Server) UnsetEnv(ctx context.Context, req *sliverpb.UnsetEnvReq) (*sliverpb.UnsetEnv, error) {
-	resp := &sliverpb.UnsetEnv{Response: &commonpb.Response{}}
+func (rpc *Server) UnsetEnv(ctx context.Context, req *glodpb.UnsetEnvReq) (*glodpb.UnsetEnv, error) {
+	resp := &glodpb.UnsetEnv{Response: &commonpb.Response{}}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err

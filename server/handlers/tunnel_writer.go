@@ -23,7 +23,7 @@ import (
 	// {{if .Config.Debug}}
 	"log"
 	// {{end}}
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/starkzarn/glod/server/core"
 	"github.com/starkzarn/glod/server/core/rtunnels"
 	"google.golang.org/protobuf/proto"
@@ -38,7 +38,7 @@ type tunnelWriter struct {
 
 func (tw tunnelWriter) Write(data []byte) (int, error) {
 	n := len(data)
-	data, err := proto.Marshal(&sliverpb.TunnelData{
+	data, err := proto.Marshal(&glodpb.TunnelData{
 		Sequence: tw.tun.WriteSequence(), // The tunnel write sequence
 		Ack:      tw.tun.ReadSequence(),
 		TunnelID: tw.tun.ID,
@@ -48,8 +48,8 @@ func (tw tunnelWriter) Write(data []byte) (int, error) {
 	log.Printf("[tunnelWriter] Write %d bytes (write seq: %d) ack: %d", n, tw.tun.WriteSequence(), tw.tun.ReadSequence())
 	// {{end}}
 	tw.tun.IncWriteSequence() // Increment write sequence
-	tw.conn.Send <- &sliverpb.Envelope{
-		Type: sliverpb.MsgTunnelData,
+	tw.conn.Send <- &glodpb.Envelope{
+		Type: glodpb.MsgTunnelData,
 		Data: data,
 	}
 	return n, err

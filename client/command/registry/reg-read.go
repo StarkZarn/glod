@@ -25,7 +25,7 @@ import (
 
 	"github.com/starkzarn/glod/client/console"
 	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/desertbit/grumble"
 	"google.golang.org/protobuf/proto"
 )
@@ -59,13 +59,13 @@ func getType(t string) (uint32, error) {
 	var res uint32
 	switch t {
 	case "binary":
-		res = sliverpb.RegistryTypeBinary
+		res = glodpb.RegistryTypeBinary
 	case "dword":
-		res = sliverpb.RegistryTypeDWORD
+		res = glodpb.RegistryTypeDWORD
 	case "qword":
-		res = sliverpb.RegistryTypeQWORD
+		res = glodpb.RegistryTypeQWORD
 	case "string":
-		res = sliverpb.RegistryTypeString
+		res = glodpb.RegistryTypeString
 	default:
 		return res, fmt.Errorf("invalid type %s", t)
 	}
@@ -116,7 +116,7 @@ func RegReadCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 	finalPath = regPath[:pathBaseIdx]
 	key = regPath[pathBaseIdx+1:]
 
-	regRead, err := con.Rpc.RegistryRead(context.Background(), &sliverpb.RegistryReadReq{
+	regRead, err := con.Rpc.RegistryRead(context.Background(), &glodpb.RegistryReadReq{
 		Hive:     hive,
 		Path:     finalPath,
 		Key:      key,
@@ -144,7 +144,7 @@ func RegReadCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 }
 
 // PrintRegRead - Print the results of the registry read command
-func PrintRegRead(regRead *sliverpb.RegistryRead, con *console.SliverConsoleClient) {
+func PrintRegRead(regRead *glodpb.RegistryRead, con *console.SliverConsoleClient) {
 	if regRead.Response != nil && regRead.Response.Err != "" {
 		con.PrintErrorf("%s\n", regRead.Response.Err)
 		return

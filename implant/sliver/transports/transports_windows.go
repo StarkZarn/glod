@@ -33,7 +33,7 @@ import (
 	// {{end}}
 
 	"github.com/starkzarn/glod/implant/sliver/transports/pivotclients"
-	pb "github.com/starkzarn/glod/protobuf/sliverpb"
+	pb "github.com/starkzarn/glod/protobuf/glodpb"
 	"google.golang.org/protobuf/proto"
 )
 

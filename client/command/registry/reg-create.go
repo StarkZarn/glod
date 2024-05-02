@@ -24,7 +24,7 @@ import (
 
 	"github.com/starkzarn/glod/client/console"
 	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/desertbit/grumble"
 	"google.golang.org/protobuf/proto"
 )
@@ -68,7 +68,7 @@ func RegCreateKeyCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 	finalPath := regPath[:pathBaseIdx]
 	key := regPath[pathBaseIdx+1:]
 
-	createKey, err := con.Rpc.RegistryCreateKey(context.Background(), &sliverpb.RegistryCreateKeyReq{
+	createKey, err := con.Rpc.RegistryCreateKey(context.Background(), &glodpb.RegistryCreateKeyReq{
 		Hive:     hive,
 		Path:     finalPath,
 		Key:      key,
@@ -96,7 +96,7 @@ func RegCreateKeyCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 }
 
 // PrintCreateKey - Print the results of the create key command
-func PrintCreateKey(createKey *sliverpb.RegistryCreateKey, regPath string, key string, con *console.SliverConsoleClient) {
+func PrintCreateKey(createKey *glodpb.RegistryCreateKey, regPath string, key string, con *console.SliverConsoleClient) {
 	if createKey.Response != nil && createKey.Response.Err != "" {
 		con.PrintErrorf("%s", createKey.Response.Err)
 		return

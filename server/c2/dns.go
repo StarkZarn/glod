@@ -49,7 +49,7 @@ import (
 
 	consts "github.com/starkzarn/glod/client/constants"
 	"github.com/starkzarn/glod/protobuf/dnspb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/starkzarn/glod/server/core"
 	"github.com/starkzarn/glod/server/cryptography"
 	"github.com/starkzarn/glod/server/db"
@@ -121,7 +121,7 @@ func (s *DNSSession) nextMsgID() uint32 {
 }
 
 // StageOutgoingEnvelope - Stage an outgoing envelope
-func (s *DNSSession) StageOutgoingEnvelope(envelope *sliverpb.Envelope) error {
+func (s *DNSSession) StageOutgoingEnvelope(envelope *glodpb.Envelope) error {
 	// dnsLog.Debugf("Staging outgoing envelope %v", envelope)
 	plaintext, err := proto.Marshal(envelope)
 	if err != nil {
@@ -218,7 +218,7 @@ func (s *DNSSession) ForwardCompletedEnvelope(msgID uint32, pending *PendingEnve
 		dnsLog.Errorf("Failed to decrypt message %d: %s", msgID, err)
 		return
 	}
-	envelope := &sliverpb.Envelope{}
+	envelope := &glodpb.Envelope{}
 	err = proto.Unmarshal(plaintext, envelope)
 	if err != nil {
 		dnsLog.Errorf("Failed to unmarshal message %d: %s", msgID, err)

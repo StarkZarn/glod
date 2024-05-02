@@ -22,7 +22,7 @@ import (
 
 	"github.com/starkzarn/glod/client/console"
 	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"google.golang.org/protobuf/proto"
 
 	"github.com/desertbit/grumble"
@@ -56,7 +56,7 @@ func ChownCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 		return
 	}
 	
-	chown, err := con.Rpc.Chown(context.Background(), &sliverpb.ChownReq{
+	chown, err := con.Rpc.Chown(context.Background(), &glodpb.ChownReq{
 		Request:   con.ActiveTarget.Request(ctx),
 		Path:      filePath,
 		Uid:  uid,
@@ -83,7 +83,7 @@ func ChownCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 }
 
 // PrintChown - Print the chown response
-func PrintChown(chown *sliverpb.Chown, con *console.SliverConsoleClient) {
+func PrintChown(chown *glodpb.Chown, con *console.SliverConsoleClient) {
 	if chown.Response != nil && chown.Response.Err != "" {
 		con.PrintErrorf("%s\n", chown.Response.Err)
 		return

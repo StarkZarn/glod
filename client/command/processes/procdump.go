@@ -29,7 +29,7 @@ import (
 	"github.com/starkzarn/glod/client/command/loot"
 	"github.com/starkzarn/glod/client/console"
 	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/desertbit/grumble"
 	"google.golang.org/protobuf/proto"
 )
@@ -62,7 +62,7 @@ func ProcdumpCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 
 	ctrl := make(chan bool)
 	con.SpinUntil("Dumping remote process memory ...", ctrl)
-	dump, err := con.Rpc.ProcessDump(context.Background(), &sliverpb.ProcessDumpReq{
+	dump, err := con.Rpc.ProcessDump(context.Background(), &glodpb.ProcessDumpReq{
 		Request: con.ActiveTarget.Request(ctx),
 		Pid:     int32(pid),
 		Timeout: int32(ctx.Flags.Int("timeout") - 1),
@@ -104,7 +104,7 @@ func ProcdumpCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 }
 
 // PrintProcessDump - Handle the results of a process dump
-func PrintProcessDump(dump *sliverpb.ProcessDump, saveTo string, hostname string, pid int, con *console.SliverConsoleClient) {
+func PrintProcessDump(dump *glodpb.ProcessDump, saveTo string, hostname string, pid int, con *console.SliverConsoleClient) {
 	var err error
 	var saveToFile *os.File
 	if saveTo == "" {
@@ -136,7 +136,7 @@ func getHostname(session *clientpb.Session, beacon *clientpb.Beacon) string {
 	return ""
 }
 
-func LootProcessDump(dump *sliverpb.ProcessDump, lootName string, hostName string, pid int, con *console.SliverConsoleClient) {
+func LootProcessDump(dump *glodpb.ProcessDump, lootName string, hostName string, pid int, con *console.SliverConsoleClient) {
 	timeNow := time.Now().UTC()
 	dumpFileName := fmt.Sprintf("procdump_%s_%d_%s.dmp", hostName, pid, timeNow.Format("20060102150405"))
 

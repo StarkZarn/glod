@@ -30,7 +30,7 @@ import (
 	"github.com/starkzarn/glod/client/command/loot"
 	"github.com/starkzarn/glod/client/console"
 	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/starkzarn/glod/util/encoders"
 	"google.golang.org/protobuf/proto"
 
@@ -52,7 +52,7 @@ func CatCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 
 	ctrl := make(chan bool)
 	con.SpinUntil(fmt.Sprintf("Downloading %s ...", filePath), ctrl)
-	download, err := con.Rpc.Download(context.Background(), &sliverpb.DownloadReq{
+	download, err := con.Rpc.Download(context.Background(), &glodpb.DownloadReq{
 		Request: con.ActiveTarget.Request(ctx),
 		Path:    filePath,
 	})
@@ -78,7 +78,7 @@ func CatCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 }
 
 // PrintCat - Print the download to stdout
-func PrintCat(download *sliverpb.Download, ctx *grumble.Context, con *console.SliverConsoleClient) {
+func PrintCat(download *glodpb.Download, ctx *grumble.Context, con *console.SliverConsoleClient) {
 	var (
 		lootDownload bool = true
 		err          error
@@ -127,7 +127,7 @@ func PrintCat(download *sliverpb.Download, ctx *grumble.Context, con *console.Sl
 	}
 }
 
-func colorize(f *sliverpb.Download) error {
+func colorize(f *glodpb.Download) error {
 	lexer := lexers.Match(f.GetPath())
 	if lexer == nil {
 		lexer = lexers.Analyse(string(f.GetData()))

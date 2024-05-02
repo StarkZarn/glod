@@ -27,7 +27,7 @@ import (
 
 	"github.com/starkzarn/glod/client/console"
 	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/desertbit/grumble"
 	"google.golang.org/protobuf/proto"
 )
@@ -55,7 +55,7 @@ func SideloadCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 	isDLL := (filepath.Ext(binPath) == ".dll")
 	ctrl := make(chan bool)
 	con.SpinUntil(fmt.Sprintf("Sideloading %s ...", binPath), ctrl)
-	sideload, err := con.Rpc.Sideload(context.Background(), &sliverpb.SideloadReq{
+	sideload, err := con.Rpc.Sideload(context.Background(), &glodpb.SideloadReq{
 		Request:     con.ActiveTarget.Request(ctx),
 		Args:        args,
 		Data:        binData,
@@ -91,7 +91,7 @@ func SideloadCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 	}
 }
 
-func HandleSideloadResponse(sideload *sliverpb.Sideload, binPath string, hostName string, ctx *grumble.Context, con *console.SliverConsoleClient) {
+func HandleSideloadResponse(sideload *glodpb.Sideload, binPath string, hostName string, ctx *grumble.Context, con *console.SliverConsoleClient) {
 	saveLoot := ctx.Flags.Bool("loot")
 	lootName := ctx.Flags.String("name")
 

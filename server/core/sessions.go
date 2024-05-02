@@ -26,7 +26,7 @@ import (
 	"github.com/starkzarn/glod/implant/sliver/transports/mtls"
 	"github.com/starkzarn/glod/implant/sliver/transports/wireguard"
 	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"github.com/starkzarn/glod/server/log"
 	"github.com/gofrs/uuid"
 
@@ -145,7 +145,7 @@ func (s *Session) ToProtobuf() *clientpb.Session {
 
 // Request - Sends a protobuf request to the active sliver and returns the response
 func (s *Session) Request(msgType uint32, timeout time.Duration, data []byte) ([]byte, error) {
-	resp := make(chan *sliverpb.Envelope)
+	resp := make(chan *glodpb.Envelope)
 	reqID := EnvelopeID()
 	s.Connection.RespMutex.Lock()
 	s.Connection.Resp[reqID] = resp
@@ -160,7 +160,7 @@ func (s *Session) Request(msgType uint32, timeout time.Duration, data []byte) ([
 		timeout = 60 * time.Second
 	}
 	select {
-	case s.Connection.Send <- &sliverpb.Envelope{
+	case s.Connection.Send <- &glodpb.Envelope{
 		ID:   reqID,
 		Type: msgType,
 		Data: data,
@@ -169,7 +169,7 @@ func (s *Session) Request(msgType uint32, timeout time.Duration, data []byte) ([
 		return nil, ErrImplantTimeout
 	}
 
-	var respEnvelope *sliverpb.Envelope
+	var respEnvelope *glodpb.Envelope
 	select {
 	case respEnvelope = <-resp:
 	case <-time.After(timeout):

@@ -25,17 +25,17 @@ import (
 	// {{end}}
 
 	"github.com/starkzarn/glod/implant/sliver/handlers/tunnel_handlers"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 )
 
 var (
 	tunnelHandlers = map[uint32]TunnelHandler{
-		sliverpb.MsgShellReq:   tunnel_handlers.ShellReqHandler,
-		sliverpb.MsgPortfwdReq: tunnel_handlers.PortfwdReqHandler,
-		sliverpb.MsgSocksData:  tunnel_handlers.SocksReqHandler,
+		glodpb.MsgShellReq:   tunnel_handlers.ShellReqHandler,
+		glodpb.MsgPortfwdReq: tunnel_handlers.PortfwdReqHandler,
+		glodpb.MsgSocksData:  tunnel_handlers.SocksReqHandler,
 
-		sliverpb.MsgTunnelData:  tunnel_handlers.TunnelDataHandler,
-		sliverpb.MsgTunnelClose: tunnel_handlers.TunnelCloseHandler,
+		glodpb.MsgTunnelData:  tunnel_handlers.TunnelDataHandler,
+		glodpb.MsgTunnelClose: tunnel_handlers.TunnelCloseHandler,
 	}
 )
 

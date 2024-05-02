@@ -24,7 +24,7 @@ import (
 
 	"github.com/starkzarn/glod/client/console"
 	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"google.golang.org/protobuf/proto"
 
 	"github.com/desertbit/grumble"
@@ -69,7 +69,7 @@ func ReconfigCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 		}
 	}
 
-	reconfig, err := con.Rpc.Reconfigure(context.Background(), &sliverpb.ReconfigureReq{
+	reconfig, err := con.Rpc.Reconfigure(context.Background(), &glodpb.ReconfigureReq{
 		ReconnectInterval: int64(reconnectInterval),
 		BeaconInterval:    int64(beaconInterval),
 		BeaconJitter:      int64(beaconJitter),

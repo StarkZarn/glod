@@ -22,7 +22,7 @@ import (
 
 	"github.com/starkzarn/glod/client/console"
 	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/glodpb"
 	"google.golang.org/protobuf/proto"
 
 	"github.com/desertbit/grumble"
@@ -49,7 +49,7 @@ func ChmodCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 		return
 	}
 
-	chmod, err := con.Rpc.Chmod(context.Background(), &sliverpb.ChmodReq{
+	chmod, err := con.Rpc.Chmod(context.Background(), &glodpb.ChmodReq{
 		Request:   con.ActiveTarget.Request(ctx),
 		Path:      filePath,
 		FileMode:  fileMode,
@@ -75,7 +75,7 @@ func ChmodCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 }
 
 // PrintChmod - Print the chmod response
-func PrintChmod(chmod *sliverpb.Chmod, con *console.SliverConsoleClient) {
+func PrintChmod(chmod *glodpb.Chmod, con *console.SliverConsoleClient) {
 	if chmod.Response != nil && chmod.Response.Err != "" {
 		con.PrintErrorf("%s\n", chmod.Response.Err)
 		return
