@@ -16,7 +16,7 @@ require (
 	github.com/Ne0nd0g/go-clr v1.0.3
 	github.com/alecthomas/chroma v0.10.0
 	github.com/cheggaaa/pb/v3 v3.1.2
-	github.com/chromedp/cdproto v0.0.0-20240426225625-909263490071
+	github.com/chromedp/cdproto v0.0.0-20240501202034-ef67d660e9fd
 	github.com/chromedp/chromedp v0.9.5
 	github.com/fatih/color v1.16.0
 	github.com/glebarez/sqlite v1.10.0
