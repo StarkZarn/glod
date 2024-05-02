@@ -31,15 +31,15 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"github.com/bishopfox/sliver/protobuf/clientpb"
-	"github.com/bishopfox/sliver/protobuf/commonpb"
-	"github.com/bishopfox/sliver/protobuf/sliverpb"
-	"github.com/bishopfox/sliver/server/codenames"
-	"github.com/bishopfox/sliver/server/core"
-	"github.com/bishopfox/sliver/server/db"
-	"github.com/bishopfox/sliver/server/generate"
-	"github.com/bishopfox/sliver/util"
-	"github.com/bishopfox/sliver/util/encoders"
+	"github.com/starkzarn/glod/protobuf/clientpb"
+	"github.com/starkzarn/glod/protobuf/commonpb"
+	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/server/codenames"
+	"github.com/starkzarn/glod/server/core"
+	"github.com/starkzarn/glod/server/db"
+	"github.com/starkzarn/glod/server/generate"
+	"github.com/starkzarn/glod/util"
+	"github.com/starkzarn/glod/util/encoders"
 )
 
 // HijackDLL - RPC call to automatically perform DLL hijacking attacks

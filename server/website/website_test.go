@@ -25,8 +25,8 @@ import (
 	insecureRand "math/rand"
 	"testing"
 
-	"github.com/bishopfox/sliver/protobuf/clientpb"
-	"github.com/bishopfox/sliver/server/db"
+	"github.com/starkzarn/glod/protobuf/clientpb"
+	"github.com/starkzarn/glod/server/db"
 )
 
 const (

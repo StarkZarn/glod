@@ -24,9 +24,9 @@ import (
 	"os"
 	"strings"
 
-	"github.com/bishopfox/sliver/client/assets"
-	"github.com/bishopfox/sliver/client/command/settings"
-	"github.com/bishopfox/sliver/client/console"
+	"github.com/starkzarn/glod/client/assets"
+	"github.com/starkzarn/glod/client/command/settings"
+	"github.com/starkzarn/glod/client/console"
 	"github.com/jedib0t/go-pretty/v6/table"
 	"github.com/jedib0t/go-pretty/v6/text"
 	"github.com/rsteube/carapace"

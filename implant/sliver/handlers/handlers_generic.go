@@ -29,7 +29,7 @@ package handlers
 import (
 	"os"
 
-	"github.com/bishopfox/sliver/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/sliverpb"
 )
 
 var (

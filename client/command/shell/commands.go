@@ -1,10 +1,10 @@
 package shell
 
 import (
-	"github.com/bishopfox/sliver/client/command/flags"
-	"github.com/bishopfox/sliver/client/command/help"
-	"github.com/bishopfox/sliver/client/console"
-	consts "github.com/bishopfox/sliver/client/constants"
+	"github.com/starkzarn/glod/client/command/flags"
+	"github.com/starkzarn/glod/client/command/help"
+	"github.com/starkzarn/glod/client/console"
+	consts "github.com/starkzarn/glod/client/constants"
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
 )

@@ -1,7 +1,7 @@
 package sessions
 
 import (
-	"github.com/bishopfox/sliver/client/console"
+	"github.com/starkzarn/glod/client/console"
 	"github.com/spf13/cobra"
 )
 

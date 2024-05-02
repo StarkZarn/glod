@@ -34,8 +34,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/bishopfox/sliver/client/assets"
-	"github.com/bishopfox/sliver/util/minisign"
+	"github.com/starkzarn/glod/client/assets"
+	"github.com/starkzarn/glod/util/minisign"
 )
 
 // ArmoryIndexParser - Generic interface to fetch armory indexes

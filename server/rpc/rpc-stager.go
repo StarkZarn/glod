@@ -22,8 +22,8 @@ import (
 	"context"
 	"net"
 
-	"github.com/bishopfox/sliver/protobuf/clientpb"
-	"github.com/bishopfox/sliver/server/c2"
+	"github.com/starkzarn/glod/protobuf/clientpb"
+	"github.com/starkzarn/glod/server/c2"
 )
 
 // StartTCPStagerListener starts a TCP stager listener

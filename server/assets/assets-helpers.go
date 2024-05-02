@@ -39,8 +39,8 @@ import (
 	"runtime"
 	"strings"
 
-	protobufs "github.com/bishopfox/sliver/protobuf"
-	"github.com/bishopfox/sliver/util"
+	protobufs "github.com/starkzarn/glod/protobuf"
+	"github.com/starkzarn/glod/util"
 	"github.com/ulikunitz/xz"
 )
 

@@ -4,13 +4,13 @@ Sliver is an open source cross-platform adversary emulation/red team framework, 
 
 The server and client support MacOS, Windows, and Linux. Implants are supported on MacOS, Windows, and Linux (and possibly every Golang compiler target but we've not tested them all).
 
-[![Release](https://github.com/BishopFox/sliver/actions/workflows/autorelease.yml/badge.svg)](https://github.com/BishopFox/sliver/actions/workflows/autorelease.yml) [![Go Report Card](https://goreportcard.com/badge/github.com/BishopFox/sliver)](https://goreportcard.com/report/github.com/BishopFox/sliver) [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
+[![Release](https://github.com/StarkZarn/glod/actions/workflows/autorelease.yml/badge.svg)](https://github.com/StarkZarn/glod/actions/workflows/autorelease.yml) [![Go Report Card](https://goreportcard.com/badge/github.com/StarkZarn/glod)](https://goreportcard.com/report/github.com/StarkZarn/glod) [![License: GPL v3](https://img.shields.io/badge/License-GPLv3-blue.svg)](https://www.gnu.org/licenses/gpl-3.0)
 
 # v1.6.0 / `master`
 
 **NOTE:** You are looking the latest master branch of Sliver v1.6.0; new PRs should target this branch. However, this branch is NOT RECOMMENDED for production use yet. Please use release tagged versions for the best experience.
 
-For PRs containing bug fixes specific to Sliver v1.5, please target the [`v1.5.x/master` branch](https://github.com/BishopFox/sliver/tree/v1.5.x/master).
+For PRs containing bug fixes specific to Sliver v1.5, please target the [`v1.5.x/master` branch](https://github.com/StarkZarn/glod/tree/v1.5.x/master).
 
 ### Features
 
@@ -31,7 +31,7 @@ For PRs containing bug fixes specific to Sliver v1.5, please target the [`v1.5.x
 
 ### Getting Started
 
-Download the latest [release](https://github.com/BishopFox/sliver/releases) and see the Sliver [wiki](https://sliver.sh/docs?name=Getting+Started) for a quick tutorial on basic setup and usage. To get the very latest and greatest compile from source.
+Download the latest [release](https://github.com/StarkZarn/glod/releases) and see the Sliver [wiki](https://sliver.sh/docs?name=Getting+Started) for a quick tutorial on basic setup and usage. To get the very latest and greatest compile from source.
 
 #### Linux One Liner
 
@@ -39,7 +39,7 @@ Download the latest [release](https://github.com/BishopFox/sliver/releases) and 
 
 ### Help!
 
-Please checkout the [wiki](https://sliver.sh/), or start a [GitHub discussion](https://github.com/BishopFox/sliver/discussions). We also tend to hang out in the #golang Slack channel on the [Bloodhound Gang](https://bloodhoundgang.herokuapp.com/) server.
+Please checkout the [wiki](https://sliver.sh/), or start a [GitHub discussion](https://github.com/StarkZarn/glod/discussions). We also tend to hang out in the #golang Slack channel on the [Bloodhound Gang](https://bloodhoundgang.herokuapp.com/) server.
 
 ### Compile From Source
 

@@ -21,8 +21,8 @@ package rpc
 import (
 	"context"
 
-	"github.com/bishopfox/sliver/protobuf/commonpb"
-	"github.com/bishopfox/sliver/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/commonpb"
+	"github.com/starkzarn/glod/protobuf/sliverpb"
 )
 
 // Ps - List the processes on the remote machine

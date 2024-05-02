@@ -22,7 +22,7 @@ import (
 	"errors"
 	"sync"
 
-	"github.com/bishopfox/sliver/protobuf/clientpb"
+	"github.com/starkzarn/glod/protobuf/clientpb"
 )
 
 var (

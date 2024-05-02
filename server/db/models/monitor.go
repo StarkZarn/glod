@@ -19,7 +19,7 @@ package models
 */
 
 import (
-	"github.com/bishopfox/sliver/protobuf/clientpb"
+	"github.com/starkzarn/glod/protobuf/clientpb"
 	"github.com/gofrs/uuid"
 	"gorm.io/gorm"
 )

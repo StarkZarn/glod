@@ -27,9 +27,9 @@ import (
 	"text/tabwriter"
 
 	"github.com/AlecAivazis/survey/v2"
-	"github.com/bishopfox/sliver/client/console"
-	"github.com/bishopfox/sliver/client/core"
-	"github.com/bishopfox/sliver/client/overlord"
+	"github.com/starkzarn/glod/client/console"
+	"github.com/starkzarn/glod/client/core"
+	"github.com/starkzarn/glod/client/overlord"
 	"github.com/reeflective/readline"
 	"github.com/spf13/cobra"
 )

@@ -30,8 +30,8 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 
-	"github.com/bishopfox/sliver/client/assets"
-	"github.com/bishopfox/sliver/protobuf/rpcpb"
+	"github.com/starkzarn/glod/client/assets"
+	"github.com/starkzarn/glod/protobuf/rpcpb"
 )
 
 const (

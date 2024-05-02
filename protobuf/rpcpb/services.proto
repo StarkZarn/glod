@@ -1,6 +1,6 @@
 syntax = "proto3";
 package rpcpb;
-option go_package = "github.com/bishopfox/sliver/protobuf/rpcpb";
+option go_package = "github.com/starkzarn/glod/protobuf/rpcpb";
 
 import "commonpb/common.proto";
 import "sliverpb/sliver.proto";

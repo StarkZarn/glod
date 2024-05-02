@@ -23,10 +23,10 @@ import (
 	"log"
 	"os"
 
-	"github.com/bishopfox/sliver/protobuf/clientpb"
-	"github.com/bishopfox/sliver/protobuf/commonpb"
-	"github.com/bishopfox/sliver/server/configs"
-	"github.com/bishopfox/sliver/server/db"
+	"github.com/starkzarn/glod/protobuf/clientpb"
+	"github.com/starkzarn/glod/protobuf/commonpb"
+	"github.com/starkzarn/glod/server/configs"
+	"github.com/starkzarn/glod/server/db"
 )
 
 // GetC2Profiles - Retrieve C2 Profile names and id's

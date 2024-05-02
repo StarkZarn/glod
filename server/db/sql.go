@@ -22,9 +22,9 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/bishopfox/sliver/server/configs"
-	"github.com/bishopfox/sliver/server/db/models"
-	"github.com/bishopfox/sliver/server/log"
+	"github.com/starkzarn/glod/server/configs"
+	"github.com/starkzarn/glod/server/db/models"
+	"github.com/starkzarn/glod/server/log"
 	"gorm.io/driver/mysql"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"

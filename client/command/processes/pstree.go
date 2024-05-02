@@ -6,8 +6,8 @@ import (
 
 	"github.com/xlab/treeprint"
 
-	"github.com/bishopfox/sliver/client/console"
-	"github.com/bishopfox/sliver/protobuf/commonpb"
+	"github.com/starkzarn/glod/client/console"
+	"github.com/starkzarn/glod/protobuf/commonpb"
 )
 
 // A PsTree is a tree of *commonpb.Process

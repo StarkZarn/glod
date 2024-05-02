@@ -8,9 +8,9 @@ package rpcpb
 
 import (
 	context "context"
-	clientpb "github.com/bishopfox/sliver/protobuf/clientpb"
-	commonpb "github.com/bishopfox/sliver/protobuf/commonpb"
-	sliverpb "github.com/bishopfox/sliver/protobuf/sliverpb"
+	clientpb "github.com/starkzarn/glod/protobuf/clientpb"
+	commonpb "github.com/starkzarn/glod/protobuf/commonpb"
+	sliverpb "github.com/starkzarn/glod/protobuf/sliverpb"
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"

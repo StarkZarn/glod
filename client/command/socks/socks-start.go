@@ -25,8 +25,8 @@ import (
 	"net"
 	"time"
 
-	"github.com/bishopfox/sliver/client/console"
-	"github.com/bishopfox/sliver/client/core"
+	"github.com/starkzarn/glod/client/console"
+	"github.com/starkzarn/glod/client/core"
 	"github.com/spf13/cobra"
 	"gopkg.in/AlecAivazis/survey.v1"
 )

@@ -23,8 +23,8 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/bishopfox/sliver/server/certs"
-	"github.com/bishopfox/sliver/server/console"
+	"github.com/starkzarn/glod/server/certs"
+	"github.com/starkzarn/glod/server/console"
 	"github.com/spf13/cobra"
 )
 

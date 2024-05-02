@@ -21,11 +21,11 @@ package cli
 import (
 	"fmt"
 
-	"github.com/bishopfox/sliver/client/assets"
-	"github.com/bishopfox/sliver/client/command"
-	"github.com/bishopfox/sliver/client/console"
-	"github.com/bishopfox/sliver/client/transport"
-	"github.com/bishopfox/sliver/protobuf/rpcpb"
+	"github.com/starkzarn/glod/client/assets"
+	"github.com/starkzarn/glod/client/command"
+	"github.com/starkzarn/glod/client/console"
+	"github.com/starkzarn/glod/client/transport"
+	"github.com/starkzarn/glod/protobuf/rpcpb"
 	"github.com/spf13/cobra"
 	"google.golang.org/grpc"
 )

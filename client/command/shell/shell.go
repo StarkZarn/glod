@@ -25,10 +25,10 @@ import (
 	"log"
 	"os"
 
-	"github.com/bishopfox/sliver/client/command/settings"
-	"github.com/bishopfox/sliver/client/console"
-	"github.com/bishopfox/sliver/client/core"
-	"github.com/bishopfox/sliver/protobuf/sliverpb"
+	"github.com/starkzarn/glod/client/command/settings"
+	"github.com/starkzarn/glod/client/console"
+	"github.com/starkzarn/glod/client/core"
+	"github.com/starkzarn/glod/protobuf/sliverpb"
 	"github.com/spf13/cobra"
 	"golang.org/x/term"
 )
