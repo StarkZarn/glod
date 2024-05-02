@@ -23,9 +23,9 @@ import (
 	// {{if .Config.Debug}}
 	"log"
 	// {{end}}
-	"github.com/bishopfox/sliver/protobuf/sliverpb"
-	"github.com/bishopfox/sliver/server/core"
-	"github.com/bishopfox/sliver/server/core/rtunnels"
+	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/server/core"
+	"github.com/starkzarn/glod/server/core/rtunnels"
 	"google.golang.org/protobuf/proto"
 )
 

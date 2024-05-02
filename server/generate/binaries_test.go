@@ -23,9 +23,9 @@ import (
 	"runtime"
 	"testing"
 
-	"github.com/bishopfox/sliver/protobuf/clientpb"
-	"github.com/bishopfox/sliver/server/certs"
-	"github.com/bishopfox/sliver/server/db/models"
+	"github.com/starkzarn/glod/protobuf/clientpb"
+	"github.com/starkzarn/glod/server/certs"
+	"github.com/starkzarn/glod/server/db/models"
 )
 
 const (

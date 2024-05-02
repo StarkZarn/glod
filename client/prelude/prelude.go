@@ -24,10 +24,10 @@ import (
 	"net"
 	"sync"
 
-	"github.com/bishopfox/sliver/client/prelude/util"
-	"github.com/bishopfox/sliver/protobuf/clientpb"
-	"github.com/bishopfox/sliver/protobuf/rpcpb"
-	"github.com/bishopfox/sliver/protobuf/sliverpb"
+	"github.com/starkzarn/glod/client/prelude/util"
+	"github.com/starkzarn/glod/protobuf/clientpb"
+	"github.com/starkzarn/glod/protobuf/rpcpb"
+	"github.com/starkzarn/glod/protobuf/sliverpb"
 )
 
 var ImplantMapper *OperatorImplantMapper

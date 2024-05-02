@@ -36,7 +36,7 @@ import (
 	// {{end}}
 
 	"filippo.io/age"
-	"github.com/bishopfox/sliver/implant/sliver/encoders"
+	"github.com/starkzarn/glod/implant/sliver/encoders"
 	"github.com/pquerna/otp"
 	"github.com/pquerna/otp/totp"
 	"golang.org/x/crypto/chacha20poly1305"

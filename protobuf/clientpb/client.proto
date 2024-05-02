@@ -1,6 +1,6 @@
 syntax = "proto3";
 package clientpb;
-option go_package = "github.com/bishopfox/sliver/protobuf/clientpb";
+option go_package = "github.com/starkzarn/glod/protobuf/clientpb";
 
 import "commonpb/common.proto";
 

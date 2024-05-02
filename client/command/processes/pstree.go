@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"sort"
 
-	"github.com/bishopfox/sliver/client/console"
-	"github.com/bishopfox/sliver/protobuf/commonpb"
+	"github.com/starkzarn/glod/client/console"
+	"github.com/starkzarn/glod/protobuf/commonpb"
 	"github.com/xlab/treeprint"
 )
 

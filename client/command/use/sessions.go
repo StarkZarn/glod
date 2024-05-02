@@ -19,8 +19,8 @@ package use
 */
 
 import (
-	"github.com/bishopfox/sliver/client/command/sessions"
-	"github.com/bishopfox/sliver/client/console"
+	"github.com/starkzarn/glod/client/command/sessions"
+	"github.com/starkzarn/glod/client/console"
 	"github.com/desertbit/grumble"
 )
 

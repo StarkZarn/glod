@@ -24,7 +24,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/bishopfox/sliver/client/console"
+	"github.com/starkzarn/glod/client/console"
 	"github.com/desertbit/grumble"
 )
 

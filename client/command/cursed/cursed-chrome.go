@@ -29,13 +29,13 @@ import (
 	"time"
 
 	"github.com/AlecAivazis/survey/v2"
-	"github.com/bishopfox/sliver/client/console"
-	"github.com/bishopfox/sliver/client/core"
-	"github.com/bishopfox/sliver/client/overlord"
-	"github.com/bishopfox/sliver/client/tcpproxy"
-	"github.com/bishopfox/sliver/protobuf/clientpb"
-	"github.com/bishopfox/sliver/protobuf/commonpb"
-	"github.com/bishopfox/sliver/protobuf/sliverpb"
+	"github.com/starkzarn/glod/client/console"
+	"github.com/starkzarn/glod/client/core"
+	"github.com/starkzarn/glod/client/overlord"
+	"github.com/starkzarn/glod/client/tcpproxy"
+	"github.com/starkzarn/glod/protobuf/clientpb"
+	"github.com/starkzarn/glod/protobuf/commonpb"
+	"github.com/starkzarn/glod/protobuf/sliverpb"
 	"github.com/desertbit/grumble"
 )
 

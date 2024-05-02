@@ -24,8 +24,8 @@ import (
 	"os"
 	"time"
 
-	"github.com/bishopfox/sliver/implant/sliver/transports"
-	"github.com/bishopfox/sliver/protobuf/sliverpb"
+	"github.com/starkzarn/glod/implant/sliver/transports"
+	"github.com/starkzarn/glod/protobuf/sliverpb"
 
 	// {{if .Config.Debug}}
 	"log"

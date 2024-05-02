@@ -21,8 +21,8 @@ package db
 */
 
 import (
-	"github.com/bishopfox/sliver/server/configs"
-	"github.com/bishopfox/sliver/server/db/gosqlite"
+	"github.com/starkzarn/glod/server/configs"
+	"github.com/starkzarn/glod/server/db/gosqlite"
 	"gorm.io/gorm"
 	_ "modernc.org/sqlite"
 )

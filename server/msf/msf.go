@@ -25,7 +25,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/bishopfox/sliver/server/log"
+	"github.com/starkzarn/glod/server/log"
 )
 
 const (

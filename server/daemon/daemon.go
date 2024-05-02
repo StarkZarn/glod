@@ -24,9 +24,9 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/bishopfox/sliver/server/configs"
-	"github.com/bishopfox/sliver/server/log"
-	"github.com/bishopfox/sliver/server/transport"
+	"github.com/starkzarn/glod/server/configs"
+	"github.com/starkzarn/glod/server/log"
+	"github.com/starkzarn/glod/server/transport"
 )
 
 var (

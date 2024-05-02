@@ -26,11 +26,11 @@ import (
 	"testing"
 	"time"
 
-	implantCrypto "github.com/bishopfox/sliver/implant/sliver/cryptography"
-	"github.com/bishopfox/sliver/server/certs"
-	"github.com/bishopfox/sliver/server/cryptography"
-	"github.com/bishopfox/sliver/server/db"
-	"github.com/bishopfox/sliver/server/db/models"
+	implantCrypto "github.com/starkzarn/glod/implant/sliver/cryptography"
+	"github.com/starkzarn/glod/server/certs"
+	"github.com/starkzarn/glod/server/cryptography"
+	"github.com/starkzarn/glod/server/db"
+	"github.com/starkzarn/glod/server/db/models"
 )
 
 var (

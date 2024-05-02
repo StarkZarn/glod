@@ -25,8 +25,8 @@ import (
 	"path/filepath"
 
 	"github.com/AlecAivazis/survey/v2"
-	"github.com/bishopfox/sliver/client/assets"
-	"github.com/bishopfox/sliver/client/console"
+	"github.com/starkzarn/glod/client/assets"
+	"github.com/starkzarn/glod/client/console"
 	"github.com/desertbit/grumble"
 )
 

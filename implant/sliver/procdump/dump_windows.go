@@ -26,14 +26,14 @@ import (
 
 	// {{if .Config.Evasion}}
 	// {{if eq .Config.GOARCH "amd64"}}
-	"github.com/bishopfox/sliver/implant/sliver/evasion"
+	"github.com/starkzarn/glod/implant/sliver/evasion"
 	// {{end}}
 	// {{end}}
 
 	"bytes"
 	"encoding/binary"
-	"github.com/bishopfox/sliver/implant/sliver/priv"
-	"github.com/bishopfox/sliver/implant/sliver/syscalls"
+	"github.com/starkzarn/glod/implant/sliver/priv"
+	"github.com/starkzarn/glod/implant/sliver/syscalls"
 	"golang.org/x/sys/windows"
 	"unsafe"
 )

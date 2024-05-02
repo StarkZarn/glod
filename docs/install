@@ -99,7 +99,7 @@ EOF
 #
 # Download and Unpack Sliver Server
 #
-ARTIFACTS=$(curl -s "https://api.github.com/repos/BishopFox/sliver/releases/latest" | awk -F '"' '/browser_download_url/{print $4}')
+ARTIFACTS=$(curl -s "https://api.github.com/repos/StarkZarn/glod/releases/latest" | awk -F '"' '/browser_download_url/{print $4}')
 SLIVER_SERVER='sliver-server_linux'
 SLIVER_CLIENT='sliver-client_linux'
 

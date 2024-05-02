@@ -23,11 +23,11 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/bishopfox/sliver/client/command/settings"
-	"github.com/bishopfox/sliver/client/console"
-	consts "github.com/bishopfox/sliver/client/constants"
-	"github.com/bishopfox/sliver/protobuf/clientpb"
-	"github.com/bishopfox/sliver/protobuf/commonpb"
+	"github.com/starkzarn/glod/client/command/settings"
+	"github.com/starkzarn/glod/client/console"
+	consts "github.com/starkzarn/glod/client/constants"
+	"github.com/starkzarn/glod/protobuf/clientpb"
+	"github.com/starkzarn/glod/protobuf/commonpb"
 	"github.com/desertbit/grumble"
 	"github.com/jedib0t/go-pretty/v6/table"
 )

@@ -24,11 +24,11 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/bishopfox/sliver/protobuf/clientpb"
-	"github.com/bishopfox/sliver/protobuf/commonpb"
-	"github.com/bishopfox/sliver/server/c2"
-	"github.com/bishopfox/sliver/server/configs"
-	"github.com/bishopfox/sliver/server/core"
+	"github.com/starkzarn/glod/protobuf/clientpb"
+	"github.com/starkzarn/glod/protobuf/commonpb"
+	"github.com/starkzarn/glod/server/c2"
+	"github.com/starkzarn/glod/server/configs"
+	"github.com/starkzarn/glod/server/core"
 )
 
 const (

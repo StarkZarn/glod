@@ -30,11 +30,11 @@ import (
 	"path/filepath"
 	"strings"
 
-	"github.com/bishopfox/sliver/server/assets"
-	"github.com/bishopfox/sliver/server/db"
-	"github.com/bishopfox/sliver/server/db/models"
-	"github.com/bishopfox/sliver/server/log"
-	"github.com/bishopfox/sliver/server/watchtower"
+	"github.com/starkzarn/glod/server/assets"
+	"github.com/starkzarn/glod/server/db"
+	"github.com/starkzarn/glod/server/db/models"
+	"github.com/starkzarn/glod/server/log"
+	"github.com/starkzarn/glod/server/watchtower"
 	"gorm.io/gorm/clause"
 )
 

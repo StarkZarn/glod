@@ -23,10 +23,10 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/bishopfox/sliver/client/command/generate"
-	"github.com/bishopfox/sliver/client/console"
-	"github.com/bishopfox/sliver/protobuf/clientpb"
-	"github.com/bishopfox/sliver/protobuf/sliverpb"
+	"github.com/starkzarn/glod/client/command/generate"
+	"github.com/starkzarn/glod/client/console"
+	"github.com/starkzarn/glod/protobuf/clientpb"
+	"github.com/starkzarn/glod/protobuf/sliverpb"
 	"github.com/desertbit/grumble"
 )
 

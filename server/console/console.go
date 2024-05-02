@@ -25,14 +25,14 @@ import (
 
 	"github.com/desertbit/grumble"
 
-	"github.com/bishopfox/sliver/client/command"
-	"github.com/bishopfox/sliver/client/command/help"
-	clientconsole "github.com/bishopfox/sliver/client/console"
-	consts "github.com/bishopfox/sliver/client/constants"
-	clienttransport "github.com/bishopfox/sliver/client/transport"
-	"github.com/bishopfox/sliver/protobuf/rpcpb"
-	"github.com/bishopfox/sliver/server/configs"
-	"github.com/bishopfox/sliver/server/transport"
+	"github.com/starkzarn/glod/client/command"
+	"github.com/starkzarn/glod/client/command/help"
+	clientconsole "github.com/starkzarn/glod/client/console"
+	consts "github.com/starkzarn/glod/client/constants"
+	clienttransport "github.com/starkzarn/glod/client/transport"
+	"github.com/starkzarn/glod/protobuf/rpcpb"
+	"github.com/starkzarn/glod/server/configs"
+	"github.com/starkzarn/glod/server/transport"
 	"google.golang.org/grpc"
 )
 

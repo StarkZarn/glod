@@ -28,7 +28,7 @@ import (
 	"net/url"
 	"time"
 
-	"github.com/bishopfox/sliver/client/core"
+	"github.com/starkzarn/glod/client/core"
 	"github.com/chromedp/cdproto/cdp"
 	"github.com/chromedp/cdproto/network"
 	"github.com/chromedp/cdproto/page"

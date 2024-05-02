@@ -8,7 +8,7 @@ import (
 	"text/tabwriter"
 
 	"github.com/AlecAivazis/survey/v2"
-	"github.com/bishopfox/sliver/protobuf/clientpb"
+	"github.com/starkzarn/glod/protobuf/clientpb"
 )
 
 // SelectBeaconTask - Select a beacon task interactively

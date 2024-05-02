@@ -23,8 +23,8 @@ import (
 	"io/ioutil"
 	"path"
 
-	"github.com/bishopfox/sliver/client/assets"
-	"github.com/bishopfox/sliver/client/core"
+	"github.com/starkzarn/glod/client/assets"
+	"github.com/starkzarn/glod/client/core"
 )
 
 const (

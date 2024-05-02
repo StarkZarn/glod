@@ -32,16 +32,16 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/bishopfox/sliver/implant"
-	"github.com/bishopfox/sliver/protobuf/clientpb"
-	"github.com/bishopfox/sliver/server/assets"
-	"github.com/bishopfox/sliver/server/certs"
-	"github.com/bishopfox/sliver/server/configs"
-	"github.com/bishopfox/sliver/server/cryptography"
-	"github.com/bishopfox/sliver/server/db/models"
-	"github.com/bishopfox/sliver/server/gogo"
-	"github.com/bishopfox/sliver/server/log"
-	"github.com/bishopfox/sliver/util"
+	"github.com/starkzarn/glod/implant"
+	"github.com/starkzarn/glod/protobuf/clientpb"
+	"github.com/starkzarn/glod/server/assets"
+	"github.com/starkzarn/glod/server/certs"
+	"github.com/starkzarn/glod/server/configs"
+	"github.com/starkzarn/glod/server/cryptography"
+	"github.com/starkzarn/glod/server/db/models"
+	"github.com/starkzarn/glod/server/gogo"
+	"github.com/starkzarn/glod/server/log"
+	"github.com/starkzarn/glod/util"
 )
 
 var (
@@ -501,7 +501,7 @@ func renderSliverGoCode(name string, otpSecret string, config *models.ImplantCon
 		return "", err
 	}
 
-	sliverPkgDir := filepath.Join(srcDir, "github.com", "bishopfox", "sliver") // "main"
+	sliverPkgDir := filepath.Join(srcDir, "github.com", "starkzarn", "glod") // "main"
 	err = os.MkdirAll(sliverPkgDir, 0700)
 	if err != nil {
 		return "", nil

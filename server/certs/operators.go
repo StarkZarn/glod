@@ -23,8 +23,8 @@ import (
 	"encoding/pem"
 	"fmt"
 
-	"github.com/bishopfox/sliver/server/db"
-	"github.com/bishopfox/sliver/server/db/models"
+	"github.com/starkzarn/glod/server/db"
+	"github.com/starkzarn/glod/server/db/models"
 )
 
 const (

@@ -21,9 +21,9 @@ package sessions
 import (
 	"context"
 
-	"github.com/bishopfox/sliver/client/command/kill"
-	"github.com/bishopfox/sliver/client/console"
-	"github.com/bishopfox/sliver/protobuf/commonpb"
+	"github.com/starkzarn/glod/client/command/kill"
+	"github.com/starkzarn/glod/client/console"
+	"github.com/starkzarn/glod/protobuf/commonpb"
 	"github.com/desertbit/grumble"
 )
 

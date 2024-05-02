@@ -26,8 +26,8 @@ import (
 	"sync"
 	"testing"
 
-	implantCrypto "github.com/bishopfox/sliver/implant/sliver/cryptography"
-	"github.com/bishopfox/sliver/server/cryptography/minisign"
+	implantCrypto "github.com/starkzarn/glod/implant/sliver/cryptography"
+	"github.com/starkzarn/glod/server/cryptography/minisign"
 )
 
 var (

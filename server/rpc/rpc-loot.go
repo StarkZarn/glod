@@ -21,11 +21,11 @@ package rpc
 import (
 	"context"
 
-	consts "github.com/bishopfox/sliver/client/constants"
-	"github.com/bishopfox/sliver/protobuf/clientpb"
-	"github.com/bishopfox/sliver/protobuf/commonpb"
-	"github.com/bishopfox/sliver/server/core"
-	"github.com/bishopfox/sliver/server/loot"
+	consts "github.com/starkzarn/glod/client/constants"
+	"github.com/starkzarn/glod/protobuf/clientpb"
+	"github.com/starkzarn/glod/protobuf/commonpb"
+	"github.com/starkzarn/glod/server/core"
+	"github.com/starkzarn/glod/server/loot"
 )
 
 // var (

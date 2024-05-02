@@ -21,9 +21,9 @@ package armory
 import (
 	"regexp"
 
-	"github.com/bishopfox/sliver/client/command/alias"
-	"github.com/bishopfox/sliver/client/command/extensions"
-	"github.com/bishopfox/sliver/client/console"
+	"github.com/starkzarn/glod/client/command/alias"
+	"github.com/starkzarn/glod/client/command/extensions"
+	"github.com/starkzarn/glod/client/console"
 	"github.com/desertbit/grumble"
 )
 

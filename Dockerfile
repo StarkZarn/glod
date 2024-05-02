@@ -51,15 +51,15 @@ RUN go install google.golang.org/protobuf/cmd/protoc-gen-go@${PROTOC_GEN_GO_VER}
     && go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@${GRPC_GO}
 
 # Go assets
-WORKDIR /go/src/github.com/bishopfox/sliver
-ADD . /go/src/github.com/bishopfox/sliver/
+WORKDIR /go/src/github.com/starkzarn/glod
+ADD . /go/src/github.com/starkzarn/glod/
 RUN make clean-all
 RUN make \
     && cp -vv sliver-server /opt/sliver-server \
     && /opt/sliver-server unpack --force 
 
 # Run unit tests
-RUN /go/src/github.com/bishopfox/sliver/go-tests.sh
+RUN /go/src/github.com/starkzarn/glod/go-tests.sh
 
 # Clean up
 RUN make clean \

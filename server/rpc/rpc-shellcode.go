@@ -21,9 +21,9 @@ package rpc
 import (
 	"context"
 
-	"github.com/bishopfox/sliver/protobuf/clientpb"
-	"github.com/bishopfox/sliver/protobuf/commonpb"
-	"github.com/bishopfox/sliver/server/sgn"
+	"github.com/starkzarn/glod/protobuf/clientpb"
+	"github.com/starkzarn/glod/protobuf/commonpb"
+	"github.com/starkzarn/glod/server/sgn"
 )
 
 // ShellcodeEncode - Encode a piece shellcode

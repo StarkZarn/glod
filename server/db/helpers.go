@@ -27,7 +27,7 @@ import (
 	"encoding/hex"
 	"time"
 
-	"github.com/bishopfox/sliver/server/db/models"
+	"github.com/starkzarn/glod/server/db/models"
 	"github.com/gofrs/uuid"
 	"gorm.io/gorm"
 )

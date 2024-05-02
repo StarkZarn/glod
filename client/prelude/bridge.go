@@ -30,11 +30,11 @@ import (
 	"strings"
 	"time"
 
-	"github.com/bishopfox/sliver/protobuf/clientpb"
-	"github.com/bishopfox/sliver/protobuf/commonpb"
-	"github.com/bishopfox/sliver/protobuf/rpcpb"
-	"github.com/bishopfox/sliver/protobuf/sliverpb"
-	"github.com/bishopfox/sliver/util"
+	"github.com/starkzarn/glod/protobuf/clientpb"
+	"github.com/starkzarn/glod/protobuf/commonpb"
+	"github.com/starkzarn/glod/protobuf/rpcpb"
+	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/util"
 )
 
 const (

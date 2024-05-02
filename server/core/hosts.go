@@ -21,10 +21,10 @@ package core
 import (
 	"errors"
 
-	consts "github.com/bishopfox/sliver/client/constants"
-	"github.com/bishopfox/sliver/server/db"
-	"github.com/bishopfox/sliver/server/db/models"
-	"github.com/bishopfox/sliver/server/log"
+	consts "github.com/starkzarn/glod/client/constants"
+	"github.com/starkzarn/glod/server/db"
+	"github.com/starkzarn/glod/server/db/models"
+	"github.com/starkzarn/glod/server/log"
 	"github.com/gofrs/uuid"
 	"gorm.io/gorm"
 )

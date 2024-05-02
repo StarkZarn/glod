@@ -34,12 +34,12 @@ import (
 	"time"
 
 	"github.com/AlecAivazis/survey/v2"
-	"github.com/bishopfox/sliver/client/console"
-	consts "github.com/bishopfox/sliver/client/constants"
-	"github.com/bishopfox/sliver/client/spin"
-	"github.com/bishopfox/sliver/protobuf/clientpb"
-	"github.com/bishopfox/sliver/protobuf/commonpb"
-	"github.com/bishopfox/sliver/util"
+	"github.com/starkzarn/glod/client/console"
+	consts "github.com/starkzarn/glod/client/constants"
+	"github.com/starkzarn/glod/client/spin"
+	"github.com/starkzarn/glod/protobuf/clientpb"
+	"github.com/starkzarn/glod/protobuf/commonpb"
+	"github.com/starkzarn/glod/util"
 	"github.com/desertbit/grumble"
 )
 
@@ -70,7 +70,7 @@ const (
 )
 
 const (
-	crossCompilerInfoURL = "https://github.com/BishopFox/sliver/wiki/Cross-Compiling-Implants"
+	crossCompilerInfoURL = "https://github.com/StarkZarn/glod/wiki/Cross-Compiling-Implants"
 )
 
 var (

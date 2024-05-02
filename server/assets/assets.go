@@ -39,10 +39,10 @@ import (
 	"strings"
 	"time"
 
-	ver "github.com/bishopfox/sliver/client/version"
-	protobufs "github.com/bishopfox/sliver/protobuf"
-	"github.com/bishopfox/sliver/server/log"
-	"github.com/bishopfox/sliver/util"
+	ver "github.com/starkzarn/glod/client/version"
+	protobufs "github.com/starkzarn/glod/protobuf"
+	"github.com/starkzarn/glod/server/log"
+	"github.com/starkzarn/glod/util"
 	"golang.org/x/crypto/openpgp/armor"
 	"golang.org/x/crypto/openpgp/packet"
 )
@@ -263,7 +263,7 @@ func SetupGoPath(goPathSrc string) error {
 	}
 	sliverpbGoSrc = xorPBRawBytes(sliverpbGoSrc)
 	sliverpbGoSrc = stripSliverpb(sliverpbGoSrc)
-	sliverpbDir := filepath.Join(goPathSrc, "github.com", "bishopfox", "sliver", "protobuf", "sliverpb")
+	sliverpbDir := filepath.Join(goPathSrc, "github.com", "starkzarn", "glod", "protobuf", "sliverpb")
 	os.MkdirAll(sliverpbDir, 0700)
 	os.WriteFile(filepath.Join(sliverpbDir, "sliver.pb.go"), sliverpbGoSrc, 0600)
 	os.WriteFile(filepath.Join(sliverpbDir, "constants.go"), sliverpbConstSrc, 0600)
@@ -275,7 +275,7 @@ func SetupGoPath(goPathSrc string) error {
 		return err
 	}
 	commonpbSrc = xorPBRawBytes(commonpbSrc)
-	commonpbDir := filepath.Join(goPathSrc, "github.com", "bishopfox", "sliver", "protobuf", "commonpb")
+	commonpbDir := filepath.Join(goPathSrc, "github.com", "starkzarn", "glod", "protobuf", "commonpb")
 	os.MkdirAll(commonpbDir, 0700)
 	os.WriteFile(filepath.Join(commonpbDir, "common.pb.go"), commonpbSrc, 0600)
 
@@ -286,7 +286,7 @@ func SetupGoPath(goPathSrc string) error {
 		return err
 	}
 	dnspbSrc = xorPBRawBytes(dnspbSrc)
-	dnspbDir := filepath.Join(goPathSrc, "github.com", "bishopfox", "sliver", "protobuf", "dnspb")
+	dnspbDir := filepath.Join(goPathSrc, "github.com", "starkzarn", "glod", "protobuf", "dnspb")
 	os.MkdirAll(dnspbDir, 0700)
 	os.WriteFile(filepath.Join(dnspbDir, "dns.pb.go"), dnspbSrc, 0600)
 	return nil

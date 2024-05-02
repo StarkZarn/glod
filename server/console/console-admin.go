@@ -30,13 +30,13 @@ import (
 	"path/filepath"
 	"regexp"
 
-	consts "github.com/bishopfox/sliver/client/constants"
-	"github.com/bishopfox/sliver/server/certs"
-	"github.com/bishopfox/sliver/server/configs"
-	"github.com/bishopfox/sliver/server/core"
-	"github.com/bishopfox/sliver/server/db"
-	"github.com/bishopfox/sliver/server/db/models"
-	"github.com/bishopfox/sliver/server/transport"
+	consts "github.com/starkzarn/glod/client/constants"
+	"github.com/starkzarn/glod/server/certs"
+	"github.com/starkzarn/glod/server/configs"
+	"github.com/starkzarn/glod/server/core"
+	"github.com/starkzarn/glod/server/db"
+	"github.com/starkzarn/glod/server/db/models"
+	"github.com/starkzarn/glod/server/transport"
 
 	"github.com/desertbit/grumble"
 )

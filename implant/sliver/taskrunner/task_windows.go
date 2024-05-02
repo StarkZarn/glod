@@ -31,15 +31,15 @@ import (
 	"time"
 	"unsafe"
 
-	"github.com/bishopfox/sliver/implant/sliver/spoof"
+	"github.com/starkzarn/glod/implant/sliver/spoof"
 	"syscall"
 	// {{if .Config.Evasion}}
-	"github.com/bishopfox/sliver/implant/sliver/evasion"
-	"github.com/bishopfox/sliver/implant/sliver/version"
+	"github.com/starkzarn/glod/implant/sliver/evasion"
+	"github.com/starkzarn/glod/implant/sliver/version"
 
 	// {{end}}
 
-	"github.com/bishopfox/sliver/implant/sliver/syscalls"
+	"github.com/starkzarn/glod/implant/sliver/syscalls"
 	"golang.org/x/sys/windows"
 )
 

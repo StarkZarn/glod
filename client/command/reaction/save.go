@@ -23,8 +23,8 @@ import (
 	"os"
 
 	"github.com/AlecAivazis/survey/v2"
-	"github.com/bishopfox/sliver/client/console"
-	"github.com/bishopfox/sliver/client/core"
+	"github.com/starkzarn/glod/client/console"
+	"github.com/starkzarn/glod/client/core"
 	"github.com/desertbit/grumble"
 )
 

@@ -22,9 +22,9 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/bishopfox/sliver/client/console"
-	consts "github.com/bishopfox/sliver/client/constants"
-	"github.com/bishopfox/sliver/protobuf/clientpb"
+	"github.com/starkzarn/glod/client/console"
+	consts "github.com/starkzarn/glod/client/constants"
+	"github.com/starkzarn/glod/protobuf/clientpb"
 	"google.golang.org/protobuf/proto"
 
 	"github.com/desertbit/grumble"

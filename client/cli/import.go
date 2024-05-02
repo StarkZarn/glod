@@ -22,7 +22,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/bishopfox/sliver/client/assets"
+	"github.com/starkzarn/glod/client/assets"
 	"github.com/spf13/cobra"
 )
 

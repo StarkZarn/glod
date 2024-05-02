@@ -25,10 +25,10 @@ import (
 	"io/ioutil"
 	"path"
 
-	"github.com/bishopfox/sliver/client/assets"
-	"github.com/bishopfox/sliver/client/core"
-	"github.com/bishopfox/sliver/protobuf/rpcpb"
-	"github.com/bishopfox/sliver/protobuf/sliverpb"
+	"github.com/starkzarn/glod/client/assets"
+	"github.com/starkzarn/glod/client/core"
+	"github.com/starkzarn/glod/protobuf/rpcpb"
+	"github.com/starkzarn/glod/protobuf/sliverpb"
 )
 
 const (

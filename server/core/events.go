@@ -19,7 +19,7 @@ package core
 */
 
 import (
-	"github.com/bishopfox/sliver/server/db/models"
+	"github.com/starkzarn/glod/server/db/models"
 )
 
 const (

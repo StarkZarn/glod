@@ -21,8 +21,8 @@ baseurl: "" # the subpath of your site, e.g. /blog
 url: "https://sliver.sh/"
 
 github:
-  latest_url: https://github.com/BishopFox/sliver/releases/latest
-  repository_url: https://github.com/BishopFox/sliver
+  latest_url: https://github.com/StarkZarn/glod/releases/latest
+  repository_url: https://github.com/StarkZarn/glod
 
 # Build settings
 markdown: kramdown

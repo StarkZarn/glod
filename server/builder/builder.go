@@ -27,14 +27,14 @@ import (
 	"path/filepath"
 	"strings"
 
-	consts "github.com/bishopfox/sliver/client/constants"
-	"github.com/bishopfox/sliver/protobuf/clientpb"
-	"github.com/bishopfox/sliver/protobuf/commonpb"
-	"github.com/bishopfox/sliver/protobuf/rpcpb"
-	"github.com/bishopfox/sliver/server/codenames"
-	"github.com/bishopfox/sliver/server/generate"
-	"github.com/bishopfox/sliver/server/log"
-	"github.com/bishopfox/sliver/util"
+	consts "github.com/starkzarn/glod/client/constants"
+	"github.com/starkzarn/glod/protobuf/clientpb"
+	"github.com/starkzarn/glod/protobuf/commonpb"
+	"github.com/starkzarn/glod/protobuf/rpcpb"
+	"github.com/starkzarn/glod/server/codenames"
+	"github.com/starkzarn/glod/server/generate"
+	"github.com/starkzarn/glod/server/log"
+	"github.com/starkzarn/glod/util"
 )
 
 var (

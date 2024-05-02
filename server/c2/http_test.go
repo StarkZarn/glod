@@ -27,12 +27,12 @@ import (
 	"net/url"
 	"testing"
 
-	implantCrypto "github.com/bishopfox/sliver/implant/sliver/cryptography"
-	implantEncoders "github.com/bishopfox/sliver/implant/sliver/encoders"
-	implantTransports "github.com/bishopfox/sliver/implant/sliver/transports/httpclient"
-	"github.com/bishopfox/sliver/protobuf/sliverpb"
-	"github.com/bishopfox/sliver/server/configs"
-	"github.com/bishopfox/sliver/server/cryptography"
+	implantCrypto "github.com/starkzarn/glod/implant/sliver/cryptography"
+	implantEncoders "github.com/starkzarn/glod/implant/sliver/encoders"
+	implantTransports "github.com/starkzarn/glod/implant/sliver/transports/httpclient"
+	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/server/configs"
+	"github.com/starkzarn/glod/server/cryptography"
 	"google.golang.org/protobuf/proto"
 )
 

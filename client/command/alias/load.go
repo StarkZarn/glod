@@ -28,13 +28,13 @@ import (
 	"strings"
 
 	"github.com/AlecAivazis/survey/v2"
-	"github.com/bishopfox/sliver/client/assets"
-	"github.com/bishopfox/sliver/client/command/help"
-	"github.com/bishopfox/sliver/client/console"
-	consts "github.com/bishopfox/sliver/client/constants"
-	"github.com/bishopfox/sliver/protobuf/clientpb"
-	"github.com/bishopfox/sliver/protobuf/sliverpb"
-	"github.com/bishopfox/sliver/util"
+	"github.com/starkzarn/glod/client/assets"
+	"github.com/starkzarn/glod/client/command/help"
+	"github.com/starkzarn/glod/client/console"
+	consts "github.com/starkzarn/glod/client/constants"
+	"github.com/starkzarn/glod/protobuf/clientpb"
+	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/util"
 	"github.com/desertbit/grumble"
 	"google.golang.org/protobuf/proto"
 )
@@ -160,7 +160,7 @@ func LoadAlias(manifestPath string, con *console.SliverConsoleClient) (*AliasMan
 	helpMsg := fmt.Sprintf("[%s] %s", aliasManifest.Name, aliasManifest.Help)
 	longHelpMsg := help.FormatHelpTmpl(aliasManifest.LongHelp)
 	longHelpMsg += "\n\n⚠️  If you're having issues passing arguments to the alias please read:\n"
-	longHelpMsg += "https://github.com/BishopFox/sliver/wiki/Aliases-&-Extensions#aliases-command-parsing"
+	longHelpMsg += "https://github.com/StarkZarn/glod/wiki/Aliases-&-Extensions#aliases-command-parsing"
 	addAliasCmd := &grumble.Command{
 		Name:     aliasManifest.CommandName,
 		Help:     helpMsg,

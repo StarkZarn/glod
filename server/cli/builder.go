@@ -25,13 +25,13 @@ import (
 	"runtime/debug"
 	"strings"
 
-	clientAssets "github.com/bishopfox/sliver/client/assets"
-	"github.com/bishopfox/sliver/client/transport"
-	"github.com/bishopfox/sliver/client/version"
-	"github.com/bishopfox/sliver/protobuf/clientpb"
-	"github.com/bishopfox/sliver/server/builder"
-	"github.com/bishopfox/sliver/server/generate"
-	"github.com/bishopfox/sliver/server/log"
+	clientAssets "github.com/starkzarn/glod/client/assets"
+	"github.com/starkzarn/glod/client/transport"
+	"github.com/starkzarn/glod/client/version"
+	"github.com/starkzarn/glod/protobuf/clientpb"
+	"github.com/starkzarn/glod/server/builder"
+	"github.com/starkzarn/glod/server/generate"
+	"github.com/starkzarn/glod/server/log"
 	"github.com/spf13/cobra"
 )
 

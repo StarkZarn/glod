@@ -1,4 +1,4 @@
-module github.com/bishopfox/sliver
+module github.com/starkzarn/glod
 
 go 1.18
 

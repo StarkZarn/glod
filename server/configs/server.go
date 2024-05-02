@@ -26,8 +26,8 @@ import (
 	"path"
 	"time"
 
-	"github.com/bishopfox/sliver/server/assets"
-	"github.com/bishopfox/sliver/server/log"
+	"github.com/starkzarn/glod/server/assets"
+	"github.com/starkzarn/glod/server/log"
 	"github.com/sirupsen/logrus"
 )
 

@@ -37,9 +37,9 @@ import (
 	"time"
 
 	"filippo.io/age"
-	"github.com/bishopfox/sliver/server/cryptography/minisign"
-	"github.com/bishopfox/sliver/server/db"
-	"github.com/bishopfox/sliver/util/encoders"
+	"github.com/starkzarn/glod/server/cryptography/minisign"
+	"github.com/starkzarn/glod/server/db"
+	"github.com/starkzarn/glod/util/encoders"
 	"github.com/pquerna/otp"
 	"github.com/pquerna/otp/totp"
 	"golang.org/x/crypto/chacha20poly1305"

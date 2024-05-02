@@ -21,8 +21,8 @@ package jobs
 import (
 	"context"
 
-	"github.com/bishopfox/sliver/client/console"
-	"github.com/bishopfox/sliver/protobuf/clientpb"
+	"github.com/starkzarn/glod/client/console"
+	"github.com/starkzarn/glod/protobuf/clientpb"
 	"github.com/desertbit/grumble"
 )
 

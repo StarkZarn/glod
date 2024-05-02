@@ -24,8 +24,8 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/bishopfox/sliver/protobuf/clientpb"
-	"github.com/bishopfox/sliver/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/clientpb"
+	"github.com/starkzarn/glod/protobuf/sliverpb"
 	"google.golang.org/protobuf/proto"
 )
 

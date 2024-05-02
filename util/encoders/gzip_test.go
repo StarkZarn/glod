@@ -24,7 +24,7 @@ import (
 	insecureRand "math/rand"
 	"testing"
 
-	implantEncoders "github.com/bishopfox/sliver/implant/sliver/encoders"
+	implantEncoders "github.com/starkzarn/glod/implant/sliver/encoders"
 )
 
 func TestGzip(t *testing.T) {

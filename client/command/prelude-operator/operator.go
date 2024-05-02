@@ -19,8 +19,8 @@ package operator
 */
 
 import (
-	"github.com/bishopfox/sliver/client/console"
-	"github.com/bishopfox/sliver/client/prelude"
+	"github.com/starkzarn/glod/client/console"
+	"github.com/starkzarn/glod/client/prelude"
 	"github.com/desertbit/grumble"
 )
 

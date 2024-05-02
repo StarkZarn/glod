@@ -22,7 +22,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/bishopfox/sliver/protobuf/sliverpb"
+	"github.com/starkzarn/glod/protobuf/sliverpb"
 	"github.com/gofrs/uuid"
 )
 

@@ -21,9 +21,9 @@ package core
 import (
 	"sync"
 
-	"github.com/bishopfox/sliver/protobuf/clientpb"
-	"github.com/bishopfox/sliver/protobuf/sliverpb"
-	"github.com/bishopfox/sliver/server/cryptography"
+	"github.com/starkzarn/glod/protobuf/clientpb"
+	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/starkzarn/glod/server/cryptography"
 	"github.com/gofrs/uuid"
 	"google.golang.org/protobuf/proto"
 )

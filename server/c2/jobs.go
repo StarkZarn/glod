@@ -29,11 +29,11 @@ import (
 	"sync"
 	"time"
 
-	consts "github.com/bishopfox/sliver/client/constants"
-	"github.com/bishopfox/sliver/server/certs"
-	"github.com/bishopfox/sliver/server/configs"
-	"github.com/bishopfox/sliver/server/core"
-	"github.com/bishopfox/sliver/server/log"
+	consts "github.com/starkzarn/glod/client/constants"
+	"github.com/starkzarn/glod/server/certs"
+	"github.com/starkzarn/glod/server/configs"
+	"github.com/starkzarn/glod/server/core"
+	"github.com/starkzarn/glod/server/log"
 	"golang.zx2c4.com/wireguard/device"
 )
 
