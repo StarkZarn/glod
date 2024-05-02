@@ -37,7 +37,7 @@ require (
 	github.com/ncruces/go-sqlite3 v0.7.2
 	github.com/reeflective/console v0.1.15
 	github.com/reeflective/readline v1.0.14
-	github.com/rsteube/carapace v0.46.3-0.20231214181515-27e49f3c3b69
+	github.com/rsteube/carapace v1.0.0
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cobra v1.8.0
 	github.com/spf13/pflag v1.0.5
