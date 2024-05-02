@@ -23,13 +23,12 @@ import (
 	"crypto/sha256"
 	"fmt"
 
-	"github.com/starkzarn/glod/protobuf/commonpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
-	"github.com/starkzarn/glod/server/core"
-	"github.com/starkzarn/glod/server/db"
-	"github.com/starkzarn/glod/server/db/models"
-	"github.com/starkzarn/glod/server/log"
-	"github.com/starkzarn/glod/util/encoders"
+	"github.com/bishopfox/sliver/protobuf/commonpb"
+	"github.com/bishopfox/sliver/protobuf/sliverpb"
+	"github.com/bishopfox/sliver/server/core"
+	"github.com/bishopfox/sliver/server/db"
+	"github.com/bishopfox/sliver/server/db/models"
+	"github.com/bishopfox/sliver/server/log"
 )
 
 var (
@@ -49,16 +48,6 @@ func (rpc *Server) Ls(ctx context.Context, req *sliverpb.LsReq) (*sliverpb.Ls, e
 // Mv - Move or rename a file
 func (rpc *Server) Mv(ctx context.Context, req *sliverpb.MvReq) (*sliverpb.Mv, error) {
 	resp := &sliverpb.Mv{Response: &commonpb.Response{}}
-	err := rpc.GenericHandler(req, resp)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-// Cp - Copy a file to another location
-func (rpc *Server) Cp(ctx context.Context, req *sliverpb.CpReq) (*sliverpb.Cp, error) {
-	resp := &sliverpb.Cp{Response: &commonpb.Response{}}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err
@@ -189,18 +178,6 @@ func (rpc *Server) MemfilesRm(ctx context.Context, req *sliverpb.MemfilesRmReq) 
 	return resp, nil
 }
 
-func hashUploadData(encoder string, data []byte) [32]byte {
-	if encoder == "gzip" {
-		decodedData, err := new(encoders.Gzip).Decode(data)
-		if err != nil {
-			return sha256.Sum256(nil)
-		}
-		return sha256.Sum256(decodedData)
-	} else {
-		return sha256.Sum256(data)
-	}
-}
-
 func trackIOC(req *sliverpb.UploadReq, resp *sliverpb.Upload) {
 	fsLog.Debugf("Adding IOC to database ...")
 	request := req.GetRequest()
@@ -219,33 +196,13 @@ func trackIOC(req *sliverpb.UploadReq, resp *sliverpb.Upload) {
 		return
 	}
 
-	sum := hashUploadData(req.Encoder, req.Data)
+	sum := sha256.Sum256(req.Data)
 	ioc := &models.IOC{
-		HostID:   host.HostUUID,
+		HostID:   host.ID,
 		Path:     resp.Path,
 		FileHash: fmt.Sprintf("%x", sum),
 	}
 	if db.Session().Create(ioc).Error != nil {
 		fsLog.Error("Failed to create IOC")
 	}
-}
-
-// Grep - Search a file or directory for text matching a regex
-func (rpc *Server) Grep(ctx context.Context, req *sliverpb.GrepReq) (*sliverpb.Grep, error) {
-	resp := &sliverpb.Grep{Response: &commonpb.Response{}}
-	err := rpc.GenericHandler(req, resp)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-// Mount - Get information on mounted filesystems
-func (rpc *Server) Mount(ctx context.Context, req *sliverpb.MountReq) (*sliverpb.Mount, error) {
-	resp := &sliverpb.Mount{Response: &commonpb.Response{}}
-	err := rpc.GenericHandler(req, resp)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
 }

@@ -20,7 +20,7 @@ package transports
 	along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-// {{if .Config.IncludeNamePipe}}
+// {{if .Config.NamePipec2Enabled}}
 
 import (
 	"io"
@@ -32,8 +32,8 @@ import (
 	"log"
 	// {{end}}
 
-	"github.com/starkzarn/glod/implant/sliver/transports/pivotclients"
-	pb "github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/bishopfox/sliver/implant/sliver/transports/pivotclients"
+	pb "github.com/bishopfox/sliver/protobuf/sliverpb"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -157,4 +157,4 @@ func namedPipeConnect(uri *url.URL) (*Connection, error) {
 	return connection, nil
 }
 
-// {{end}} -IncludeNamePipe
+// {{end}} -NamePipec2Enabled

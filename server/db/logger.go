@@ -4,8 +4,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/starkzarn/glod/server/configs"
-	"github.com/starkzarn/glod/server/log"
+	"github.com/bishopfox/sliver/server/configs"
+	"github.com/bishopfox/sliver/server/log"
 	"gorm.io/gorm/logger"
 )
 

@@ -21,9 +21,9 @@ package rpc
 import (
 	"context"
 
-	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/commonpb"
-	"github.com/starkzarn/glod/server/db"
+	"github.com/bishopfox/sliver/protobuf/clientpb"
+	"github.com/bishopfox/sliver/protobuf/commonpb"
+	"github.com/bishopfox/sliver/server/db"
 )
 
 // var (
@@ -38,7 +38,7 @@ func (rpc *Server) Hosts(ctx context.Context, _ *commonpb.Empty) (*clientpb.AllH
 	}
 	hosts := []*clientpb.Host{}
 	for _, dbHost := range dbHosts {
-		hosts = append(hosts, dbHost)
+		hosts = append(hosts, dbHost.ToProtobuf())
 	}
 	return &clientpb.AllHosts{Hosts: hosts}, nil
 }
@@ -58,7 +58,7 @@ func (rpc *Server) HostRm(ctx context.Context, req *clientpb.Host) (*commonpb.Em
 	if err != nil {
 		return nil, err
 	}
-	err = db.Session().Delete(*dbHost).Error
+	err = db.Session().Delete(dbHost).Error
 	if err != nil {
 		return nil, err
 	}

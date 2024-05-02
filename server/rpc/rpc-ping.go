@@ -3,8 +3,8 @@ package rpc
 import (
 	"context"
 
-	"github.com/starkzarn/glod/protobuf/commonpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/bishopfox/sliver/protobuf/commonpb"
+	"github.com/bishopfox/sliver/protobuf/sliverpb"
 )
 
 // Ping - Try to send a round trip message to the implant

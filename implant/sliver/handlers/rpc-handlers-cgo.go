@@ -25,8 +25,8 @@ import (
 	"log"
 	// {{end}}
 
-	"github.com/starkzarn/glod/implant/sliver/screen"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/bishopfox/sliver/implant/sliver/screen"
+	"github.com/bishopfox/sliver/protobuf/sliverpb"
 	"google.golang.org/protobuf/proto"
 )
 

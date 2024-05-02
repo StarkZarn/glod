@@ -28,8 +28,8 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/starkzarn/glod/server/assets"
-	"github.com/starkzarn/glod/server/log"
+	"github.com/bishopfox/sliver/server/assets"
+	"github.com/bishopfox/sliver/server/log"
 )
 
 var (

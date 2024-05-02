@@ -22,12 +22,12 @@ import (
 	"os"
 
 	"github.com/AlecAivazis/survey/v2"
-	"github.com/starkzarn/glod/client/console"
-	"github.com/spf13/cobra"
+	"github.com/bishopfox/sliver/client/console"
+	"github.com/desertbit/grumble"
 )
 
-// ReactionSaveCmd - Manage reactions to events.
-func ReactionReloadCmd(cmd *cobra.Command, con *console.SliverClient, args []string) {
+// ReactionSaveCmd - Manage reactions to events
+func ReactionReloadCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 	if _, err := os.Stat(GetReactionFilePath()); os.IsNotExist(err) {
 		con.PrintErrorf("Missing reaction file %s\n", GetReactionFilePath())
 		return

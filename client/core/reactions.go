@@ -21,7 +21,7 @@ package core
 import (
 	"sync"
 
-	consts "github.com/starkzarn/glod/client/constants"
+	consts "github.com/bishopfox/sliver/client/constants"
 )
 
 var (

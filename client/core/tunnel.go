@@ -23,7 +23,7 @@ import (
 	"io"
 	"log"
 
-	"github.com/starkzarn/glod/protobuf/rpcpb"
+	"github.com/bishopfox/sliver/protobuf/rpcpb"
 )
 
 // TunnelLoop - Parses incoming tunnel messages and distributes them

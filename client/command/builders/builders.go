@@ -23,16 +23,16 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/starkzarn/glod/client/command/settings"
-	"github.com/starkzarn/glod/client/console"
-	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/commonpb"
+	"github.com/bishopfox/sliver/client/command/settings"
+	"github.com/bishopfox/sliver/client/console"
+	"github.com/bishopfox/sliver/protobuf/clientpb"
+	"github.com/bishopfox/sliver/protobuf/commonpb"
+	"github.com/desertbit/grumble"
 	"github.com/jedib0t/go-pretty/v6/table"
-	"github.com/spf13/cobra"
 )
 
-// BuildersCmd - List external builders.
-func BuildersCmd(cmd *cobra.Command, con *console.SliverClient, args []string) {
+// BuildersCmd - List external builders
+func BuildersCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 	builders, err := con.Rpc.Builders(context.Background(), &commonpb.Empty{})
 	if err != nil {
 		con.PrintErrorf("%s", err)
@@ -45,7 +45,7 @@ func BuildersCmd(cmd *cobra.Command, con *console.SliverClient, args []string) {
 	}
 }
 
-func PrintBuilders(externalBuilders []*clientpb.Builder, con *console.SliverClient) {
+func PrintBuilders(externalBuilders []*clientpb.Builder, con *console.SliverConsoleClient) {
 	tw := table.NewWriter()
 	tw.SetStyle(settings.GetTableStyle(con))
 	tw.AppendHeader(table.Row{

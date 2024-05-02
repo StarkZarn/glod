@@ -28,9 +28,9 @@ import (
 	"testing"
 	"time"
 
-	"github.com/starkzarn/glod/implant/sliver/transports/dnsclient"
-	"github.com/starkzarn/glod/protobuf/dnspb"
-	"github.com/starkzarn/glod/util/encoders"
+	"github.com/bishopfox/sliver/implant/sliver/transports/dnsclient"
+	"github.com/bishopfox/sliver/protobuf/dnspb"
+	"github.com/bishopfox/sliver/util/encoders"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -165,8 +165,7 @@ func TestIsC2Domain(t *testing.T) {
 func TestDetermineLikelyEncoders(t *testing.T) {
 	listener := StartDNSListener("", uint16(9999), c2Domains, false, true)
 	sample := randomDataRandomSize(2048)
-	encodedSample, _ := encoders.Base58{}.Encode(sample)
-	b58Sample := string(encodedSample)
+	b58Sample := string(encoders.Base58{}.Encode(sample))
 	likelyEncoders := listener.determineLikelyEncoders(b58Sample)
 	_, err := likelyEncoders[0].Decode([]byte(b58Sample))
 	if err != nil {

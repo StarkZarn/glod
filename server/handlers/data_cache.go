@@ -21,7 +21,7 @@ package handlers
 import (
 	"sync"
 
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/bishopfox/sliver/protobuf/sliverpb"
 )
 
 var (

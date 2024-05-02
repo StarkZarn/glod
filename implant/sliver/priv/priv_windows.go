@@ -37,9 +37,9 @@ import (
 	"golang.org/x/sys/windows"
 	"golang.org/x/sys/windows/registry"
 
-	"github.com/starkzarn/glod/implant/sliver/ps"
-	"github.com/starkzarn/glod/implant/sliver/syscalls"
-	"github.com/starkzarn/glod/implant/sliver/taskrunner"
+	"github.com/bishopfox/sliver/implant/sliver/ps"
+	"github.com/bishopfox/sliver/implant/sliver/syscalls"
+	"github.com/bishopfox/sliver/implant/sliver/taskrunner"
 )
 
 const (
@@ -259,7 +259,7 @@ func MakeToken(domain string, username string, password string, logonType uint32
 	if err != nil {
 		return err
 	}
-	if logonType == syscalls.LOGON32_LOGON_NEW_CREDENTIALS {
+	if logonType == 0 {
 		err = syscalls.LogonUser(pu, pd, pp, logonType, syscalls.LOGON32_PROVIDER_WINNT50, &token)
 	} else {
 		err = syscalls.LogonUser(pu, pd, pp, logonType, syscalls.LOGON32_PROVIDER_DEFAULT, &token)

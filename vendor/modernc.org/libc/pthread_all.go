@@ -2,10 +2,8 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-//go:build !freebsd && !openbsd && !(linux && (amd64 || loong64))
-// +build !freebsd
-// +build !openbsd
-// +build !linux !amd64,!loong64
+//go:build !freebsd && !openbsd
+// +build !freebsd,!openbsd
 
 package libc // import "modernc.org/libc"
 
@@ -17,9 +15,6 @@ import (
 
 // int pthread_attr_init(pthread_attr_t *attr);
 func Xpthread_attr_init(t *TLS, pAttr uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v pAttr=%v, (%v:)", t, pAttr, origin(2))
-	}
 	*(*pthread.Pthread_attr_t)(unsafe.Pointer(pAttr)) = pthread.Pthread_attr_t{}
 	return 0
 }
@@ -36,9 +31,6 @@ func Xpthread_attr_init(t *TLS, pAttr uintptr) int32 {
 //
 // int pthread_mutex_init(pthread_mutex_t *restrict mutex, const pthread_mutexattr_t *restrict attr);
 func Xpthread_mutex_init(t *TLS, pMutex, pAttr uintptr) int32 {
-	if __ccgo_strace {
-		trc("t=%v pAttr=%v, (%v:)", t, pAttr, origin(2))
-	}
 	typ := pthread.PTHREAD_MUTEX_DEFAULT
 	if pAttr != 0 {
 		typ = int(X__ccgo_pthreadMutexattrGettype(t, pAttr))

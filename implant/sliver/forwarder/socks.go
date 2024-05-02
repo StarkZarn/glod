@@ -18,14 +18,14 @@ package forwarder
 	along with this program.  If not, see <https://www.gnu.org/licenses/>.
 */
 
-// {{if .Config.IncludeWG}}
+// {{if .Config.WGc2Enabled}}
 import (
 	"fmt"
-	"io"
+	"io/ioutil"
 	"log"
 	"net"
 
-	"github.com/starkzarn/glod/implant/sliver/netstack"
+	"github.com/bishopfox/sliver/implant/sliver/netstack"
 	"github.com/things-go/go-socks5"
 )
 
@@ -61,7 +61,7 @@ func (s *WGSocksServer) LocalAddr() string {
 func (s *WGSocksServer) Start() error {
 	var err error
 	server := socks5.NewServer(
-		socks5.WithLogger(socks5.NewLogger(log.New(io.Discard, "", log.LstdFlags))),
+		socks5.WithLogger(socks5.NewLogger(log.New(ioutil.Discard, "", log.LstdFlags))),
 	)
 	select {
 	case <-s.done:

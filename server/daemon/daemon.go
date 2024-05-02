@@ -20,14 +20,13 @@ package daemon
 
 import (
 	"fmt"
-	"net"
 	"os"
 	"os/signal"
 	"syscall"
 
-	"github.com/starkzarn/glod/server/configs"
-	"github.com/starkzarn/glod/server/log"
-	"github.com/starkzarn/glod/server/transport"
+	"github.com/bishopfox/sliver/server/configs"
+	"github.com/bishopfox/sliver/server/log"
+	"github.com/bishopfox/sliver/server/transport"
 )
 
 var (
@@ -41,11 +40,8 @@ var (
 )
 
 // Start - Start as daemon process
-func Start(host string, port uint16, tailscale bool) {
-	var (
-		ln  net.Listener
-		err error
-	)
+func Start(host string, port uint16) {
+
 	// cli args take president over config
 	if host == BlankHost {
 		daemonLog.Info("No cli lhost, using config file or default value")
@@ -57,11 +53,7 @@ func Start(host string, port uint16, tailscale bool) {
 	}
 
 	daemonLog.Infof("Starting Sliver daemon %s:%d ...", host, port)
-	if tailscale {
-		_, ln, err = transport.StartTsNetClientListener(host, port)
-	} else {
-		_, ln, err = transport.StartMtlsClientListener(host, port)
-	}
+	_, ln, err := transport.StartClientListener(host, port)
 	if err != nil {
 		fmt.Printf("[!] Failed to start daemon %s", err)
 		daemonLog.Errorf("Error starting client listener %s", err)

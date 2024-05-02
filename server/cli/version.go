@@ -21,7 +21,7 @@ package cli
 import (
 	"fmt"
 
-	"github.com/starkzarn/glod/client/version"
+	"github.com/bishopfox/sliver/client/version"
 	"github.com/spf13/cobra"
 )
 

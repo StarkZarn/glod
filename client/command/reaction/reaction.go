@@ -22,16 +22,16 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/starkzarn/glod/client/command/settings"
-	"github.com/starkzarn/glod/client/console"
-	consts "github.com/starkzarn/glod/client/constants"
-	"github.com/starkzarn/glod/client/core"
+	"github.com/bishopfox/sliver/client/command/settings"
+	"github.com/bishopfox/sliver/client/console"
+	consts "github.com/bishopfox/sliver/client/constants"
+	"github.com/bishopfox/sliver/client/core"
+	"github.com/desertbit/grumble"
 	"github.com/jedib0t/go-pretty/v6/table"
-	"github.com/spf13/cobra"
 )
 
-// ReactionCmd - Manage reactions to events.
-func ReactionCmd(cmd *cobra.Command, con *console.SliverClient, args []string) {
+// ReactionCmd - Manage reactions to events
+func ReactionCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 	totalReactions := 0
 	for _, eventType := range core.ReactableEvents {
 		reactions := core.Reactions.On(eventType)
@@ -48,7 +48,7 @@ func ReactionCmd(cmd *cobra.Command, con *console.SliverClient, args []string) {
 	}
 }
 
-func displayReactionsTable(eventType string, reactions []core.Reaction, con *console.SliverClient) {
+func displayReactionsTable(eventType string, reactions []core.Reaction, con *console.SliverConsoleClient) {
 	tw := table.NewWriter()
 	tw.SetStyle(settings.GetTableStyle(con))
 	tw.SetTitle(fmt.Sprintf(console.Bold+"%s"+console.Normal, EventTypeToTitle(eventType)))
@@ -70,7 +70,7 @@ func displayReactionsTable(eventType string, reactions []core.Reaction, con *con
 	con.Printf("%s\n", tw.Render())
 }
 
-// EventTypeToTitle - Convert an eventType to a more human friendly string.
+// EventTypeToTitle - Convert an eventType to a more human friendly string
 func EventTypeToTitle(eventType string) string {
 	switch eventType {
 

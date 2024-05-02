@@ -26,18 +26,19 @@ import (
 	"path"
 	"time"
 
-	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/commonpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
-	"github.com/starkzarn/glod/server/codenames"
-	"github.com/starkzarn/glod/server/core"
-	"github.com/starkzarn/glod/server/db"
-	"github.com/starkzarn/glod/server/log"
-	"github.com/starkzarn/glod/server/msf"
+	"github.com/bishopfox/sliver/protobuf/clientpb"
+	"github.com/bishopfox/sliver/protobuf/commonpb"
+	"github.com/bishopfox/sliver/protobuf/sliverpb"
+	"github.com/bishopfox/sliver/server/codenames"
+	"github.com/bishopfox/sliver/server/configs"
+	"github.com/bishopfox/sliver/server/core"
+	"github.com/bishopfox/sliver/server/db"
+	"github.com/bishopfox/sliver/server/log"
+	"github.com/bishopfox/sliver/server/msf"
 )
 
 var (
-	msfLog = log.NamedLogger("rpc", "msf")
+	msfLog = log.NamedLogger("rcp", "msf")
 )
 
 // Msf - Helper function to execute MSF payloads on the remote system
@@ -167,10 +168,10 @@ func (rpc *Server) MsfStage(ctx context.Context, req *clientpb.MsfStagerReq) (*c
 		payload = "meterpreter/reverse_tcp"
 	case clientpb.StageProtocol_HTTP:
 		payload = "custom/reverse_winhttp"
-		uri = generateCallbackURI(req.HTTPC2ConfigName)
+		uri = generateCallbackURI()
 	case clientpb.StageProtocol_HTTPS:
 		payload = "custom/reverse_winhttps"
-		uri = generateCallbackURI(req.HTTPC2ConfigName)
+		uri = generateCallbackURI()
 	default:
 		return MSFStage, errors.New("protocol not supported")
 	}
@@ -181,15 +182,14 @@ func (rpc *Server) MsfStage(ctx context.Context, req *clientpb.MsfStagerReq) (*c
 	}
 
 	venomConfig := msf.VenomConfig{
-		Os:         req.GetOS(),
-		Payload:    payload,
-		LHost:      req.GetHost(),
-		LPort:      uint16(req.GetPort()),
-		Arch:       arch,
-		Format:     req.GetFormat(),
-		BadChars:   req.GetBadChars(), // TODO: make this configurable
-		Luri:       uri,
-		AdvOptions: req.AdvOptions,
+		Os:       req.GetOS(),
+		Payload:  payload,
+		LHost:    req.GetHost(),
+		LPort:    uint16(req.GetPort()),
+		Arch:     arch,
+		Format:   req.GetFormat(),
+		BadChars: req.GetBadChars(), // TODO: make this configurable
+		Luri:     uri,
 	}
 
 	stage, err := msf.VenomPayload(venomConfig)
@@ -207,26 +207,15 @@ func (rpc *Server) MsfStage(ctx context.Context, req *clientpb.MsfStagerReq) (*c
 }
 
 // Utility functions
-func generateCallbackURI(httpC2ConfigName string) string {
-	httpC2Config, err := db.LoadHTTPC2ConfigByName(httpC2ConfigName)
-	if err != nil {
-		return ""
-	}
-	segments := httpC2Config.ImplantConfig.PathSegments
-	StageFiles := []string{}
-	StagePaths := []string{}
-
-	for _, segment := range segments {
-		if segment.SegmentType == 3 {
-			if segment.IsFile {
-				StageFiles = append(StageFiles, segment.Value)
-			} else {
-				StagePaths = append(StagePaths, segment.Value)
-			}
-		}
+func generateCallbackURI() string {
+	currentHTTPC2Config := configs.GetHTTPC2Config()
+	segments := currentHTTPC2Config.ImplantConfig.StagerPaths
+	fileNames := []string{}
+	for _, fileName := range currentHTTPC2Config.ImplantConfig.StagerFiles {
+		fileNames = append(fileNames, fileName+"."+currentHTTPC2Config.ImplantConfig.StagerFileExt)
 	}
 
-	return path.Join(randomPath(StagePaths, StageFiles)...)
+	return path.Join(randomPath(segments, fileNames)...)
 }
 
 func randomPath(segments []string, filenames []string) []string {

@@ -5,14 +5,14 @@ import (
 	"encoding/pem"
 	"testing"
 
-	clienttransport "github.com/starkzarn/glod/client/transport"
-	"github.com/starkzarn/glod/server/certs"
+	clienttransport "github.com/bishopfox/sliver/client/transport"
+	"github.com/bishopfox/sliver/server/certs"
 )
 
 func TestRootOnlyVerifyCertificate(t *testing.T) {
 	certs.SetupCAs()
 
-	data, err := NewOperatorConfig("zerocool", "localhost", uint16(1337), []string{"all"})
+	data, err := NewOperatorConfig("zerocool", "localhost", uint16(1337))
 	if err != nil {
 		t.Fatalf("failed to generate test player profile %s", err)
 	}

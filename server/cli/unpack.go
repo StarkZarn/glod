@@ -21,7 +21,7 @@ package cli
 import (
 	"fmt"
 
-	"github.com/starkzarn/glod/server/assets"
+	"github.com/bishopfox/sliver/server/assets"
 	"github.com/spf13/cobra"
 )
 

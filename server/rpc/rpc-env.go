@@ -21,8 +21,8 @@ package rpc
 import (
 	"context"
 
-	"github.com/starkzarn/glod/protobuf/commonpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/bishopfox/sliver/protobuf/commonpb"
+	"github.com/bishopfox/sliver/protobuf/sliverpb"
 )
 
 // GetEnv - Retrieve the environment variables list from the current session

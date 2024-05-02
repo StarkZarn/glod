@@ -23,14 +23,14 @@ import (
 	"sync"
 	"time"
 
-	"github.com/starkzarn/glod/implant/sliver/transports/mtls"
-	"github.com/starkzarn/glod/implant/sliver/transports/wireguard"
-	"github.com/starkzarn/glod/protobuf/clientpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
-	"github.com/starkzarn/glod/server/log"
+	"github.com/bishopfox/sliver/implant/sliver/transports/mtls"
+	"github.com/bishopfox/sliver/implant/sliver/transports/wireguard"
+	"github.com/bishopfox/sliver/protobuf/clientpb"
+	"github.com/bishopfox/sliver/protobuf/sliverpb"
+	"github.com/bishopfox/sliver/server/log"
 	"github.com/gofrs/uuid"
 
-	consts "github.com/starkzarn/glod/client/constants"
+	consts "github.com/bishopfox/sliver/client/constants"
 )
 
 var (
@@ -74,7 +74,6 @@ type Session struct {
 	PeerID            int64
 	Locale            string
 	FirstContact      int64
-	Integrity         string
 }
 
 // LastCheckin - Get the last time a session message was received
@@ -91,7 +90,7 @@ func (s *Session) IsDead() bool {
 	reconnect := time.Duration(s.ReconnectInterval)
 	pollTimeout := time.Duration(s.PollTimeout)
 	if timePassed < reconnect+padding && timePassed < pollTimeout+padding {
-		sessionsLog.Debugf("Last message within reconnect interval / poll timeout + padding")
+		sessionsLog.Debugf("Last message within reconnect interval / poll timeout with padding")
 		return false
 	}
 	if s.Connection.Transport == consts.MtlsStr {
@@ -141,7 +140,6 @@ func (s *Session) ToProtobuf() *clientpb.Session {
 		PeerID:            s.PeerID,
 		Locale:            s.Locale,
 		FirstContact:      s.FirstContact,
-		Integrity:         s.Integrity,
 	}
 }
 
@@ -225,7 +223,7 @@ func (s *sessions) Remove(sessionID string) {
 	parentSession := val.(*Session)
 	children := findAllChildrenByPeerID(parentSession.PeerID)
 	s.sessions.Delete(parentSession.ID)
-	coreLog.Debugf("Removing %d children of session %s (%v)", len(children), parentSession.ID, children)
+	coreLog.Debugf("Removing %d children of session %d (%v)", len(children), parentSession.ID, children)
 	for _, child := range children {
 		childSession, ok := s.sessions.LoadAndDelete(child.SessionID)
 		if ok {
@@ -251,7 +249,6 @@ func NewSession(implantConn *ImplantConnection) *Session {
 		ID:           nextSessionID(),
 		Connection:   implantConn,
 		FirstContact: time.Now().Unix(),
-		Integrity:    "-",
 	}
 }
 

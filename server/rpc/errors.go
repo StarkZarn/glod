@@ -21,7 +21,7 @@ package rpc
 import (
 	"fmt"
 
-	"github.com/starkzarn/glod/server/db/models"
+	"github.com/bishopfox/sliver/server/db/models"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )

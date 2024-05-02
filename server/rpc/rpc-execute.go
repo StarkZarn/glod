@@ -21,8 +21,8 @@ package rpc
 import (
 	"context"
 
-	"github.com/starkzarn/glod/protobuf/commonpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/bishopfox/sliver/protobuf/commonpb"
+	"github.com/bishopfox/sliver/protobuf/sliverpb"
 )
 
 // Execute - Execute a remote process

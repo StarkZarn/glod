@@ -19,13 +19,13 @@ package settings
 */
 
 import (
-	"github.com/starkzarn/glod/client/assets"
-	"github.com/starkzarn/glod/client/console"
-	"github.com/spf13/cobra"
+	"github.com/bishopfox/sliver/client/assets"
+	"github.com/bishopfox/sliver/client/console"
+	"github.com/desertbit/grumble"
 )
 
-// SettingsBeaconsAutoResultCmd - The client settings command.
-func SettingsBeaconsAutoResultCmd(cmd *cobra.Command, con *console.SliverClient, args []string) {
+// SettingsBeaconsAutoResultCmd - The client settings command
+func SettingsBeaconsAutoResultCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
 	var err error
 	if con.Settings == nil {
 		con.Settings, err = assets.LoadSettings()

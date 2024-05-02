@@ -21,13 +21,14 @@ package sessions
 import (
 	"context"
 
-	"github.com/starkzarn/glod/client/console"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
-	"github.com/spf13/cobra"
+	"github.com/bishopfox/sliver/client/console"
+	"github.com/bishopfox/sliver/protobuf/sliverpb"
+	"github.com/desertbit/grumble"
 )
 
-// CloseSessionCmd - Close an interactive session but do not kill the remote process.
-func CloseSessionCmd(cmd *cobra.Command, con *console.SliverClient, args []string) {
+// CloseSessionCmd - Close an interactive session but do not kill the remote process
+func CloseSessionCmd(ctx *grumble.Context, con *console.SliverConsoleClient) {
+
 	// Get the active session
 	session := con.ActiveTarget.GetSessionInteractive()
 	if session == nil {
@@ -37,7 +38,7 @@ func CloseSessionCmd(cmd *cobra.Command, con *console.SliverClient, args []strin
 
 	// Close the session
 	_, err := con.Rpc.CloseSession(context.Background(), &sliverpb.CloseSession{
-		Request: con.ActiveTarget.Request(cmd),
+		Request: con.ActiveTarget.Request(ctx),
 	})
 	if err != nil {
 		con.PrintErrorf("%s\n", err.Error())
@@ -45,4 +46,5 @@ func CloseSessionCmd(cmd *cobra.Command, con *console.SliverClient, args []strin
 	}
 
 	con.ActiveTarget.Set(nil, nil)
+
 }

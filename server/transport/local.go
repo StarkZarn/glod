@@ -21,9 +21,9 @@ package transport
 import (
 	"runtime/debug"
 
-	"github.com/starkzarn/glod/protobuf/rpcpb"
-	"github.com/starkzarn/glod/server/log"
-	"github.com/starkzarn/glod/server/rpc"
+	"github.com/bishopfox/sliver/protobuf/rpcpb"
+	"github.com/bishopfox/sliver/server/log"
+	"github.com/bishopfox/sliver/server/rpc"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/test/bufconn"
 )
@@ -35,9 +35,9 @@ var (
 )
 
 // LocalListener - Bind gRPC server to an in-memory listener, which is
-// typically used for unit testing, but ... it should be fine
+//                 typically used for unit testing, but ... it should be fine
 func LocalListener() (*grpc.Server, *bufconn.Listener, error) {
-	bufConnLog.Infof("Binding gRPC/bufconn to listener ...")
+	bufConnLog.Infof("Binding gRPC to listener ...")
 	ln := bufconn.Listen(bufSize)
 	options := []grpc.ServerOption{
 		grpc.MaxRecvMsgSize(ServerMaxMessageSize),

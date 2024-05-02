@@ -21,8 +21,8 @@ package rpc
 import (
 	"context"
 
-	"github.com/starkzarn/glod/protobuf/commonpb"
-	"github.com/starkzarn/glod/protobuf/sliverpb"
+	"github.com/bishopfox/sliver/protobuf/commonpb"
+	"github.com/bishopfox/sliver/protobuf/sliverpb"
 )
 
 // RegistryRead - gRPC interface to read a registry key from a session
@@ -78,16 +78,6 @@ func (rpc *Server) RegistryListSubKeys(ctx context.Context, req *sliverpb.Regist
 // RegistryListSubKeys - gRPC interface to list the sub keys of a registry key
 func (rpc *Server) RegistryListValues(ctx context.Context, req *sliverpb.RegistryListValuesReq) (*sliverpb.RegistryValuesList, error) {
 	resp := &sliverpb.RegistryValuesList{Response: &commonpb.Response{}}
-	err := rpc.GenericHandler(req, resp)
-	if err != nil {
-		return nil, err
-	}
-	return resp, nil
-}
-
-// RegistryDumpHive - gRPC interface to dump a specific registry hive as a binary file
-func (rpc *Server) RegistryReadHive(ctx context.Context, req *sliverpb.RegistryReadHiveReq) (*sliverpb.RegistryReadHive, error) {
-	resp := &sliverpb.RegistryReadHive{Response: &commonpb.Response{}}
 	err := rpc.GenericHandler(req, resp)
 	if err != nil {
 		return nil, err

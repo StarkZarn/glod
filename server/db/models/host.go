@@ -21,7 +21,7 @@ package models
 import (
 	"time"
 
-	"github.com/starkzarn/glod/protobuf/clientpb"
+	"github.com/bishopfox/sliver/protobuf/clientpb"
 	"github.com/gofrs/uuid"
 	"gorm.io/gorm"
 )
@@ -33,11 +33,11 @@ type Host struct {
 	CreatedAt time.Time `gorm:"->;<-:create;"`
 
 	Hostname  string
-	OSVersion string // Verbose OS version
+	OSVersion string // Verbore OS version
 	Locale    string // Detected language code
 
-	IOCs          []IOC           `gorm:"foreignKey:HostID;references:HostUUID"`
-	ExtensionData []ExtensionData `gorm:"foreignKey:HostID;references:HostUUID"`
+	IOCs          []IOC
+	ExtensionData []ExtensionData
 }
 
 // BeforeCreate - GORM hook
@@ -107,7 +107,6 @@ func (i *IOC) ToProtobuf() *clientpb.IOC {
 	return &clientpb.IOC{
 		Path:     i.Path,
 		FileHash: i.FileHash,
-		ID:       i.ID.String(),
 	}
 }
 

@@ -22,7 +22,7 @@ import (
 	"errors"
 	"sync"
 
-	"github.com/starkzarn/glod/protobuf/clientpb"
+	"github.com/bishopfox/sliver/protobuf/clientpb"
 )
 
 var (
@@ -41,10 +41,7 @@ func AddBuilder(builder *clientpb.Builder) error {
 }
 
 func GetBuilder(builderName string) *clientpb.Builder {
-	builder, ok := builders.Load(builderName)
-	if !ok {
-		return nil
-	}
+	builder, _ := builders.Load(builderName)
 	return builder.(*clientpb.Builder)
 }
 

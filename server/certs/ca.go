@@ -27,7 +27,7 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/starkzarn/glod/server/assets"
+	"github.com/bishopfox/sliver/server/assets"
 )
 
 // -----------------------

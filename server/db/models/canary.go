@@ -21,7 +21,7 @@ package models
 import (
 	"time"
 
-	"github.com/starkzarn/glod/protobuf/clientpb"
+	"github.com/bishopfox/sliver/protobuf/clientpb"
 	"github.com/gofrs/uuid"
 	"gorm.io/gorm"
 )
@@ -58,21 +58,5 @@ func (c *DNSCanary) ToProtobuf() *clientpb.DNSCanary {
 		FirstTriggered: c.FirstTrigger.Format(time.RFC1123),
 		LatestTrigger:  c.LatestTrigger.Format(time.RFC1123),
 		Count:          c.Count,
-	}
-}
-
-// convert from protobuf
-func DNSCanaryFromProtobuf(m *clientpb.DNSCanary) DNSCanary {
-	uuid, _ := uuid.FromString(m.ID)
-	firstTrigger, _ := time.Parse(time.RFC1123, m.FirstTriggered)
-	latestTrigger, _ := time.Parse(time.RFC1123, m.LatestTrigger)
-	return DNSCanary{
-		ID:            uuid,
-		ImplantName:   m.ImplantName,
-		Domain:        m.Domain,
-		Triggered:     m.Triggered,
-		FirstTrigger:  firstTrigger,
-		LatestTrigger: latestTrigger,
-		Count:         m.Count,
 	}
 }

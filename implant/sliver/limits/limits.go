@@ -45,7 +45,7 @@ import (
 	// {{else}}{{end}}
 
 	// {{if .Config.LimitLocale}}
-	"github.com/starkzarn/glod/implant/sliver/locale"
+	"github.com/bishopfox/sliver/implant/sliver/locale"
 	// {{end}}
 )
 

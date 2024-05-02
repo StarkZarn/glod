@@ -22,7 +22,7 @@ package locale
 
 
 import (
-	"github.com/starkzarn/glod/implant/sliver/locale/jibberjabber"
+	"github.com/bishopfox/sliver/implant/sliver/locale/jibberjabber"
 )
 
 // GetLocale returns the default language set

@@ -21,8 +21,8 @@ package core
 import (
 	"sync"
 
-	consts "github.com/starkzarn/glod/client/constants"
-	"github.com/starkzarn/glod/protobuf/clientpb"
+	consts "github.com/bishopfox/sliver/client/constants"
+	"github.com/bishopfox/sliver/protobuf/clientpb"
 )
 
 var (
