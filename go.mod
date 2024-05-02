@@ -37,7 +37,7 @@ require (
 	github.com/ncruces/go-sqlite3 v0.7.2
 	github.com/reeflective/console v0.1.15
 	github.com/reeflective/readline v1.0.14
-	github.com/rsteube/carapace v0.46.3-0.20231214181515-27e49f3c3b69
+	github.com/rsteube/carapace v0.50.2
 	github.com/sirupsen/logrus v1.9.3
 	github.com/spf13/cobra v1.8.0
 	github.com/spf13/pflag v1.0.5
@@ -155,7 +155,7 @@ require (
 	github.com/pmezard/go-difflib v1.0.0 // indirect
 	github.com/remyoudompheng/bigfft v0.0.0-20230129092748-24d4a6f8daec // indirect
 	github.com/rivo/uniseg v0.4.4 // indirect
-	github.com/rsteube/carapace-shlex v0.1.1 // indirect
+	github.com/rsteube/carapace-shlex v0.1.2 // indirect
 	github.com/safchain/ethtool v0.3.0 // indirect
 	github.com/tailscale/certstore v0.1.1-0.20231202035212-d3fa0460f47e // indirect
 	github.com/tailscale/go-winio v0.0.0-20231025203758-c4f33415bf55 // indirect

@@ -589,7 +589,7 @@ github.com/remyoudompheng/bigfft
 # github.com/rivo/uniseg v0.4.4
 ## explicit; go 1.18
 github.com/rivo/uniseg
-# github.com/rsteube/carapace v0.46.3-0.20231214181515-27e49f3c3b69
+# github.com/rsteube/carapace v0.50.2
 ## explicit; go 1.15
 github.com/rsteube/carapace
 github.com/rsteube/carapace/internal/cache
@@ -597,6 +597,7 @@ github.com/rsteube/carapace/internal/common
 github.com/rsteube/carapace/internal/config
 github.com/rsteube/carapace/internal/env
 github.com/rsteube/carapace/internal/export
+github.com/rsteube/carapace/internal/log
 github.com/rsteube/carapace/internal/man
 github.com/rsteube/carapace/internal/pflagfork
 github.com/rsteube/carapace/internal/shell
@@ -609,12 +610,13 @@ github.com/rsteube/carapace/internal/shell/ion
 github.com/rsteube/carapace/internal/shell/nushell
 github.com/rsteube/carapace/internal/shell/oil
 github.com/rsteube/carapace/internal/shell/powershell
-github.com/rsteube/carapace/internal/shell/spec
 github.com/rsteube/carapace/internal/shell/tcsh
 github.com/rsteube/carapace/internal/shell/xonsh
 github.com/rsteube/carapace/internal/shell/zsh
+github.com/rsteube/carapace/internal/spec
 github.com/rsteube/carapace/internal/uid
-github.com/rsteube/carapace/pkg/cache
+github.com/rsteube/carapace/pkg/cache/key
+github.com/rsteube/carapace/pkg/execlog
 github.com/rsteube/carapace/pkg/match
 github.com/rsteube/carapace/pkg/ps
 github.com/rsteube/carapace/pkg/style
@@ -630,7 +632,7 @@ github.com/rsteube/carapace/third_party/github.com/elves/elvish/pkg/cli/lscolors
 github.com/rsteube/carapace/third_party/github.com/elves/elvish/pkg/ui
 github.com/rsteube/carapace/third_party/github.com/mitchellh/go-ps
 github.com/rsteube/carapace/third_party/golang.org/x/sys/execabs
-# github.com/rsteube/carapace-shlex v0.1.1
+# github.com/rsteube/carapace-shlex v0.1.2
 ## explicit; go 1.15
 github.com/rsteube/carapace-shlex
 # github.com/safchain/ethtool v0.3.0
