@@ -32,7 +32,7 @@ GO_VERSION_VALIDATION_ERR_MSG = Golang version is not supported, please update t
 
 VERSION ?= $(shell git describe --abbrev=0)
 COMPILED_AT = $(shell date +%s)
-RELEASES_URL ?= https://api.github.com/repos/BishopFox/sliver/releases
+RELEASES_URL ?= https://api.github.com/repos/StarkZarn/glod/releases
 ARMORY_PUBLIC_KEY ?= RWSBpxpRWDrD7Fe+VvRE3c2VEDC2NK80rlNCj+BX0gz44Xw07r6KQD9L
 ARMORY_REPO_URL ?= https://api.github.com/repos/sliverarmory/armory/releases
 VERSION_PKG = github.com/starkzarn/glod/client/version

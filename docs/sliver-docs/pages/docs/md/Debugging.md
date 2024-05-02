@@ -31,7 +31,7 @@ To simplify things, you can add this command as a VSCode task, by adding the fol
   "command": "dlv",
   "args": [
     "debug",
-    "--build-flags=\"-tags osusergo,netgo,go_sqlite,server -ldflags='-X github.com/starkzarn/glod/client/version.Version=0.0.0 -X github.com/starkzarn/glod/client/version.CompiledAt=Never -X github.com/starkzarn/glod/client/version.GithubReleasesURL=https://api.github.com/repos/BishopFox/sliver/releases -X github.com/starkzarn/glod/client/version.GitCommit=debug -X github.com/starkzarn/glod/client/version.GitDirty=Dirty -X github.com/starkzarn/glod/client/assets.DefaultArmoryPublicKey=RWSBpxpRWDrD7Fe+VvRE3c2VEDC2NK80rlNCj+BX0gz44Xw07r6KQD9L -X github.com/starkzarn/glod/client/assets.DefaultArmoryRepoURL=https://api.github.com/repos/sliverarmory/armory/releases'\"",
+    "--build-flags=\"-tags osusergo,netgo,go_sqlite,server -ldflags='-X github.com/starkzarn/glod/client/version.Version=0.0.0 -X github.com/starkzarn/glod/client/version.CompiledAt=Never -X github.com/starkzarn/glod/client/version.GithubReleasesURL=https://api.github.com/repos/StarkZarn/glod/releases -X github.com/starkzarn/glod/client/version.GitCommit=debug -X github.com/starkzarn/glod/client/version.GitDirty=Dirty -X github.com/starkzarn/glod/client/assets.DefaultArmoryPublicKey=RWSBpxpRWDrD7Fe+VvRE3c2VEDC2NK80rlNCj+BX0gz44Xw07r6KQD9L -X github.com/starkzarn/glod/client/assets.DefaultArmoryRepoURL=https://api.github.com/repos/sliverarmory/armory/releases'\"",
     "--headless",
     "--listen=:8844",
     "--api-version=2",
