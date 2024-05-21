@@ -7,7 +7,7 @@ replace github.com/desertbit/grumble v1.1.1 => github.com/moloch--/grumble v1.1.
 require (
 	filippo.io/age v1.1.1
 	github.com/AlecAivazis/survey/v2 v2.3.6
-	github.com/Binject/binjection v0.0.0-20200705191933-da1a50d7013d
+	github.com/Binject/binjection v0.0.0-20210701074423-605d46e35deb
 	github.com/Binject/debug v0.0.0-20210312092933-6277045c2fdf
 	github.com/Binject/go-donut v0.0.0-20210701074227-67a31e2d883e
 	github.com/Binject/universal v0.0.0-20210304094126-daefaa886313
