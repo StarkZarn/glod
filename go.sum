@@ -9,6 +9,8 @@ github.com/AlecAivazis/survey/v2 v2.3.6 h1:NvTuVHISgTHEHeBFqt6BHOe4Ny/NwGZr7w+F8
 github.com/AlecAivazis/survey/v2 v2.3.6/go.mod h1:4AuI9b7RjAR+G7v9+C4YSlX/YL3K3cWNXgWXOhllqvI=
 github.com/Binject/binjection v0.0.0-20200705191933-da1a50d7013d h1:uq6FM7b88vkNEqwjyP2mK6oL8cymY5b75Luu6ADTStY=
 github.com/Binject/binjection v0.0.0-20200705191933-da1a50d7013d/go.mod h1:rJLtHgGUqTxJbfg+b+LjWBBPuYUzFFza1LXFhrzfxHA=
+github.com/Binject/binjection v0.0.0-20210701074423-605d46e35deb h1:c1Bb1n1wr2xgTHkNVxkUHBshff33m+IXgY6lE6oYttg=
+github.com/Binject/binjection v0.0.0-20210701074423-605d46e35deb/go.mod h1:fSQ9asCJK/lIGXUnoRwJNMXcnzel53AsZMCtlVBIn3k=
 github.com/Binject/debug v0.0.0-20200621050044-63af8e405111/go.mod h1:6WgJ7mEG7ngJkNwwDkEVreDk2dPGg3oqdI6OEWaeDNg=
 github.com/Binject/debug v0.0.0-20210225042342-c9b8b45728d2/go.mod h1:QzgxDLY/qdKlvnbnb65eqTedhvQPbaSP2NqIbcuKvsQ=
 github.com/Binject/debug v0.0.0-20210312092933-6277045c2fdf h1:Cx4YJvjPZD91xiffqJOq8l3j1YKcvx3+8duqq7DX9gY=
@@ -87,6 +89,7 @@ github.com/envoyproxy/go-control-plane v0.9.4/go.mod h1:6rpuAdCZL397s3pYoYcLgu1m
 github.com/envoyproxy/protoc-gen-validate v0.1.0/go.mod h1:iSmxcyjqTsJpI2R4NaDN7+kN2VEUnK/pcBlmesArF7c=
 github.com/fatih/color v1.9.0/go.mod h1:eQcE1qtQxscV5RaZvpXrrb8Drkc3/DdQ+uUYCNjL+zU=
 github.com/fatih/color v1.10.0/go.mod h1:ELkj/draVOlAH/xkhN6mQ50Qd0MPOk5AAr3maGEBuJM=
+github.com/fatih/color v1.12.0/go.mod h1:ELkj/draVOlAH/xkhN6mQ50Qd0MPOk5AAr3maGEBuJM=
 github.com/fatih/color v1.15.0 h1:kOqh6YHBtK8aywxGerMG2Eq3H6Qgoqeo13Bk2Mv/nBs=
 github.com/fatih/color v1.15.0/go.mod h1:0h5ZqXfHYED7Bhv2ZJamyIOUej9KtShiJESRwBDUSsw=
 github.com/flynn/go-shlex v0.0.0-20150515145356-3f9db97f8568 h1:BHsljHzVlRcyQhjrss6TZTdY2VfCqZPbv5k3iBFa2ZQ=
