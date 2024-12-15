@@ -15,6 +15,8 @@ github.com/Binject/debug v0.0.0-20210312092933-6277045c2fdf h1:Cx4YJvjPZD91xiffq
 github.com/Binject/debug v0.0.0-20210312092933-6277045c2fdf/go.mod h1:QzgxDLY/qdKlvnbnb65eqTedhvQPbaSP2NqIbcuKvsQ=
 github.com/Binject/go-donut v0.0.0-20210701074227-67a31e2d883e h1:ytVmxGQuS7ELO/WpvH6iuY1hVcJ6iOTw3VLOOIFlo8o=
 github.com/Binject/go-donut v0.0.0-20210701074227-67a31e2d883e/go.mod h1:dc3mUnr4KTKcFKVq7BVbHGF0xAHrIyooQ+VTO7/bIZw=
+github.com/Binject/go-donut v0.0.0-20220908180326-fcdcc35d591c h1:cFMQKxryHZ3Sddca8nqJ1RDjaUTW/+79lRKs+7508nk=
+github.com/Binject/go-donut v0.0.0-20220908180326-fcdcc35d591c/go.mod h1:dc3mUnr4KTKcFKVq7BVbHGF0xAHrIyooQ+VTO7/bIZw=
 github.com/Binject/shellcode v0.0.0-20191101084904-a8a90e7d4563 h1:T8z8Wz/fqaPPANF8Unv4LjWLoa0TAvsjYAsRpvSkOqs=
 github.com/Binject/shellcode v0.0.0-20191101084904-a8a90e7d4563/go.mod h1:HMbzsKPz1sF7H4Hmeovh+d2PH2iKPYpAB4XMOVz8wmM=
 github.com/Binject/universal v0.0.0-20210304094126-daefaa886313 h1:hX9boCRvCxIpsiV4q9ts+WOYNnjHiji2FOR5BsDzxiY=
